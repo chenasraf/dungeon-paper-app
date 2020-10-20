@@ -16,3 +16,4 @@ secrets.json
 flutter_export_*.sh
 .tmp
 web/env.js
+.gradle/

@@ -8,17 +8,12 @@ dependencies:
   apple_sign_in: ^0.1.0
   cloud_firestore: ^0.14.1+3
   cupertino_icons: ^1.0.0
-  # wheel_spinner:
-  #   path: ../wheel_spinner
   dungeon_world_data: ^2.0.5+9
-  # dungeon_world_data:
-  #   path: ../dw_data
-  # Firebase/Firestore
+  email_validator: ^1.0.5
   firebase_analytics: ^6.0.2
   firebase_auth: ^0.18.1+2
   firebase_core: ^0.5.0+1
   firebase_crashlytics: ^0.2.1+1
-  email_validator: ^1.0.5
   flutter_file_dialog: ^0.0.5
   flutter_image: ^3.0.0
   flutter_markdown: ^0.4.4
@@ -37,7 +32,7 @@ dependencies:
   quiver_hashcode: ^2.0.0
   redux_logging: ^0.4.0
   screen: ^0.0.5
-  share: ^0.6.5+2
+  share: ^0.6.5+3
   shared_preferences: ^0.5.12
   theme_provider: ^0.4.0+1
   universal_html: ^1.2.3
