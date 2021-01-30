@@ -1,4 +1,4 @@
-import 'package:dungeon_paper/db/models/move_templates.dart';
+import 'package:dungeon_paper/db/models/move_template.dart';
 import 'package:dungeon_paper/src/dialogs/standard_dialog_controls.dart';
 import 'package:dungeon_paper/src/utils/analytics.dart';
 import 'package:flutter/material.dart';

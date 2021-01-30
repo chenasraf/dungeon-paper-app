@@ -10,10 +10,10 @@ import 'package:dungeon_paper/src/pages/notes_view/notes_view.dart';
 import 'package:dungeon_paper/src/pages/reference_view/reference_view.dart';
 import 'package:dungeon_paper/src/pages/welcome_view/welcome_view.dart';
 import 'package:dungeon_paper/src/pages/whats_new_view/whats_new_view.dart';
-import 'package:dungeon_paper/src/redux/connectors.dart';
-import 'package:dungeon_paper/src/redux/loading/loading_store.dart';
-import 'package:dungeon_paper/src/redux/shared_preferences/prefs_store.dart';
-import 'package:dungeon_paper/src/redux/stores.dart';
+import 'package:dungeon_paper/src/controllers/characters_controller.dart';
+import 'package:dungeon_paper/src/controllers/loading_controller.dart';
+import 'package:dungeon_paper/src/controllers/prefs_controller.dart';
+import 'package:dungeon_paper/src/controllers/user_controller.dart';
 import 'package:dungeon_paper/src/scaffolds/main_scaffold.dart';
 import 'package:dungeon_paper/src/utils/analytics.dart';
 import 'package:dungeon_paper/src/utils/logger.dart';
@@ -29,6 +29,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
 import 'app_bar_title.dart';
+import 'drawer_positioner.dart';
 import 'fab.dart';
 import 'nav_bar.dart';
 import 'sidebar.dart';
@@ -46,15 +47,16 @@ class MainContainer extends StatelessWidget {
     return GetBuilder<Themes>(
       init: Themes.instance,
       builder: (themes) {
-        return DWStoreConnector<DWStore>(
-          builder: (ctx, state) {
-            final character = state.characters.current;
-            final user = state.user.current;
+        return Obx(
+          () {
+            final character = characterController.current;
+            final user = userController.current;
+            final isLoading = loadingController[LoadingKeys.character] ||
+                loadingController[LoadingKeys.user];
             return MainView(
               character: character,
               user: user,
-              loading: state.loading[LoadingKeys.Character] ||
-                  state.loading[LoadingKeys.User],
+              loading: isLoading,
               pageController: pageController,
             );
           },
@@ -121,20 +123,20 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     final useAppBar = widget.character != null;
-    return MainScaffold(
-      // appBar: MainAppBar(
-      // scrollController: _currentScrollController,
-      title: appBarTitle,
-      actions: actions(context),
-      elevation: 0,
-      // ),
-      wrapWithScrollable: false,
-      useAppBar: useAppBar,
+    return DrawerPositioner(
       drawer: drawer,
-      floatingActionButton: fab,
-      floatingActionButtonLocation: fabLocation,
-      bottomNavigationBar: navBar,
-      body: pageView,
+      body: (drawer) => MainScaffold(
+        title: appBarTitle,
+        actions: actions(context),
+        elevation: 0,
+        wrapWithScrollable: false,
+        useAppBar: useAppBar,
+        drawer: drawer,
+        floatingActionButton: fab,
+        floatingActionButtonLocation: fabLocation,
+        bottomNavigationBar: navBar,
+        body: pageView,
+      ),
     );
   }
 
@@ -227,21 +229,30 @@ class _MainViewState extends State<MainView> {
     unawaited(sharedPrefs.setString(lastVersionKey, packageInfo.version));
   }
 
+  static final screenNames = <String, String>{
+    'Home': 'home_page',
+    'Battle': 'battle_page',
+    'Inventory': 'inventory_page',
+    'Notes': 'notes_page',
+    'Reference': 'reference_page',
+  };
+
   void _pageListener() {
     if (widget.pageController.hasClients) {
       loseAllFocus(context);
       if (widget.pageController.page.round() == widget.pageController.page) {
         if (pageName != lastPageName) {
+          logger.d(
+              'Page View: ${screenNames[pageName]} (from: ${screenNames[lastPageName]})');
           setState(() {
             lastPageName = pageName;
           });
-          logger.d('Page View: $pageName (from: $lastPageName)');
           analytics.setCurrentScreen(
-            screenName: pageName,
+            screenName: screenNames[pageName],
           );
         } else {
           analytics.logEvent(name: Events.ReturnToScreen, parameters: {
-            'screen_name': lastPageName,
+            'screen_name': screenNames[lastPageName],
           });
         }
       }

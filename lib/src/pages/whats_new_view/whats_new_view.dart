@@ -105,8 +105,7 @@ class _WhatsNewState extends State<WhatsNew> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16).copyWith(top: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -102,7 +102,7 @@ class _AddMoveListState extends State<AddMoveList> {
                 ),
                 child: MoveCard(
                   move: moves[int.parse(key)].elementAt(idx),
-                  mode: MoveCardMode.Addable,
+                  mode: MoveCardMode.addable,
                   onSave: widget.onSave,
                   onDelete: null,
                 ),

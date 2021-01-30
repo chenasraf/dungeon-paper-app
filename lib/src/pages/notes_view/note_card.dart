@@ -1,10 +1,9 @@
-import 'package:dungeon_paper/db/models/notes.dart';
+import 'package:dungeon_paper/db/models/note.dart';
 import 'package:dungeon_paper/src/atoms/card_bottom_controls.dart';
 import 'package:dungeon_paper/src/dialogs/confirmation_dialog.dart';
-import 'package:dungeon_paper/src/dialogs/dialogs.dart';
 import 'package:dungeon_paper/src/flutter_utils/widget_utils.dart';
 import 'package:dungeon_paper/src/lists/tag_list.dart';
-import 'package:dungeon_paper/src/scaffolds/edit_note_scaffold.dart';
+import 'package:dungeon_paper/src/scaffolds/note_view.dart';
 import 'package:dungeon_paper/src/utils/analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -50,6 +49,7 @@ class NoteCardState extends State<NoteCard> {
             ? TagList(
                 visualDensity: VisualDensity.compact,
                 tags: widget.note.tags,
+                textScaleFactor: 0.9,
               )
             : null,
         onExpansionChanged: (value) => analytics.logEvent(
@@ -67,10 +67,6 @@ class NoteCardState extends State<NoteCard> {
                   MarkdownListItemCrossAxisAlignment.start,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: TagList(tags: widget.note.tags),
-          ),
           CardBottomControls(
             entityTypeName: 'Note',
             onEdit: () => editNote(context),
@@ -82,15 +78,13 @@ class NoteCardState extends State<NoteCard> {
   }
 
   void editNote(BuildContext context) {
-    Get.to(
-      EditNoteScreen(
+    Get.toNamed(
+      '/edit-note',
+      arguments: NoteViewArguments(
         note: widget.note,
-        mode: DialogMode.Edit,
         categories: widget.categories,
         onSave: (note) {
-          if (widget.onSave != null) {
-            widget.onSave(note);
-          }
+          widget.onSave?.call(note);
         },
       ),
     );

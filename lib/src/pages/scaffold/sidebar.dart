@@ -4,13 +4,12 @@ import 'package:dungeon_paper/src/atoms/user_avatar.dart';
 import 'package:dungeon_paper/src/dialogs/dialogs.dart';
 import 'package:dungeon_paper/src/flutter_utils/platform_svg.dart';
 import 'package:dungeon_paper/src/pages/about_view/about_view.dart';
-import 'package:dungeon_paper/src/pages/account_view/account_view.dart';
+import 'package:dungeon_paper/src/pages/campaigns_view/campaigns_view.dart';
 import 'package:dungeon_paper/src/pages/custom_classes_view/custom_classes_view.dart';
-import 'package:dungeon_paper/src/pages/edit_character/edit_character_view.dart';
+import 'package:dungeon_paper/src/pages/character/character_view.dart';
 import 'package:dungeon_paper/src/pages/settings_view/settings_view.dart';
-import 'package:dungeon_paper/src/redux/characters/characters_store.dart';
-import 'package:dungeon_paper/src/redux/connectors.dart';
-import 'package:dungeon_paper/src/redux/stores.dart';
+import 'package:dungeon_paper/src/controllers/characters_controller.dart';
+import 'package:dungeon_paper/src/controllers/user_controller.dart';
 import 'package:dungeon_paper/src/scaffolds/manage_characters_view/manage_characters_view.dart';
 import 'package:dungeon_paper/src/utils/analytics.dart';
 import 'package:dungeon_paper/src/utils/auth/auth.dart';
@@ -44,12 +43,12 @@ class _SidebarState extends State<Sidebar> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return DWStoreConnector<DWStore>(
-      builder: (context, state) {
-        final user = state.user.current;
+    return Obx(
+      () {
+        final user = userController.current;
 
         return Drawer(
-          child: ListView(
+          child: Column(
             children: [
               UserDrawerHeader(
                 user: user,
@@ -63,7 +62,7 @@ class _SidebarState extends State<Sidebar> with SingleTickerProviderStateMixin {
                     ListTile(
                       leading: Icon(Icons.person),
                       title: Text('Account'),
-                      onTap: () => Get.to(AccountView()),
+                      onTap: () => Get.toNamed('/account'),
                     ),
                     // Log out
                     ListTile(
@@ -71,61 +70,77 @@ class _SidebarState extends State<Sidebar> with SingleTickerProviderStateMixin {
                       title: Text('Log out'),
                       onTap: _signOut,
                     ),
+                    Divider(height: 1),
                   ],
                 ),
               ),
-              title(
-                'Characters',
-                context,
-                leading: Row(
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
                   children: [
-                    IconButton(
-                      color: Get.theme.accentColor,
-                      padding: EdgeInsets.zero,
-                      icon: Icon(Icons.add),
-                      tooltip: 'Create new character',
-                      onPressed: () => createNewCharacterScreen(context),
+                    SizedBox(height: 8),
+                    title(
+                      'Characters',
+                      context,
+                      leading: Row(
+                        children: [
+                          IconButton(
+                            color: Get.theme.accentColor,
+                            padding: EdgeInsets.zero,
+                            icon: Icon(Icons.add),
+                            tooltip: 'Create new character',
+                            onPressed: createNewCharacterScreen,
+                          ),
+                          IconButton(
+                            color: Get.theme.accentColor,
+                            padding: EdgeInsets.zero,
+                            icon: Icon(Icons.settings),
+                            tooltip: 'Manage characters',
+                            onPressed: manageCharactersScreen,
+                          ),
+                        ],
+                      ),
                     ),
-                    IconButton(
-                      color: Get.theme.accentColor,
-                      padding: EdgeInsets.zero,
-                      icon: Icon(Icons.settings),
-                      tooltip: 'Manage characters',
-                      onPressed: () => manageCharactersScreen(context),
+                    ...characterList(characterController.all, context),
+                    Divider(),
+                    title('Custom Content', context),
+                    if (user.isDm)
+                      ListTile(
+                        title: Text('Campaigns'),
+                        onTap: campaignsScreen,
+                        leading: Icon(Icons.group),
+                      ),
+                    ListTile(
+                      title: Text('Custom Classes'),
+                      onTap: customClassesScreen,
+                      leading: Padding(
+                        padding: const EdgeInsets.only(top: 4, left: 4),
+                        child: PlatformSvg.asset(
+                          'book-stack.svg',
+                          width: 16,
+                          height: 16,
+                          color: Get.theme.brightness == Brightness.light
+                              ? Colors.black45
+                              : Get.theme.accentColor,
+                        ),
+                      ),
+                    ),
+                    Divider(),
+                    title('Application', context),
+                    ListTile(
+                      leading: Icon(Icons.settings),
+                      title: Text('Settings'),
+                      onTap: () =>
+                          openPage(ScreenNames.Settings, SettingsView()),
+                    ),
+                    // About
+                    ListTile(
+                      leading: Icon(Icons.info),
+                      title: Text('About'),
+                      onTap: aboutScreen,
                     ),
                   ],
                 ),
-              ),
-              ...characterList(state.characters.all, context),
-              Divider(),
-              title('Custom Content', context),
-              ListTile(
-                leading: Padding(
-                  padding: const EdgeInsets.only(top: 4, left: 4),
-                  child: PlatformSvg.asset(
-                    'book-stack.svg',
-                    width: 16,
-                    height: 16,
-                    color: Get.theme.brightness == Brightness.light
-                        ? Colors.black45
-                        : Get.theme.accentColor,
-                  ),
-                ),
-                title: Text('Custom Classes'),
-                onTap: () => customClassesScreen(context),
-              ),
-              Divider(),
-              title('Application', context),
-              ListTile(
-                leading: Icon(Icons.settings),
-                title: Text('Settings'),
-                onTap: () => openPage(ScreenNames.Settings, SettingsView()),
-              ),
-              // About
-              ListTile(
-                leading: Icon(Icons.info),
-                title: Text('About'),
-                onTap: () => aboutScreen(context),
               ),
             ],
           ),
@@ -158,35 +173,43 @@ class _SidebarState extends State<Sidebar> with SingleTickerProviderStateMixin {
     Get.to(page);
   }
 
-  void createNewCharacterScreen(BuildContext context) {
+  void createNewCharacterScreen() {
     Get.back();
     openPage(
       ScreenNames.CharacterScreen,
-      EditCharacterView(
+      CharacterView(
         character: null,
-        mode: DialogMode.Create,
-        onSave: (char) => dwStore.dispatch(SetCurrentChar(char)),
+        mode: DialogMode.create,
+        onSave: (char) => characterController.setCurrent(char),
       ),
     );
   }
 
-  void manageCharactersScreen(BuildContext context) {
+  void manageCharactersScreen() {
     Get.back();
     openPage(ScreenNames.ManageCharacters, ManageCharactersView());
   }
 
-  void customClassesScreen(BuildContext context) {
+  void customClassesScreen() {
     Get.back();
     openPage(ScreenNames.CustomClasses, CustomClassesView());
   }
 
-  void aboutScreen(BuildContext context) {
+  void campaignsScreen() {
+    Get.back();
+    openPage(ScreenNames.About, CampaignsView());
+  }
+
+  void aboutScreen() {
     Get.back();
     openPage(ScreenNames.About, AboutView());
   }
 
-  Widget title(String text, BuildContext context, {Widget leading}) {
-    final titleStyle = getTitleStyle(context);
+  Widget title(
+    String text,
+    BuildContext context, {
+    Widget leading,
+  }) {
     Widget title = Padding(
       padding: EdgeInsets.all(8).copyWith(left: 18),
       child: Text(
@@ -213,13 +236,11 @@ class _SidebarState extends State<Sidebar> with SingleTickerProviderStateMixin {
     );
   }
 
-  TextStyle getTitleStyle(BuildContext context) {
-    return TextStyle(
-      color: Get.theme.accentColor,
-      fontWeight: FontWeight.w700,
-      fontSize: 14,
-    );
-  }
+  static final titleStyle = TextStyle(
+    color: Get.theme.accentColor,
+    fontWeight: FontWeight.w700,
+    fontSize: 14,
+  );
 
   List<Widget> characterList(
       Map<String, Character> characters, BuildContext context) {
@@ -228,7 +249,7 @@ class _SidebarState extends State<Sidebar> with SingleTickerProviderStateMixin {
     }
     return CharacterListTile.list(
       characters.values.toList()..sort((ch1, ch2) => ch1.order - ch2.order),
-      selectedId: dwStore.state.characters.current.documentID,
+      selectedId: characterController.current.documentID,
     );
   }
 }
@@ -259,7 +280,7 @@ class CharacterListTile extends StatelessWidget {
             'documentID': character.documentID,
             'order': character.order,
           });
-          dwStore.dispatch(SetCurrentChar(character));
+          characterController.setCurrent(character);
           Get.back();
         },
       ),
@@ -308,7 +329,7 @@ class UserDrawerHeader extends StatelessWidget {
           ),
           currentAccountPicture: GestureDetector(
             child: UserAvatar(user: user),
-            onTap: () => Get.to(AccountView()),
+            onTap: () => Get.toNamed('/account'),
           ),
           onDetailsPressed: onToggleUserMenu,
         ),

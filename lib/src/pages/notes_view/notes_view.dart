@@ -1,5 +1,5 @@
 import 'package:dungeon_paper/db/models/character.dart';
-import 'package:dungeon_paper/db/models/notes.dart';
+import 'package:dungeon_paper/db/models/note.dart';
 import 'package:dungeon_paper/src/atoms/flexible_columns.dart';
 import 'package:dungeon_paper/src/atoms/empty_state.dart';
 import 'package:dungeon_paper/src/atoms/search_bar.dart';

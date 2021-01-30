@@ -6,6 +6,7 @@ import 'package:dungeon_paper/src/utils/auth/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:flutter/foundation.dart';
 import 'package:pedantic/pedantic.dart';
+import 'package:uuid/uuid.dart';
 
 Future<User> getDatabaseUser(
   fb.User fbUser, {
@@ -18,23 +19,27 @@ Future<User> getDatabaseUser(
       fbUser.providerData
           .firstWhere((element) => element.email?.isNotEmpty == true)
           ?.email;
-  var user = User(
-    ref: firestore.collection('user_data').doc(email),
-    autoLoad: false,
+  final userDoc = await firestore.collection('user_data').doc(email).get();
+  final data = userDoc.data();
+  var user = User.fromJson(
+    data,
+    ref: userDoc.reference,
   );
-  var data = await user.getRemoteData();
   if (data.isEmpty) {
     unawaited(analytics.logSignUp(signUpMethod: signInMethod.name));
-    user
-      ..displayName = fbUser.displayName ?? fbUser.email
-      ..email = fbUser.email
-      ..photoURL = fbUser.photoURL;
-    await user.create();
-    await user.createCharacter(Character());
+    user = user.copyWith(
+      displayName: fbUser.displayName ?? fbUser.email,
+      email: fbUser.email,
+      photoURL: fbUser.photoURL,
+    );
+    await helpers.create(userDoc.reference, data);
+    await user.createCharacter(Character(key: Uuid().v4()));
   } else {
     if (user.email?.isEmpty != true) {
-      user.email = email;
-      await user.update();
+      user = user.copyWith(
+        email: email,
+      );
+      await helpers.update(userDoc.reference, data, keys: ['email']);
     }
   }
   return user;

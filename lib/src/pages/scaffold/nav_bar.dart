@@ -85,7 +85,7 @@ class NavBarState extends State<NavBar> {
       final color = Color.lerp(
         Get.theme.colorScheme.surface.withOpacity(0.8), // slected color
         Get.theme.colorScheme.secondary, // unselected color
-        clamp01(t),
+        clamp01<double>(t),
       );
 
       if (details == null) {

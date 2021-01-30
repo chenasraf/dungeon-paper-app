@@ -7,7 +7,7 @@ Future<bool> checkAppleSignIn() async {
 Future<UserLogin> signInWithApple({
   @required bool interactive,
 }) async {
-  dwStore.dispatch(RequestLogin());
+  authController.requestLogin();
   final credential = await getAppleCredential(interactive: interactive);
   return signInWithCredentials(credential);
 }

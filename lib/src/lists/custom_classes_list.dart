@@ -1,9 +1,10 @@
 import 'package:dungeon_paper/db/models/custom_class.dart';
 import 'package:dungeon_paper/src/atoms/card_list_item.dart';
 import 'package:dungeon_paper/src/flutter_utils/widget_utils.dart';
-import 'package:dungeon_paper/src/redux/connectors.dart';
+import 'package:dungeon_paper/src/controllers/custom_classes_controller.dart';
 import 'package:dungeon_paper/src/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CustomClassesList extends StatelessWidget {
   final SingleChildWidgetBuilder builder;
@@ -28,10 +29,9 @@ class CustomClassesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var child = DWStoreConnector<List<CustomClass>>(
-      converter: (store) =>
-          store.state.customClasses.customClasses.values.toList(),
-      builder: (context, classes) {
+    var child = Obx(
+      () {
+        final classes = customClassesController.classes.values.toList();
         return SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

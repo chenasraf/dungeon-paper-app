@@ -1,11 +1,10 @@
 import 'package:dungeon_paper/db/models/custom_class.dart';
 import 'package:dungeon_paper/src/atoms/empty_state.dart';
 import 'package:dungeon_paper/src/dialogs/confirmation_dialog.dart';
-import 'package:dungeon_paper/src/dialogs/dialogs.dart';
 import 'package:dungeon_paper/src/lists/custom_classes_list.dart';
 import 'package:dungeon_paper/src/lists/player_class_list.dart';
-import 'package:dungeon_paper/src/redux/connectors.dart';
-import 'package:dungeon_paper/src/scaffolds/custom_class_wizard/custom_class_wizard.dart';
+import 'package:dungeon_paper/src/controllers/custom_classes_controller.dart';
+import 'package:dungeon_paper/src/scaffolds/custom_class_wizard/custom_class_view.dart';
 import 'package:dungeon_paper/src/scaffolds/main_scaffold.dart';
 import 'package:dungeon_paper/src/utils/analytics.dart';
 import 'package:dungeon_paper/src/utils/logger.dart';
@@ -29,10 +28,9 @@ class _CustomClassesViewState extends State<CustomClassesView> {
 
   @override
   Widget build(BuildContext context) {
-    return DWStoreConnector<bool>(
-      converter: (store) =>
-          store.state.customClasses.customClasses?.isNotEmpty == true,
-      builder: (context, hasClasses) {
+    return Obx(
+      () {
+        final hasClasses = customClassesController.classes.isNotEmpty;
         return MainScaffold(
           title: Text('Custom Classes'),
           automaticallyImplyLeading: true,
@@ -89,15 +87,15 @@ class _CustomClassesViewState extends State<CustomClassesView> {
 
   void Function() _add(BuildContext context) {
     return () {
-      Get.to(CustomClassWizard(mode: DialogMode.Create));
+      Get.toNamed('/create-custom-class');
     };
   }
 
   void Function(CustomClass) _edit(BuildContext context) {
     return (cls) {
-      Get.to(
-        CustomClassWizard(
-          mode: DialogMode.Edit,
+      Get.toNamed(
+        '/edit-custom-class',
+        arguments: CustomClassViewArguments(
           customClass: cls,
         ),
       );
@@ -121,12 +119,13 @@ class _CustomClassesViewState extends State<CustomClassesView> {
   }
 
   void _copyExisting(PlayerClass cls) {
-    var custCls = CustomClass.fromPlayerClass(cls);
-    custCls.name = custCls.name + ' copy';
+    var custCls = CustomClass.fromPlayerClass(cls).copyWith(
+      name: cls.name + ' copy',
+    );
 
-    Get.to(
-      CustomClassWizard(
-        mode: DialogMode.Create,
+    Get.toNamed(
+      '/create-custom-class',
+      arguments: CustomClassViewArguments(
         customClass: custCls,
       ),
     );

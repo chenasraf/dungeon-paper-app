@@ -1,11 +1,11 @@
 import 'package:dungeon_paper/db/helpers/character_utils.dart';
 import 'package:dungeon_paper/db/models/character.dart';
-import 'package:dungeon_paper/src/dialogs/edit_stat_dialog.dart';
+import 'package:dungeon_paper/src/dialogs/stat_dialog.dart';
 import 'package:flutter/material.dart';
 
 class StatCard extends StatelessWidget {
   final Character character;
-  final CharacterKey stat;
+  final CharacterStat stat;
   final void Function() onTap;
 
   const StatCard({
@@ -49,7 +49,7 @@ class StatCard extends StatelessWidget {
     );
   }
 
-  num getValue(Character character, CharacterKey key) =>
+  num getValue(Character character, CharacterStat key) =>
       character.statValueFromKey(key);
 
   void Function() _edit(BuildContext context) {
@@ -57,7 +57,7 @@ class StatCard extends StatelessWidget {
     return () {
       showDialog(
         context: context,
-        builder: (context) => EditStatDialog(
+        builder: (context) => StatDialog(
           stat: stat,
           value: value,
           character: character,

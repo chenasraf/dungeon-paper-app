@@ -1,7 +1,7 @@
 import 'package:dungeon_paper/db/models/character.dart';
-import 'package:dungeon_paper/src/redux/connectors.dart';
-import 'package:dungeon_paper/src/redux/stores.dart';
+import 'package:dungeon_paper/src/controllers/characters_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CharacterList extends StatelessWidget {
   final Widget Function(BuildContext, List<Character>) builder;
@@ -32,12 +32,8 @@ class CharacterList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DWStoreConnector<List<Character>>(
-      builder: builder,
-      converter: (store) {
-        return dwStore.state.characters.all.values.toList()
-          ..sort((a, b) => a.order - b.order);
-      },
-    );
+    final characters = characterController.all.values.toList()
+      ..sort((a, b) => a.order - b.order);
+    return Obx(() => builder(context, characters));
   }
 }

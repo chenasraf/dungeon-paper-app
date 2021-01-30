@@ -45,8 +45,9 @@ class _ClassBasicDetailsState extends State<ClassBasicDetails> {
           defaultValue: widget.customClass.name,
           listener: () {
             setState(() {
-              var def = widget.customClass;
-              def.name = editingControllers[Keys.name].text.trim();
+              var def = widget.customClass.copyWith(
+                name: editingControllers[Keys.name].text.trim(),
+              );
               updateWith(def);
               nameDirty = true;
             });
@@ -56,8 +57,9 @@ class _ClassBasicDetailsState extends State<ClassBasicDetails> {
           key: Keys.description,
           defaultValue: widget.customClass.description,
           listener: () {
-            var def = widget.customClass;
-            def.description = editingControllers[Keys.description].text.trim();
+            var def = widget.customClass.copyWith(
+              description: editingControllers[Keys.description].text.trim(),
+            );
             updateWith(def);
           },
         ),
@@ -65,9 +67,11 @@ class _ClassBasicDetailsState extends State<ClassBasicDetails> {
           key: Keys.baseHP,
           defaultValue: (widget.customClass.baseHP ?? 0).toString(),
           listener: () {
-            var def = widget.customClass;
-            def.baseHP =
-                int.tryParse(editingControllers[Keys.baseHP].text.trim()) ?? 0;
+            var def = widget.customClass.copyWith(
+              baseHP:
+                  int.tryParse(editingControllers[Keys.baseHP].text.trim()) ??
+                      0,
+            );
             updateWith(def);
           },
         ),
@@ -75,16 +79,17 @@ class _ClassBasicDetailsState extends State<ClassBasicDetails> {
           key: Keys.load,
           defaultValue: (widget.customClass.load ?? 0).toString(),
           listener: () {
-            var def = widget.customClass;
-            def.load =
-                int.tryParse(editingControllers[Keys.load].text.trim()) ?? 0;
+            var def = widget.customClass.copyWith(
+              load:
+                  int.tryParse(editingControllers[Keys.load].text.trim()) ?? 0,
+            );
             updateWith(def);
           },
         ),
       ],
     );
 
-    dice = widget.customClass.damage;
+    dice = widget.customClass.damage ?? Dice.d6;
 
     widget.validityNotifier.value = _isValid();
   }
@@ -208,8 +213,9 @@ class _ClassBasicDetailsState extends State<ClassBasicDetails> {
                         dice: dice,
                         onChanged: (d) => setState(() {
                           dice = d;
-                          var def = widget.customClass;
-                          def.damage = dice;
+                          var def = widget.customClass.copyWith(
+                            damage: dice,
+                          );
                           updateWith(def);
                         }),
                       ),

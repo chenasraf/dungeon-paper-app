@@ -1,30 +1,6 @@
 import 'package:dungeon_paper/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 
-enum ClassNames {
-  bard,
-  cleric,
-  druid,
-  fighter,
-  paladin,
-  ranger,
-  thief,
-  wizard,
-  immolator,
-}
-
-const ClassNamesMap = {
-  ClassNames.bard: 'bard',
-  ClassNames.cleric: 'cleric',
-  ClassNames.druid: 'druid',
-  ClassNames.fighter: 'fighter',
-  ClassNames.paladin: 'paladin',
-  ClassNames.ranger: 'ranger',
-  ClassNames.thief: 'thief',
-  ClassNames.wizard: 'wizard',
-  ClassNames.immolator: 'immolator',
-};
-
 enum AlignmentName {
   good,
   lawful,
@@ -44,15 +20,15 @@ const AlignmentMap = {
 // ignore: non_constant_identifier_names
 final Map<String, AlignmentName> AlignmentNameMap = invertMap(AlignmentMap);
 
-enum Stats { str, dex, int, wis, cha, con }
+enum CharacterStat { str, dex, int, wis, cha, con }
 
 const StatNameMap = {
-  Stats.str: 'Strength',
-  Stats.dex: 'Dexterity',
-  Stats.int: 'Intelligence',
-  Stats.wis: 'Wisdom',
-  Stats.cha: 'Charisma',
-  Stats.con: 'Constitution',
+  CharacterStat.str: 'Strength',
+  CharacterStat.dex: 'Dexterity',
+  CharacterStat.int: 'Intelligence',
+  CharacterStat.wis: 'Wisdom',
+  CharacterStat.cha: 'Charisma',
+  CharacterStat.con: 'Constitution',
 };
 
 enum CharacterKey {
@@ -66,12 +42,6 @@ enum CharacterKey {
   maxHP,
   useDefaultMaxHP,
   armor,
-  str,
-  dex,
-  con,
-  wis,
-  int,
-  cha,
   moves,
   notes,
   spells,
@@ -86,31 +56,40 @@ enum CharacterKey {
 
 const int MAX_STAT_VALUE = 18;
 
-const List<CharacterKey> ORDERED_STATS = [
-  CharacterKey.str,
-  CharacterKey.dex,
-  CharacterKey.con,
-  CharacterKey.int,
-  CharacterKey.wis,
-  CharacterKey.cha,
+const List<CharacterStat> ORDERED_STATS = [
+  CharacterStat.str,
+  CharacterStat.dex,
+  CharacterStat.con,
+  CharacterStat.int,
+  CharacterStat.wis,
+  CharacterStat.cha,
 ];
 
-const Map<CharacterKey, String> CHARACTER_STAT_LABELS = {
-  CharacterKey.str: 'Strength',
-  CharacterKey.dex: 'Dexterity',
-  CharacterKey.con: 'Constitution',
-  CharacterKey.wis: 'Wisdom',
-  CharacterKey.int: 'Intelligence',
-  CharacterKey.cha: 'Charisma',
+const Map<CharacterStat, String> CHARACTER_STAT_LABELS = {
+  CharacterStat.str: 'Strength',
+  CharacterStat.dex: 'Dexterity',
+  CharacterStat.con: 'Constitution',
+  CharacterStat.wis: 'Wisdom',
+  CharacterStat.int: 'Intelligence',
+  CharacterStat.cha: 'Charisma',
 };
 
-const Map<CharacterKey, String> CHARACTER_STAT_MODIFIER_LABELS = {
-  CharacterKey.str: 'STR',
-  CharacterKey.dex: 'DEX',
-  CharacterKey.con: 'CON',
-  CharacterKey.wis: 'WIS',
-  CharacterKey.int: 'INT',
-  CharacterKey.cha: 'CHA',
+const Map<CharacterStat, String> CHARACTER_STAT_KEYS = {
+  CharacterStat.str: 'str',
+  CharacterStat.dex: 'dex',
+  CharacterStat.con: 'con',
+  CharacterStat.wis: 'wis',
+  CharacterStat.int: 'int',
+  CharacterStat.cha: 'cha',
+};
+
+const Map<CharacterStat, String> CHARACTER_STAT_MODIFIER_LABELS = {
+  CharacterStat.str: 'STR',
+  CharacterStat.dex: 'DEX',
+  CharacterStat.con: 'CON',
+  CharacterStat.wis: 'WIS',
+  CharacterStat.int: 'INT',
+  CharacterStat.cha: 'CHA',
 };
 
 const Map<AlignmentName, IconData> ALIGNMENT_ICON_MAP = {

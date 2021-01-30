@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 class TagList extends StatelessWidget {
   final List<Tag> tags;
   final VisualDensity visualDensity;
+  final double textScaleFactor;
 
   const TagList({
     Key key,
     @required this.tags,
     this.visualDensity,
+    this.textScaleFactor,
   }) : super(key: key);
 
   @override
@@ -25,6 +27,7 @@ class TagList extends StatelessWidget {
               child: TagChip(
                 tag: tags[i],
                 visualDensity: visualDensity,
+                textScaleFactor: textScaleFactor,
                 onPressed: (tag) {
                   showDialog(
                     context: context,

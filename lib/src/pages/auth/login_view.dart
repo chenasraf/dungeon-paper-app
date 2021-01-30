@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:dungeon_paper/src/flutter_utils/platform_svg.dart';
 import 'package:dungeon_paper/src/flutter_utils/widget_utils.dart';
 import 'package:dungeon_paper/src/pages/auth/email_auth_view.dart';
-import 'package:dungeon_paper/src/redux/stores.dart';
-import 'package:dungeon_paper/src/redux/users/user_store.dart';
+import 'package:dungeon_paper/src/controllers/auth_controller.dart';
 import 'package:dungeon_paper/src/utils/auth/auth.dart';
 import 'package:dungeon_paper/src/utils/logger.dart';
 import 'package:flutter/material.dart';
@@ -92,7 +91,7 @@ class LoginView extends StatelessWidget {
       await doLogin();
     } on SignInError catch (err, stack) {
       logger.e('Normal sign in error:', err, stack);
-      dwStore.dispatch(NoLogin());
+      authController.noLogin();
       Get.snackbar(
         'Error',
         'Login failed.',
@@ -100,7 +99,7 @@ class LoginView extends StatelessWidget {
       );
     } catch (err, stack) {
       logger.e('Irregular sign in error:', err, stack);
-      dwStore.dispatch(NoLogin());
+      authController.noLogin();
       Get.snackbar(
         'Error',
         'Something went wrong... Please try again later.',

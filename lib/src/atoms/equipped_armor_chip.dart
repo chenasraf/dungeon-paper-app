@@ -1,5 +1,5 @@
 import 'package:dungeon_paper/db/models/character.dart';
-import 'package:dungeon_paper/src/dialogs/edit_armor_dialog.dart';
+import 'package:dungeon_paper/src/dialogs/armor_dialog.dart';
 import 'package:dungeon_paper/src/flutter_utils/platform_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -28,7 +28,7 @@ class EquippedArmorChip extends StatelessWidget {
             visualDensity: VisualDensity.compact,
             backgroundColor: Colors.grey[700],
             padding: EdgeInsets.all(8),
-            onPressed: () => Get.dialog(EditArmorDialog(character: character)),
+            onPressed: () => Get.dialog(ArmorDialog(character: character)),
             label: IconTheme(
               data: IconThemeData(color: Colors.white),
               child: DefaultTextStyle.merge(

@@ -6,7 +6,7 @@ import 'package:dungeon_paper/src/dialogs/confirmation_dialog.dart';
 import 'package:dungeon_paper/src/dialogs/single_field_edit_dialog.dart';
 import 'package:dungeon_paper/src/flutter_utils/widget_utils.dart';
 import 'package:dungeon_paper/src/pages/account_view/auth_provider_tile.dart';
-import 'package:dungeon_paper/src/redux/connectors.dart';
+import 'package:dungeon_paper/src/controllers/user_controller.dart';
 import 'package:dungeon_paper/src/scaffolds/main_scaffold.dart';
 import 'package:dungeon_paper/src/utils/analytics.dart';
 import 'package:dungeon_paper/src/utils/auth/auth.dart';
@@ -53,14 +53,10 @@ class _AccountViewState extends State<AccountView> {
 
   @override
   Widget build(BuildContext context) {
-    return DWStoreConnector<UserLogin>(
-      converter: (store) => UserLogin(
-        user: store.state.user.current,
-        firebaseUser: store.state.user.firebaseUser,
-      ),
-      builder: (context, login) {
-        final user = login.user;
-        final fbUser = login.firebaseUser;
+    return Obx(
+      () {
+        final user = userController.current;
+        final fbUser = userController.firebaseUser;
         final hasPassword = isUserLinkedToAuth('password', fbUser);
         return MainScaffold(
           key: Key('${fbUser.email}-${fbUser.displayName}-${fbUser.photoURL}'),
@@ -234,8 +230,7 @@ class _AccountViewState extends State<AccountView> {
         title: Text('Edit Display Name'),
         onSave: (displayName) async {
           unawaited(analytics.logEvent(name: Events.EditDisplayNameConfirm));
-          user.displayName = displayName;
-          await user.update();
+          await user.ref.update({'displayName': displayName});
           Get.back();
         },
         onCancel: () {
@@ -296,7 +291,6 @@ class _AccountViewState extends State<AccountView> {
     setState(() {
       imageFile = null;
     });
-    user.photoURL = downloadURL;
-    unawaited(user.update());
+    await user.ref.update({'photoURL': downloadURL});
   }
 }

@@ -4,7 +4,7 @@ Future<UserLogin> signInWithEmailAndPassword({
   @required String email,
   @required String password,
 }) async {
-  dwStore.dispatch(RequestLogin());
+  authController.requestLogin();
   final res = await performEmailAuth(email, password);
   return signInWithFbUser(SignInMethod.password, res?.user);
 }
@@ -14,7 +14,7 @@ Future<UserLogin> createUserWithEmailAndPassword({
   @required String password,
 }) async {
   assert(email != null && password != null);
-  dwStore.dispatch(RequestLogin());
+  authController.requestLogin();
   final res = await auth.createUserWithEmailAndPassword(
     email: email,
     password: password,

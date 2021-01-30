@@ -27,12 +27,12 @@ Future<Sheet> generateCharacterExcelSheet(Character character) async {
   );
 
   final stats = [
-    _Stat(0, 0, 'STR', character.str),
-    _Stat(0, 1, 'DEX', character.dex),
-    _Stat(0, 2, 'CON', character.con),
-    _Stat(2, 0, 'WIS', character.wis),
-    _Stat(0, 1, 'INT', character.int),
-    _Stat(0, 2, 'CHA', character.cha),
+    _Stat(0, 0, 'STR', character.strength),
+    _Stat(0, 1, 'DEX', character.dexterity),
+    _Stat(0, 2, 'CON', character.constitution),
+    _Stat(2, 0, 'WIS', character.wisdom),
+    _Stat(0, 1, 'INT', character.intelligence),
+    _Stat(0, 2, 'CHA', character.charisma),
   ];
 
   for (final stat in stats) {

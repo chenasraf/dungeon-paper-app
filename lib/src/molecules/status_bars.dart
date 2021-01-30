@@ -1,6 +1,6 @@
 import 'package:dungeon_paper/db/models/character.dart';
-import 'package:dungeon_paper/src/dialogs/edit_hp_dialog.dart';
-import 'package:dungeon_paper/src/dialogs/edit_xp_dialog.dart';
+import 'package:dungeon_paper/src/dialogs/hp_dialog.dart';
+import 'package:dungeon_paper/src/dialogs/xp_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -73,12 +73,12 @@ class StatusBars extends StatelessWidget {
   void showHpEditDialog(BuildContext context, Character character) =>
       showDialog(
           context: context,
-          builder: (context) => EditHPDialog(character: character));
+          builder: (context) => HpDialog(character: character));
 
   void showXpEditDialog(BuildContext context, Character character) =>
       showDialog(
           context: context,
-          builder: (context) => EditXPDialog(character: character));
+          builder: (context) => XpDialog(character: character));
 }
 
 class StatusBarCard extends StatelessWidget {

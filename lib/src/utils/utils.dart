@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:dungeon_paper/db/db.dart';
 import 'package:dungeon_paper/src/utils/logger.dart';
 import 'package:dungeon_world_data/dw_data.dart';
 import 'package:flutter/material.dart';
@@ -33,13 +34,21 @@ String pluralize(
 T noopReturn<T>(T a) => a;
 void noopVoid<T>(T a) {}
 
-double clamp<T extends num>(T number, T low, T high) =>
-    max(low * 1.0, min(number * 1.0, high * 1.0));
+T numAs<T extends num>(num number) => number == double.infinity
+    ? double.infinity
+    : T == double
+        ? number.toDouble()
+        : number.toInt();
+
+T clamp<T extends num>(num number, num low, num high) => max<T>(
+      numAs<T>(low),
+      min<T>(numAs<T>(number), numAs<T>(high)),
+    );
 
 double lerp(num t, num minA, num maxA, num minB, num maxB) =>
     (t - minA) / (maxA - minA) * (maxB - minB) + minB;
 
-double clamp01<T extends num>(T number) => clamp(number, 0, 1);
+T clamp01<T extends num>(T number) => clamp<T>(number, 0, 1);
 
 double lerp01(num t, num minA, num maxA) => lerp(t, minA, maxA, 0, 1);
 
@@ -165,8 +174,15 @@ bool Function(T) keyMatcher<T>(dynamic Function(T) delegate, T object) =>
 bool Function(DWEntity) dwEntityMatcher(DWEntity comp) =>
     keyMatcher((o) => o.key, comp);
 
+bool Function(KeyMixin) keyMixinMatcher(KeyMixin comp) =>
+    keyMatcher((o) => o.key, comp);
+
 bool Function(T) getMatcher<T>(T obj, [bool Function(T) defaultMatcher]) =>
-    obj is DWEntity ? dwEntityMatcher(obj) : defaultMatcher ?? (o) => o == obj;
+    obj is DWEntity
+        ? dwEntityMatcher(obj)
+        : obj is KeyMixin
+            ? keyMixinMatcher(obj)
+            : defaultMatcher ?? (o) => o == obj;
 
 List<T> findAndReplaceInList<T>(List<T> list, T obj,
     [bool Function(T) matcher]) {
@@ -208,6 +224,9 @@ String snakeToCamel(String string) =>
           (match) => match.group(1).toUpperCase(),
         );
 
+Map<K, List<V>> groupByAlt<K, V>(Iterable<V> list, K Function(V) predicate) =>
+    groupBy(list, predicate);
+
 Map<K, List<V>> groupBy<K, V>(Iterable<V> list, K Function(V) predicate) {
   final out = <K, List<V>>{};
   for (final item in list) {
@@ -240,3 +259,14 @@ Set<T> unique<T>(Iterable<T> list, dynamic Function(T) value) {
 
 String prettyDouble(num number) =>
     number == number.ceil() ? number.toStringAsFixed(0) : number.toString();
+
+Map<K, V> pick<K, V>(Map<K, V> map, Iterable<String> keys) {
+  if (keys == null) {
+    return {...map};
+  }
+
+  return <K, V>{
+    for (final entry in map.entries)
+      if (keys.contains(entry.key)) entry.key: entry.value,
+  };
+}

@@ -1,12 +1,14 @@
 import 'package:dungeon_paper/src/utils/utils.dart';
 import 'package:dungeon_world_data/tag.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class TagChip extends StatelessWidget {
   final Tag tag;
   final void Function(Tag tag) onDelete;
   final void Function(Tag tag) onPressed;
   final VisualDensity visualDensity;
+  final double textScaleFactor;
 
   const TagChip({
     Key key,
@@ -14,7 +16,12 @@ class TagChip extends StatelessWidget {
     this.onDelete,
     this.onPressed,
     this.visualDensity,
+    this.textScaleFactor,
   }) : super(key: key);
+
+  TextStyle get labelStyle => Get.theme.chipTheme.labelStyle.copyWith(
+        fontSize: 14 * (textScaleFactor ?? 1.0),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +41,7 @@ class TagChip extends StatelessWidget {
         onDeleted: onDeleteCb,
         label: label,
         visualDensity: visualDensity,
+        labelStyle: labelStyle,
       );
     }
 
@@ -42,6 +50,7 @@ class TagChip extends StatelessWidget {
       onDeleted: onDeleteCb,
       label: label,
       visualDensity: visualDensity,
+      labelStyle: labelStyle,
     );
   }
 }

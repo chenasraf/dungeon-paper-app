@@ -5,7 +5,7 @@ import 'package:dungeon_paper/db/models/character.dart';
 import 'package:dungeon_paper/db/models/custom_class.dart';
 import 'package:dungeon_paper/src/lists/character_select_list.dart';
 import 'package:dungeon_paper/src/lists/custom_class_select_list.dart';
-import 'package:dungeon_paper/src/redux/stores.dart';
+import 'package:dungeon_paper/src/controllers/custom_classes_controller.dart';
 import 'package:dungeon_paper/src/utils/analytics.dart';
 import 'package:dungeon_paper/src/utils/utils.dart';
 import 'package:dungeon_world_data/player_class.dart';
@@ -39,8 +39,7 @@ class _ExportViewState extends State<ExportView> {
     super.initState();
     _format = ExportFormat.JSON;
     _charactersToExport = {};
-    _allCustomClasses =
-        Set.from(dwStore.state.customClasses.customClasses.values);
+    _allCustomClasses = Set.from(customClassesController.classes.values);
   }
 
   @override
@@ -181,7 +180,7 @@ class _ExportViewState extends State<ExportView> {
   static final Map<ExportFormat, Future<List<int>> Function(ExportData)>
       _dataParsers = {
     ExportFormat.JSON: (data) {
-      final charsData = data.characters.map((char) => char.toJSON()).toList();
+      final charsData = data.characters.map((char) => char.toJson()).toList();
       final classesData =
           data.customClasses.map((char) => char.toJSON()).toList();
       final _strData =

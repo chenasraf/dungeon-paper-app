@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:dungeon_paper/src/atoms/version_number.dart';
 import 'package:dungeon_paper/src/dialogs/single_field_edit_dialog.dart';
 import 'package:dungeon_paper/src/flutter_utils/loading_container.dart';
-import 'package:dungeon_paper/src/pages/about_view/about_view.dart';
 import 'package:dungeon_paper/src/pages/auth/login_view.dart';
 import 'package:dungeon_paper/src/pages/whats_new_view/whats_new_view.dart';
 import 'package:dungeon_paper/src/utils/auth/auth.dart';
@@ -106,7 +105,7 @@ class WelcomeView extends StatelessWidget {
   }
 
   void _openAboutView() {
-    Get.to(AboutView());
+    Get.toNamed('/account');
   }
 
   void _openResetPasswordView() {

@@ -1,5 +1,5 @@
 import 'package:dungeon_paper/db/models/character.dart';
-import 'package:dungeon_paper/db/models/inventory_items.dart';
+import 'package:dungeon_paper/db/models/inventory_item.dart';
 import 'package:dungeon_paper/src/atoms/equipped_armor_chip.dart';
 import 'package:dungeon_paper/src/atoms/flexible_columns.dart';
 import 'package:dungeon_paper/src/atoms/coins_chip.dart';
@@ -140,7 +140,7 @@ class _InventoryViewState extends State<InventoryView> {
       child: InventoryItemCard(
         key: PageStorageKey(item.key),
         item: item,
-        mode: InventoryItemCardMode.Editable,
+        mode: InventoryItemCardMode.editable,
         onSave: (item) => updateInventoryItem(widget.character, item),
         onDelete: () => deleteInventoryItem(widget.character, item),
         character: widget.character,

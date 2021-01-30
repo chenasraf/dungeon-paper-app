@@ -123,7 +123,7 @@ class ProcessTask extends Task<ArgOptions> {
     bool Function(ArgOptions) condition,
     FutureOr<void> Function(ArgOptions) beforeAll,
     FutureOr<void> Function(ArgOptions) afterAll,
-    FutureOr<void> Function(ArgOptions, Error, StackTrace) onError,
+    FutureOr<void> Function(ArgOptions, Exception, StackTrace) onError,
   }) : super(
           condition: condition,
           run: _runProcess(process, args, onError),
@@ -148,7 +148,7 @@ class ProcessTask extends Task<ArgOptions> {
   static FutureOr<void> Function(ArgOptions) _runProcess(
     FutureOr<String> Function(ArgOptions) process,
     FutureOr<List<String>> Function(ArgOptions) args,
-    FutureOr<void> Function(ArgOptions, Error, StackTrace) onError,
+    FutureOr<void> Function(ArgOptions, Exception, StackTrace) onError,
   ) =>
       (o) async {
         final _process = await process(o);
@@ -156,18 +156,19 @@ class ProcessTask extends Task<ArgOptions> {
         final _argsStr =
             _args.map((a) => a.contains(' ') ? '"$a"' : a).join(' ');
         print('\n\nRunning process: $_process ${_argsStr}\n\n');
-        final result = await Process.run(_process, _args);
-        stdout.write(result.stdout);
-        stdout.write(result.stderr);
-        final exitCode = await result.exitCode;
-        if (exitCode != 0) {
-          final stack = StackTrace.current;
-          final e = StateError('Process exited with error code: $exitCode');
-          if (onError != null) {
-            onError(o, e, stack);
-          } else {
-            throw e;
+        try {
+          final result = await Process.run(_process, _args);
+          stdout.write(result.stdout);
+          stdout.write(result.stderr);
+          final exitCode = await result.exitCode;
+          if (exitCode != 0) {
+            final stack = StackTrace.current;
+            final e = ProcessException(_process, _args,
+                'Process exited with error code: $exitCode', exitCode);
+            _handleError(o, e, stack, onError);
           }
+        } catch (e, stack) {
+          _handleError(o, e, stack, onError);
         }
       };
 
@@ -176,6 +177,15 @@ class ProcessTask extends Task<ArgOptions> {
     await stdout.flush();
     await stderr.flush();
     super.dispose();
+  }
+
+  static void _handleError(ArgOptions o, Exception e, StackTrace stack,
+      FutureOr<void> Function(ArgOptions, Exception, StackTrace) onError) {
+    if (onError != null) {
+      onError(o, e, stack);
+    } else {
+      throw e;
+    }
   }
 }
 

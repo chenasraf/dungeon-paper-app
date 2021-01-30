@@ -1,5 +1,5 @@
 import 'package:dungeon_paper/db/models/character.dart';
-import 'package:dungeon_paper/db/models/inventory_items.dart';
+import 'package:dungeon_paper/db/models/inventory_item.dart';
 import 'package:dungeon_paper/src/atoms/flexible_columns.dart';
 import 'package:dungeon_paper/src/atoms/search_bar.dart';
 import 'package:dungeon_paper/src/molecules/inventory_item_card.dart';
@@ -107,7 +107,7 @@ class _AddInventoryItemState extends State<AddInventoryItem> {
                 child: InventoryItemCard(
                   key: PageStorageKey('add-${item.key}'),
                   item: item,
-                  mode: InventoryItemCardMode.Addable,
+                  mode: InventoryItemCardMode.addable,
                   onSave: widget.onSave,
                   onDelete: null,
                   character: widget.character,

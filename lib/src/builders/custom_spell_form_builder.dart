@@ -1,4 +1,4 @@
-import 'package:dungeon_paper/db/models/spells.dart';
+import 'package:dungeon_paper/db/models/spell.dart';
 import 'package:dungeon_paper/src/atoms/markdown_help.dart';
 import 'package:dungeon_paper/src/dialogs/dialogs.dart';
 import 'package:dungeon_paper/src/molecules/editable_tag_list.dart';
@@ -6,7 +6,6 @@ import 'package:dungeon_world_data/tag.dart';
 import 'package:flutter/material.dart';
 
 class CustomSpellFormBuilder extends StatefulWidget {
-  final num index;
   final DbSpell spell;
   final DialogMode mode;
   final Widget Function(BuildContext context, Widget form, Function() onSave)
@@ -15,7 +14,6 @@ class CustomSpellFormBuilder extends StatefulWidget {
 
   CustomSpellFormBuilder({
     Key key,
-    @required this.index,
     @required this.spell,
     @required this.mode,
     @required this.builder,
@@ -70,7 +68,7 @@ class CustomSpellFormBuilderState extends State<CustomSpellFormBuilder> {
                 labelText: 'Description',
                 floatingLabelBehavior: FloatingLabelBehavior.always,
               ),
-              autofocus: widget.mode == DialogMode.Edit,
+              autofocus: widget.mode == DialogMode.edit,
               minLines: 6,
               maxLines: null,
               keyboardType: TextInputType.multiline,

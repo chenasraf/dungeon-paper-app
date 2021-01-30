@@ -14,7 +14,7 @@ class ChangeAlignmentDialog extends StatelessWidget {
     Key key,
     @required this.character,
     @required this.onUpdate,
-    this.mode = DialogMode.Edit,
+    this.mode = DialogMode.edit,
   }) : super(key: key);
 
   @override
@@ -40,8 +40,8 @@ class ChangeAlignmentDialog extends StatelessWidget {
 
   Function() changeAlignment(chr.AlignmentName def) {
     return () async {
-      character.alignment = def;
-      onUpdate?.call(character);
+      final char = character.copyWith(alignment: def);
+      onUpdate?.call(char);
     };
   }
 }

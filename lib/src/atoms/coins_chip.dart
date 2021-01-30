@@ -1,5 +1,5 @@
 import 'package:dungeon_paper/db/models/character.dart';
-import 'package:dungeon_paper/src/dialogs/edit_coins_dialog.dart';
+import 'package:dungeon_paper/src/dialogs/coins_dialog.dart';
 import 'package:dungeon_paper/src/flutter_utils/platform_svg.dart';
 import 'package:dungeon_paper/src/utils/analytics.dart';
 import 'package:dungeon_paper/src/utils/utils.dart';
@@ -27,7 +27,7 @@ class CoinsChip extends StatelessWidget {
               analytics.logEvent(name: Events.OpenCoinsChip);
               showDialog(
                 context: context,
-                builder: (context) => EditCoinsDialog(value: character.coins),
+                builder: (context) => CoinsDialog(value: character.coins),
               );
             },
             visualDensity: VisualDensity.compact,

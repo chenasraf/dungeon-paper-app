@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:dungeon_paper/db/db.dart';
-import 'package:dungeon_paper/src/redux/stores.dart';
+import 'package:dungeon_paper/src/controllers/user_controller.dart';
 import 'package:dungeon_paper/src/utils/analytics.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
@@ -25,7 +25,7 @@ Future<String> uploadImage(
       imageFile,
       SettableMetadata(
         customMetadata: {
-          'userId': dwStore.state.user.current.email,
+          'userId': userController.current.email,
           ...(extraMetadata ?? {}),
         },
       ),

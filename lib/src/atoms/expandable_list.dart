@@ -1,5 +1,5 @@
-import 'package:dungeon_paper/src/redux/shared_preferences/expansion_states.dart';
-import 'package:dungeon_paper/src/redux/stores.dart';
+import 'package:dungeon_paper/db/models/expansion_states.dart';
+import 'package:dungeon_paper/src/controllers/prefs_controller.dart';
 import 'package:flutter/material.dart';
 
 class ExpandableList extends StatelessWidget {
@@ -24,6 +24,7 @@ class ExpandableList extends StatelessWidget {
       return ListView(
         shrinkWrap: true,
         children: children,
+        physics: NeverScrollableScrollPhysics(),
         // mainAxisAlignment: MainAxisAlignment.start,
         // mainAxisSize: MainAxisSize.min,
         // crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -53,5 +54,5 @@ class ExpandableList extends StatelessWidget {
   }
 
   ExpansionStates get expansionStates =>
-      dwStore.state.prefs.settings.expansionStates;
+      prefsController.settings.expansionStates;
 }

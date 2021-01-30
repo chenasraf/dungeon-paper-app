@@ -49,7 +49,19 @@
         "--test"
       ],
       "problemMatcher": []
-    }
+    },
+    {
+      "label": "Run build_runner",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "pub",
+        "run",
+        "build_runner",
+        "build"
+      ],
+      "problemMatcher": []
+    },
   ],
   "inputs": [
     {

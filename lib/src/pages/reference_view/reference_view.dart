@@ -55,7 +55,7 @@ class _ReferenceViewState extends State<ReferenceView> {
                         move: moves.elementAt(idx),
                         onSave: null,
                         onDelete: null,
-                        mode: MoveCardMode.Fixed,
+                        mode: MoveCardMode.fixed,
                       )
                     : Container(),
               );

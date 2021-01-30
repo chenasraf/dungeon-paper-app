@@ -1,5 +1,3 @@
-import 'package:dungeon_paper/db/models/user.dart';
-import 'package:dungeon_paper/src/redux/connectors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -23,33 +21,25 @@ class LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DWStoreConnector<User>(
-      converter: (store) => store.state.user.current,
-      builder: (context, user) {
-        if (user == null) {
-          return Container(
-            width: 220,
-            height: 40,
-            child: RaisedButton.icon(
-              icon: icon,
-              label: Expanded(
-                child: Text(
-                  label,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
-                    color: textColor,
-                  ),
-                ),
-              ),
-              color: color ?? Get.theme.accentColor,
-              onPressed: onPressed,
+    return Container(
+      width: 220,
+      height: 40,
+      child: RaisedButton.icon(
+        icon: icon,
+        label: Expanded(
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.normal,
+              color: textColor,
             ),
-          );
-        }
-        return SizedBox(height: 0, width: 0);
-      },
+          ),
+        ),
+        color: color ?? Get.theme.accentColor,
+        onPressed: onPressed,
+      ),
     );
   }
 }

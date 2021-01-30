@@ -1,4 +1,4 @@
-import 'package:dungeon_paper/db/models/spells.dart';
+import 'package:dungeon_paper/db/models/spell.dart';
 import 'package:dungeon_paper/src/atoms/flexible_columns.dart';
 import 'package:dungeon_paper/src/atoms/search_bar.dart';
 import 'package:dungeon_paper/src/molecules/spell_card.dart';
@@ -70,7 +70,7 @@ class _AddSpellListState extends State<AddSpellList> {
                 child: SpellCard(
                   index: -1,
                   spell: DbSpell.fromSpell(spell),
-                  mode: SpellCardMode.Addable,
+                  mode: SpellCardMode.addable,
                   onSave: widget.onSave,
                   onDelete: null,
                 ),

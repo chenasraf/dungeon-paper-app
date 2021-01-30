@@ -1,14 +1,13 @@
 import 'package:dungeon_paper/db/models/character.dart';
-import 'package:dungeon_paper/db/models/inventory_items.dart';
+import 'package:dungeon_paper/db/models/inventory_item.dart';
 import 'package:dungeon_paper/src/atoms/card_bottom_controls.dart';
 import 'package:dungeon_paper/src/atoms/dice_icon.dart';
 import 'package:dungeon_paper/src/atoms/icon_chip.dart';
 import 'package:dungeon_paper/src/dialogs/confirmation_dialog.dart';
-import 'package:dungeon_paper/src/dialogs/dialogs.dart';
 import 'package:dungeon_paper/src/flutter_utils/platform_svg.dart';
 import 'package:dungeon_paper/src/flutter_utils/widget_utils.dart';
 import 'package:dungeon_paper/src/lists/tag_list.dart';
-import 'package:dungeon_paper/src/scaffolds/add_inventory_item_scaffold.dart';
+import 'package:dungeon_paper/src/scaffolds/inventory_item_view.dart';
 import 'package:dungeon_paper/src/utils/analytics.dart';
 import 'package:dungeon_paper/src/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +15,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-enum InventoryItemCardMode { Addable, Editable }
+enum InventoryItemCardMode { addable, editable }
 
 class InventoryItemCard extends StatelessWidget {
   final InventoryItem item;
@@ -63,7 +62,7 @@ class InventoryItemCard extends StatelessWidget {
         ),
       ),
     ];
-    if (mode == InventoryItemCardMode.Editable && item.equipped == true) {
+    if (mode == InventoryItemCardMode.editable && item.equipped == true) {
       titleChildren.addAll([
         Chip(
           visualDensity: VisualDensity.compact,
@@ -75,7 +74,7 @@ class InventoryItemCard extends StatelessWidget {
         SizedBox(width: 10),
       ]);
     }
-    if (mode == InventoryItemCardMode.Editable) {
+    if (mode == InventoryItemCardMode.editable) {
       titleChildren.add(Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Text('x$amount'),
@@ -146,7 +145,7 @@ class InventoryItemCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16)
                 .copyWith(
-                    bottom: mode == InventoryItemCardMode.Editable ? 0 : 16),
+                    bottom: mode == InventoryItemCardMode.editable ? 0 : 16),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -154,7 +153,7 @@ class InventoryItemCard extends StatelessWidget {
               children: info,
             ),
           ),
-          if (mode == InventoryItemCardMode.Editable)
+          if (mode == InventoryItemCardMode.editable)
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 16).copyWith(top: 16),
@@ -168,49 +167,37 @@ class InventoryItemCard extends StatelessWidget {
                       visualDensity: VisualDensity.compact,
                       label: Text(!item.countWeight ? 'No weight' : 'Weight'),
                       selected: item.countWeight,
-                      onSelected: (val) {
-                        final copy = item.copy();
-                        copy.countWeight = val;
-                        onSave?.call(copy);
-                      },
+                      onSelected: (val) =>
+                          onSave?.call(item.copyWith(countWeight: val)),
                     ),
                   if (item.hasDamage)
                     FilterChip(
                       visualDensity: VisualDensity.compact,
                       label: Text(!item.countDamage ? 'No damage' : 'Damage'),
                       selected: item.countDamage,
-                      onSelected: (val) {
-                        final copy = item.copy();
-                        copy.countDamage = val;
-                        onSave?.call(copy);
-                      },
+                      onSelected: (val) =>
+                          onSave?.call(item.copyWith(countDamage: val)),
                     ),
                   if (item.hasArmor)
                     FilterChip(
                       visualDensity: VisualDensity.compact,
                       label: Text(!item.countArmor ? 'No armor' : 'Armor'),
                       selected: item.countArmor,
-                      onSelected: (val) {
-                        final copy = item.copy();
-                        copy.countArmor = val;
-                        onSave?.call(copy);
-                      },
+                      onSelected: (val) =>
+                          onSave?.call(item.copyWith(countArmor: val)),
                     ),
                   FilterChip(
                     visualDensity: VisualDensity.compact,
                     label: Text(item.equipped ? 'Equipped' : 'Unequiped'),
                     selected: item.equipped,
                     selectedColor: Colors.orange[300],
-                    onSelected: (val) {
-                      final copy = item.copy();
-                      copy.equipped = val;
-                      onSave?.call(copy);
-                    },
+                    onSelected: (val) =>
+                        onSave?.call(item.copyWith(equipped: val)),
                   ),
                 ],
               ),
             ),
-          mode == InventoryItemCardMode.Editable
+          mode == InventoryItemCardMode.editable
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
@@ -222,7 +209,7 @@ class InventoryItemCard extends StatelessWidget {
                             shape: CircleBorder(side: BorderSide.none),
                             child: Text('-'),
                             onPressed: () {
-                              var copy = _incrAmount(item, -1);
+                              final copy = _incrAmount(item, -1);
                               onSave?.call(copy);
                             },
                           ),
@@ -231,7 +218,7 @@ class InventoryItemCard extends StatelessWidget {
                             shape: CircleBorder(side: BorderSide.none),
                             child: Text('+'),
                             onPressed: () {
-                              var copy = _incrAmount(item, 1);
+                              final copy = _incrAmount(item, 1);
                               onSave?.call(copy);
                             },
                           )
@@ -269,10 +256,10 @@ class InventoryItemCard extends StatelessWidget {
   }
 
   void editInventoryItem(BuildContext context) {
-    Get.to(
-      AddInventoryItemScaffold(
+    Get.toNamed(
+      '/inventory-item',
+      arguments: InventoryItemViewArguments(
         item: item,
-        mode: DialogMode.Edit,
         onSave: onSave,
         character: character,
       ),
@@ -303,10 +290,7 @@ class InventoryItemCard extends StatelessWidget {
     }
   }
 
-  InventoryItem _incrAmount(InventoryItem item, num amount) {
-    var copy = item.copy();
-    var amt = clamp(copy.amount + amount, 0, double.infinity);
-    copy.amount = amt.toInt();
-    return copy;
-  }
+  InventoryItem _incrAmount(InventoryItem item, num amount) => item.copyWith(
+        amount: clamp(item.amount + amount, 0, double.infinity).toInt(),
+      );
 }

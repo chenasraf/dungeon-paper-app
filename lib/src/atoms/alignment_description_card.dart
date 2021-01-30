@@ -20,13 +20,15 @@ class AlignmentDescription extends StatelessWidget {
     this.level,
     this.onTap,
     this.selected,
-  })  : assert(playerClass != null),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final alignmentKey = enumName(alignment);
-    final alignmentInfo = playerClass.alignments[alignmentKey] ??
+    final alignmentInfo = (playerClass?.alignments?.containsKey(alignmentKey) ==
+                true
+            ? playerClass.alignments[alignmentKey]
+            : null) ??
         dw.Alignment(key: alignmentKey, name: alignmentKey, description: '');
     final hasDescription = alignmentInfo.description.isNotEmpty;
 

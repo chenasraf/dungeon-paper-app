@@ -3,8 +3,8 @@ import 'package:dungeon_paper/src/atoms/flexible_columns.dart';
 import 'package:dungeon_paper/src/dialogs/dialogs.dart';
 import 'package:dungeon_paper/src/flutter_utils/widget_utils.dart';
 import 'package:dungeon_paper/src/molecules/move_card.dart';
-import 'package:dungeon_paper/src/scaffolds/add_move_scaffold.dart';
-import 'package:dungeon_paper/src/scaffolds/add_race_move_scaffold.dart';
+import 'package:dungeon_paper/src/scaffolds/move_view.dart';
+import 'package:dungeon_paper/src/scaffolds/race_move_view.dart';
 import 'package:dungeon_paper/src/utils/types.dart';
 import 'package:dungeon_world_data/move.dart';
 import 'package:flutter/material.dart';
@@ -106,7 +106,7 @@ class CustomClassMoveList extends StatelessWidget {
           child: MoveCard(
               move: moves[i],
               raceMove: cats.keys.elementAt(catI) == MoveCategory.Race,
-              mode: MoveCardMode.Editable,
+              mode: MoveCardMode.editable,
               onSave: (move) => _updateMoveInCat(context, move, cat),
               onDelete: () => _deleteMoveInCat(context, moves[i], cat)),
         );
@@ -122,15 +122,14 @@ class CustomClassMoveList extends StatelessWidget {
       explanation: '',
       classes: [],
     );
-    Get.to(
-      cat == MoveCategory.Race
-          ? AddRaceMoveScaffold(
-              mode: DialogMode.Create,
+    Get.toNamed(
+      cat == MoveCategory.Race ? '/add-race-move' : '/add-move',
+      arguments: cat == MoveCategory.Race
+          ? RaceMoveViewArguments(
               move: blankMove,
               onSave: (move) => _addMoveToCat(context, move, cat),
             )
-          : AddMoveScreen(
-              mode: DialogMode.Create,
+          : MoveViewArguments(
               move: blankMove,
               onSave: (move) => _addMoveToCat(context, move, cat),
             ),
@@ -138,89 +137,100 @@ class CustomClassMoveList extends StatelessWidget {
   }
 
   void _addMoveToCat(BuildContext context, Move move, MoveCategory cat) {
+    CustomClass _customClass;
     switch (cat) {
       case MoveCategory.Starting:
-        customClass.startingMoves.add(move);
-        customClass.fields['startingMoves'].setDirty(true);
+        _customClass = customClass
+            .copyWith(startingMoves: [...customClass.startingMoves, move]);
         break;
       case MoveCategory.Race:
-        customClass.raceMoves.add(move);
-        customClass.fields['raceMoves'].setDirty(true);
+        _customClass =
+            customClass.copyWith(raceMoves: [...customClass.raceMoves, move]);
         break;
       case MoveCategory.Advanced1:
-        customClass.advancedMoves1.add(move);
-        customClass.fields['advancedMoves1'].setDirty(true);
+        _customClass = customClass
+            .copyWith(advancedMoves1: [...customClass.advancedMoves1, move]);
         break;
       case MoveCategory.Advanced2:
-        customClass.advancedMoves2.add(move);
-        customClass.fields['advancedMoves2'].setDirty(true);
+        _customClass = customClass
+            .copyWith(advancedMoves2: [...customClass.advancedMoves2, move]);
         break;
     }
-    _update();
+    _update(_customClass);
     Get.back();
   }
 
   void _updateMoveInCat(BuildContext context, Move move, MoveCategory cat) {
+    CustomClass _customClass;
     switch (cat) {
       case MoveCategory.Race:
-        num idx = customClass.raceMoves.indexWhere((m) => m.key == move.key);
-        customClass.raceMoves[idx] = move;
-        customClass.fields['raceMoves'].setDirty(true);
+        final idx = customClass.raceMoves.indexWhere((m) => m.key == move.key);
+        final raceMoves = [...customClass.raceMoves];
+        raceMoves[idx] = move;
+        _customClass = customClass.copyWith(raceMoves: raceMoves);
         break;
       case MoveCategory.Starting:
-        num idx =
+        final idx =
             customClass.startingMoves.indexWhere((m) => m.key == move.key);
-        customClass.startingMoves[idx] = move;
-        customClass.fields['startingMoves'].setDirty(true);
+        final startingMoves = [...customClass.startingMoves];
+        startingMoves[idx] = move;
+        _customClass = customClass.copyWith(startingMoves: startingMoves);
         break;
       case MoveCategory.Advanced1:
-        num idx =
+        final idx =
             customClass.advancedMoves1.indexWhere((m) => m.key == move.key);
-        customClass.advancedMoves1[idx] = move;
-        customClass.fields['advancedMoves1'].setDirty(true);
+        final advancedMoves1 = [...customClass.advancedMoves1];
+        advancedMoves1[idx] = move;
+        _customClass = customClass.copyWith(advancedMoves1: advancedMoves1);
         break;
       case MoveCategory.Advanced2:
-        num idx =
+        final idx =
             customClass.advancedMoves2.indexWhere((m) => m.key == move.key);
-        customClass.advancedMoves2[idx] = move;
-        customClass.fields['advancedMoves2'].setDirty(true);
+        final advancedMoves2 = [...customClass.advancedMoves2];
+        advancedMoves2[idx] = move;
+        _customClass = customClass.copyWith(advancedMoves2: advancedMoves2);
         break;
     }
 
-    _update();
+    _update(_customClass);
   }
 
   void _deleteMoveInCat(BuildContext context, Move move, MoveCategory cat) {
+    CustomClass _customClass;
     switch (cat) {
       case MoveCategory.Race:
-        num idx = customClass.raceMoves.indexWhere((m) => m.key == move.key);
-        customClass.raceMoves.removeAt(idx);
-        customClass.fields['raceMoves'].setDirty(true);
+        final idx = customClass.raceMoves.indexWhere((m) => m.key == move.key);
+        final raceMoves = [...customClass.raceMoves];
+        raceMoves.removeAt(idx);
+        _customClass = customClass.copyWith(raceMoves: raceMoves);
         break;
       case MoveCategory.Starting:
-        num idx =
+        final idx =
             customClass.startingMoves.indexWhere((m) => m.key == move.key);
-        customClass.startingMoves.removeAt(idx);
-        customClass.fields['startingMoves'].setDirty(true);
+        final startingMoves = [...customClass.startingMoves];
+        startingMoves.removeAt(idx);
+        _customClass = customClass.copyWith(startingMoves: startingMoves);
         break;
       case MoveCategory.Advanced1:
-        num idx =
+        final idx =
             customClass.advancedMoves1.indexWhere((m) => m.key == move.key);
-        customClass.advancedMoves1.removeAt(idx);
-        customClass.fields['advancedMoves1'].setDirty(true);
+        final advancedMoves1 = [...customClass.advancedMoves1];
+        advancedMoves1.removeAt(idx);
+        _customClass = customClass.copyWith(advancedMoves1: advancedMoves1);
         break;
       case MoveCategory.Advanced2:
-        num idx =
+        final idx =
             customClass.advancedMoves2.indexWhere((m) => m.key == move.key);
-        customClass.advancedMoves2.removeAt(idx);
-        customClass.fields['advancedMoves2'].setDirty(true);
+        final advancedMoves2 = [...customClass.advancedMoves2];
+        advancedMoves2.removeAt(idx);
+        _customClass = customClass.copyWith(advancedMoves2: advancedMoves2);
         break;
     }
 
-    _update();
+    _update(_customClass);
   }
 
-  void _update() {
+  void _update(CustomClass customClass) {
     validityNotifier?.value =
         raceMoveMode ? customClass.raceMoves.isNotEmpty : true;
     onUpdate?.call(customClass);

@@ -6,9 +6,9 @@ import 'package:dungeon_paper/db/models/custom_class.dart';
 import 'package:dungeon_paper/src/dialogs/confirmation_dialog.dart';
 import 'package:dungeon_paper/src/lists/character_select_list.dart';
 import 'package:dungeon_paper/src/lists/custom_class_select_list.dart';
-import 'package:dungeon_paper/src/redux/characters/characters_store.dart';
-import 'package:dungeon_paper/src/redux/custom_classes/custom_classes_store.dart';
-import 'package:dungeon_paper/src/redux/stores.dart';
+import 'package:dungeon_paper/src/controllers/characters_controller.dart';
+import 'package:dungeon_paper/src/controllers/custom_classes_controller.dart';
+import 'package:dungeon_paper/src/controllers/user_controller.dart';
 import 'package:dungeon_paper/src/utils/analytics.dart';
 import 'package:dungeon_world_data/player_class.dart';
 import 'package:flutter/material.dart';
@@ -142,11 +142,10 @@ class _ImportViewState extends State<ImportView> {
         'characters_count': _charactersToImport.length,
         'classes_count': _classesToImport.length,
       }));
-      final user = dwStore.state.user.current;
-      final finalChars =
-          Set<Character>.from(dwStore.state.characters.all.values);
-      final finalClasses = Set<CustomClass>.from(
-          dwStore.state.customClasses.customClasses.values);
+      final user = userController.current;
+      final finalChars = Set<Character>.from(characterController.all.values);
+      final finalClasses =
+          Set<CustomClass>.from(customClassesController.classes.values);
       for (final char in _charactersToImport) {
         final found = finalChars.firstWhere(
             (_char) => _char.displayName == char.displayName,
@@ -155,10 +154,10 @@ class _ImportViewState extends State<ImportView> {
         if (found == null) {
           added = await user.createCharacter(char);
         } else {
-          await found.update(json: char.toJSON());
-          added = found;
+          added = char.copyWith(order: found.order);
+          finalChars.remove(found);
+          await found.delete();
         }
-        finalChars.remove(found);
         finalChars.add(added);
       }
       for (final cls in _classesToImport) {
@@ -168,10 +167,10 @@ class _ImportViewState extends State<ImportView> {
         if (found == null) {
           added = await user.createCustomClass(cls);
         } else {
-          await found.update(json: cls.toJSON());
-          added = found;
+          added = cls.copyWith();
+          finalClasses.remove(found);
+          await found.delete();
         }
-        finalClasses.remove(found);
         finalClasses.add(added);
       }
 
@@ -180,8 +179,8 @@ class _ImportViewState extends State<ImportView> {
         'classes_count': _classesToImport.length,
       }));
 
-      dwStore.dispatch(SetCharacters.fromIterable(finalChars));
-      dwStore.dispatch(SetCustomClasses.fromIterable(finalClasses));
+      characterController.setAll(finalChars);
+      customClassesController.setAll(finalClasses);
 
       setState(() {
         _loadedCharacters = {};
@@ -234,7 +233,7 @@ class _ImportViewState extends State<ImportView> {
       final raw = jsonDecode(str);
       final json = raw is List ? {'characters': raw} : raw;
       final chars = Set<Character>.from(
-              json['characters']?.map((v) => Character(data: v))) ??
+              json['characters']?.map((v) => Character.fromJson(v))) ??
           [];
       final customClasses = Set<CustomClass>.from(
             json['classes']?.map(

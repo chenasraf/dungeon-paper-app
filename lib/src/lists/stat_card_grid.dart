@@ -46,18 +46,18 @@ class _BaseStatsState extends State<BaseStats> {
                 children: <Widget>[
                   StatCard(
                     character: widget.character,
-                    stat: CharacterKey.str,
-                    onTap: _roll(CharacterKey.str),
+                    stat: CharacterStat.str,
+                    onTap: _roll(CharacterStat.str),
                   ),
                   StatCard(
                     character: widget.character,
-                    stat: CharacterKey.dex,
-                    onTap: _roll(CharacterKey.dex),
+                    stat: CharacterStat.dex,
+                    onTap: _roll(CharacterStat.dex),
                   ),
                   StatCard(
                     character: widget.character,
-                    stat: CharacterKey.con,
-                    onTap: _roll(CharacterKey.con),
+                    stat: CharacterStat.con,
+                    onTap: _roll(CharacterStat.con),
                   ),
                 ],
               ),
@@ -67,18 +67,18 @@ class _BaseStatsState extends State<BaseStats> {
                 children: <Widget>[
                   StatCard(
                     character: widget.character,
-                    stat: CharacterKey.int,
-                    onTap: _roll(CharacterKey.int),
+                    stat: CharacterStat.int,
+                    onTap: _roll(CharacterStat.int),
                   ),
                   StatCard(
                     character: widget.character,
-                    stat: CharacterKey.wis,
-                    onTap: _roll(CharacterKey.wis),
+                    stat: CharacterStat.wis,
+                    onTap: _roll(CharacterStat.wis),
                   ),
                   StatCard(
                     character: widget.character,
-                    stat: CharacterKey.cha,
-                    onTap: _roll(CharacterKey.cha),
+                    stat: CharacterStat.cha,
+                    onTap: _roll(CharacterStat.cha),
                   ),
                 ],
               ),
@@ -103,7 +103,7 @@ class _BaseStatsState extends State<BaseStats> {
 
   String generateSessionKey() => Uuid().v4();
 
-  void Function() _roll(CharacterKey key) {
+  void Function() _roll(CharacterStat key) {
     return () {
       setState(() {
         sessionKey = generateSessionKey();

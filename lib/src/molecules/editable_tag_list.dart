@@ -1,5 +1,5 @@
 import 'package:dungeon_paper/src/atoms/tag_chip.dart';
-import 'package:dungeon_paper/src/dialogs/edit_tag_dialog.dart';
+import 'package:dungeon_paper/src/dialogs/tag_dialog.dart';
 import 'package:dungeon_paper/src/utils/utils.dart';
 import 'package:dungeon_world_data/tag.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +48,7 @@ class EditableTagList extends StatelessWidget {
   void openEditDialog(BuildContext context, Tag tag) {
     showDialog(
       context: context,
-      builder: (ctx) => EditTagDialog(
+      builder: (ctx) => TagDialog(
           tag: tag,
           onSave: (tag) {
             if (onSave == null) return;

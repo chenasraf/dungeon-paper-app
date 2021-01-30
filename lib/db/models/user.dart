@@ -1,40 +1,38 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dungeon_paper/db/db.dart';
-import 'package:dungeon_paper/src/redux/characters/characters_store.dart';
-import 'package:dungeon_paper/src/redux/custom_classes/custom_classes_store.dart';
-import 'package:dungeon_paper/src/redux/stores.dart';
-import 'package:dungeon_paper/src/redux/users/user_store.dart';
+import 'package:dungeon_paper/db/models/converters/datetime_converter.dart';
+import 'package:dungeon_paper/db/models/converters/document_reference_converter.dart';
+import 'package:dungeon_paper/src/controllers/characters_controller.dart';
+import 'package:dungeon_paper/src/controllers/custom_classes_controller.dart';
 import 'package:dungeon_paper/src/utils/auth/auth.dart';
 import 'package:dungeon_paper/src/utils/logger.dart';
 
 import 'character.dart';
 import 'custom_class.dart';
-import 'firebase_entity/fields/fields.dart';
-import 'firebase_entity/firebase_entity.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/foundation.dart';
 
-FieldsContext userFields = FieldsContext([
-  StringField(fieldName: 'displayName'),
-  StringField(fieldName: 'email'),
-  StringField(fieldName: 'photoURL'),
-  MapOfField<String, dynamic>(
-    fieldName: 'features',
-    field: Field<dynamic>(fieldName: 'features', defaultValue: (ctx) => null),
-  ),
-]);
+part 'user.freezed.dart';
+part 'user.g.dart';
 
-class User extends FirebaseEntity {
-  FieldsContext _fields;
-  @override
-  FieldsContext get fields => _fields ??= userFields.copy();
+@freezed
+abstract class User with FirebaseMixin implements _$User {
+  const User._();
 
-  String get displayName => fields.get<String>('displayName').get;
-  set displayName(val) => fields.get<String>('displayName').set(val);
-  String get email => fields.get<String>('email').get;
-  set email(val) => fields.get<String>('email').set(val);
-  String get photoURL => fields.get<String>('photoURL').get;
-  set photoURL(val) => fields.get<String>('photoURL').set(val);
-  Map<String, dynamic> get features =>
-      fields.get<Map<String, dynamic>>('features').get;
+  @With(FirebaseMixin)
+  const factory User({
+    @required String displayName,
+    @required String email,
+    String photoURL,
+    @Default({}) Map<String, dynamic> features,
+    @DocumentReferenceConverter() DocumentReference ref,
+    @DateTimeConverter() DateTime createdAt,
+    @DateTimeConverter() DateTime updatedAt,
+    String lastCharacterId,
+  }) = _User;
+
+  factory User.fromJson(json, {DocumentReference ref}) =>
+      _$UserFromJson(json).copyWith(ref: ref);
 
   bool hasFeature(String key) =>
       key != null &&
@@ -42,49 +40,44 @@ class User extends FirebaseEntity {
       features[key] != false &&
       features[key] != null;
 
+  bool featureEnabled(String key) =>
+      features[key] is bool && features[key] == true;
+
+  bool get isDm => featureEnabled('dm_tools_preview');
+
   bool get isTester => hasFeature('tester');
 
-  User({
-    DocumentReference ref,
-    Map<String, dynamic> data,
-    bool autoLoad,
-  }) : super(ref: ref, data: data, autoLoad: autoLoad);
-
   Future<Character> createCharacter(Character character) async {
-    var doc = firestore.collection(ref.path + '/characters').doc();
-    var data = character.toJSON();
+    var doc = ref.collection('characters').doc();
+    var data = character.toJson();
     logger.d('Creating character: $data');
     await doc.set(data);
-    character..ref = doc;
-    dwStore.dispatch(UpsertCharacter(character));
-    dwStore.dispatch(SetCurrentChar(character));
+    character = character.copyWith(ref: doc);
+    characterController.upsert(character);
     return character;
   }
 
   Future<CustomClass> createCustomClass(CustomClass cls) async {
-    var doc = firestore.collection(ref.path + '/custom_classes').doc();
-    var data = cls.toJSON();
+    var doc = ref.collection('custom_classes').doc();
+    var data = cls.toJson();
     logger.d('Creating custom class: $data');
     await doc.set(data);
-    cls..ref = doc;
-    dwStore.dispatch(UpsertCustomClass(cls));
+    cls = cls.copyWith(ref: doc);
+    customClassesController.upsert(cls);
     return cls;
   }
 
-  @override
-  void finalizeUpdate(Map<String, dynamic> json, {bool save = true}) {
-    if (save) {
-      dwStore.dispatch(SetUser(this));
-    }
-    super.finalizeUpdate(json, save: save);
-  }
-
-  @override
-  String toString() => '$displayName ($email)';
-
-  Future<void> changeEmail(String newEmail) async {
-    email = newEmail;
-    await updateEmail(newEmail);
-    return move(newEmail);
+  Future<User> changeEmail(String newEmail) async {
+    final newRef = await move(
+      'user_data/$newEmail',
+      update: {
+        'email': newEmail,
+      },
+    );
+    await updateFirebaseEmail(newEmail);
+    return copyWith(
+      email: newEmail,
+      ref: newRef,
+    );
   }
 }

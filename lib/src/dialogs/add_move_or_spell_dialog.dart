@@ -1,16 +1,8 @@
 import 'package:dungeon_paper/db/models/character.dart';
-import 'package:dungeon_paper/db/models/moves.dart';
-import 'package:dungeon_paper/db/models/spells.dart';
-import 'package:dungeon_paper/src/dialogs/dialogs.dart';
 import 'package:dungeon_paper/src/flutter_utils/platform_svg.dart';
-import 'package:dungeon_paper/src/scaffolds/add_move_scaffold.dart';
-import 'package:dungeon_paper/src/scaffolds/add_spell_scaffold.dart';
-import 'package:dungeon_paper/src/utils/logger.dart';
-import 'package:dungeon_world_data/move.dart';
 import 'package:dungeon_world_data/player_class.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:uuid/uuid.dart';
 
 class AddMoveOrSpell extends StatelessWidget {
   final PlayerClass defaultClass;
@@ -56,24 +48,7 @@ class AddMoveOrSpell extends StatelessWidget {
                   ),
                   onPressed: () {
                     Get.back();
-                    Get.to(
-                      AddMoveScreen(
-                        move: Move(
-                          key: Uuid().v4(),
-                          name: '',
-                          description: '',
-                          classes: [],
-                          explanation: '',
-                        ),
-                        mode: DialogMode.Create,
-                        onSave: (move) {
-                          logger.d('add_move_or_spell.dart onCreateMove');
-                          createMove(character, move);
-                          Get.back();
-                        },
-                        defaultClass: defaultClass,
-                      ),
-                    );
+                    Get.toNamed('/add-move');
                   },
                 ),
               ),
@@ -109,22 +84,7 @@ class AddMoveOrSpell extends StatelessWidget {
                   ),
                   onPressed: () {
                     Get.back();
-                    Get.to(
-                      AddSpellScaffold(
-                        spell: DbSpell(
-                          key: Uuid().v4(),
-                          name: '',
-                          description: '',
-                          tags: [],
-                        ),
-                        mode: DialogMode.Create,
-                        onSave: (spell) {
-                          createSpell(character, spell);
-                          Get.back();
-                        },
-                        index: -1,
-                      ),
-                    );
+                    Get.toNamed('/add-spell');
                   },
                 ),
               ),

@@ -1,5 +1,14 @@
 {
   "[dart]": {
     "editor.defaultFormatter": "Dart-Code.dart-code"
-  }
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/*.g.dart": true,
+    "**/*.freezed.dart": true,
+  },
 }
