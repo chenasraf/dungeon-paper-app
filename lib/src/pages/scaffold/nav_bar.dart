@@ -101,7 +101,7 @@ class NavBarState extends State<NavBar> {
             curve: Curves.easeInOutQuart),
       );
     }).toList();
-    final width = MediaQuery.of(context).size.width;
+    final width = Get.mediaQuery.size.width;
 
     return BottomAppBar(
       color: Get.theme.colorScheme.primary,

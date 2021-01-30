@@ -35,7 +35,7 @@ class _XpDialogState extends State<XpDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    final screenWidth = Get.mediaQuery.size.width;
     final maxXP = widget.character.level + 7;
     Widget indicator = Container(
       height: 110,

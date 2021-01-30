@@ -34,8 +34,7 @@ class WelcomeView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox.fromSize(
-                    size: Size.square(
-                        min(MediaQuery.of(context).size.width - 32, 200)),
+                    size: Size.square(min(Get.mediaQuery.size.width - 32, 200)),
                     child: Image.asset('assets/logo.png'),
                   ),
                   SizedBox(height: 24),

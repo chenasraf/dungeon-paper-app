@@ -11,6 +11,7 @@ import 'package:dungeon_paper/src/flutter_utils/widget_utils.dart';
 import 'package:dungeon_paper/src/molecules/inventory_item_card.dart';
 import 'package:dungeon_paper/src/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 enum EquipmentCats {
   Stats,
@@ -52,7 +53,7 @@ class _InventoryViewState extends State<InventoryView> {
       subtitle: Text("Use the '+' button to add things to your possession."),
       assetName: 'bag.svg',
     );
-    final isShort = MediaQuery.of(context).size.height < 420;
+    final isShort = Get.mediaQuery.size.height < 420;
 
     if (_equipmentGrouped.values.every((i) => i == null || i.isEmpty)) {
       return SingleChildScrollView(
@@ -67,7 +68,7 @@ class _InventoryViewState extends State<InventoryView> {
                 ? emptyState
                 : ConstrainedBox(
                     constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height - 300,
+                      maxHeight: Get.mediaQuery.size.height - 300,
                     ),
                     child: emptyState,
                   ),

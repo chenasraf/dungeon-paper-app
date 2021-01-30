@@ -13,17 +13,21 @@ class DrawerPositioner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final usePermanentSidebar = Get.mediaQuery.size.width > 1200;
-    if (usePermanentSidebar) {
-      return Row(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          drawer,
-          Expanded(child: body(null)),
-        ],
-      );
-    }
-    return body(drawer);
+    return LayoutBuilder(
+      builder: (context, _) {
+        final usePermanentSidebar = Get.mediaQuery.size.width > 1200;
+        if (usePermanentSidebar) {
+          return Row(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              drawer ?? Container(),
+              Expanded(child: body(null)),
+            ],
+          );
+        }
+        return body(drawer);
+      },
+    );
   }
 }

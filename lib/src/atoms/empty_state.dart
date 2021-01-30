@@ -58,7 +58,7 @@ class EmptyState extends StatelessWidget {
             ),
           ),
           Container(
-            width: min(MediaQuery.of(context).size.width, 260),
+            width: min(Get.mediaQuery.size.width, 260),
             child: DefaultTextStyle(
               child: subtitle,
               style: Get.theme.textTheme.headline6.copyWith(color: _fgColor),

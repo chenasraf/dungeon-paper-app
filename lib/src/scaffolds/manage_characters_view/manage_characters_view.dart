@@ -34,7 +34,7 @@ class _ManageCharactersViewState extends State<ManageCharactersView> {
 
   @override
   Widget build(BuildContext context) {
-    final mq = MediaQuery.of(context);
+    final mq = Get.mediaQuery;
     final theme = Get.theme;
     return MainScaffold(
       title: Text('Manage Characters'),
@@ -78,7 +78,7 @@ class _ManageCharactersViewState extends State<ManageCharactersView> {
                 for (var char in enumerate(characters))
                   CardListItem(
                     key: Key(char.value.documentID),
-                    width: MediaQuery.of(context).size.width - 22,
+                    width: Get.mediaQuery.size.width - 22,
                     title: Text(char.value.displayName),
                     leading: Icon(Icons.person, size: 40),
                     onTap: () => _select(char.value),

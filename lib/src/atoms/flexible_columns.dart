@@ -79,39 +79,35 @@ class _FlexibleColumnsState<T> extends State<FlexibleColumns<T>> {
   Widget build(BuildContext context) {
     final origTheme = Get.theme;
 
-    return OrientationBuilder(
-      // key: PageStorageKey('$sessionKey: $sessionKey'),
-      builder: (context, orientation) {
-        return Theme(
-          data: origTheme.copyWith(
-            dividerColor: Colors.transparent,
-            unselectedWidgetColor: titleStyle(context).color,
-          ),
-          child: LayoutBuilder(
-            builder: _layoutBuilder(),
-          ),
-        );
-      },
+    return LayoutBuilder(
+      builder: (context, _) => Theme(
+        data: origTheme.copyWith(
+          dividerColor: Colors.transparent,
+          unselectedWidgetColor: titleStyle(context).color,
+        ),
+        child: LayoutBuilder(
+          builder: _layoutBuilder,
+        ),
+      ),
     );
   }
 
-  void Function(BuildContext, BoxConstraints) _layoutBuilder() {
-    return (context, constraints) {
-      final cats = _itemsToWidgets(context);
-      return StaggeredGridView.countBuilder(
-        crossAxisCount: constraints.maxWidth < 450 ? 1 : 2,
-        controller: widget.scrollController,
-        itemCount: cats.length + bottomSpacerCount + topSpacerCount,
-        itemBuilder: _itemWrapperBuilder,
-        staggeredTileBuilder: (index) =>
-            index < topSpacerCount || (index - 1 >= cats.length)
-                ? StaggeredTile.fit(2)
-                : StaggeredTile.fit(1),
-      );
-    };
+  Widget _layoutBuilder(BuildContext context, BoxConstraints constraints) {
+    final cats = _itemsToWidgets(context);
+
+    return StaggeredGridView.countBuilder(
+      crossAxisCount: constraints.maxWidth > 1000 ? 2 : 1,
+      controller: widget.scrollController,
+      itemCount: cats.length + bottomSpacerCount + topSpacerCount,
+      itemBuilder: _itemWrapperBuilder,
+      staggeredTileBuilder: (index) =>
+          index < topSpacerCount || (index - 1 >= cats.length)
+              ? StaggeredTile.fit(2)
+              : StaggeredTile.fit(1),
+    );
   }
 
-  Widget _itemWrapperBuilder(context, index) {
+  Widget _itemWrapperBuilder(BuildContext context, int index) {
     final cats = _itemsToWidgets(context);
     if (index < topSpacerCount) {
       return SizedBox(height: widget.topSpacerHeight);

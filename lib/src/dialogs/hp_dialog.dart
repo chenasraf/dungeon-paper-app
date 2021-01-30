@@ -71,7 +71,7 @@ class _HpDialogState extends State<HpDialog> {
         ),
       ],
     );
-    var screenWidth = MediaQuery.of(context).size.width;
+    var screenWidth = Get.mediaQuery.size.width;
     Widget indicator = Container(
       height: 110,
       child: CurrentStatIndicator(

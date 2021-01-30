@@ -109,7 +109,7 @@ class AppInfoBox extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 24.0),
           child: SizedBox.fromSize(
-            size: Size.square(min(MediaQuery.of(context).size.width - 32, 128)),
+            size: Size.square(min(Get.mediaQuery.size.width - 32, 128)),
             child: Image.asset('assets/logo.png'),
           ),
         ),

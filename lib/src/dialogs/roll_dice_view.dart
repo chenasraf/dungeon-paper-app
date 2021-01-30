@@ -54,8 +54,7 @@ class _RollDiceViewState extends State<RollDiceView>
 
   @override
   Widget build(BuildContext context) {
-    final isLandscape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+    final isLandscape = Get.mediaQuery.orientation == Orientation.landscape;
 
     final builder = ValueListenableBuilder(
       valueListenable: addingDiceCtrl,
@@ -192,7 +191,7 @@ class RollDialogTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // var mq = MediaQuery.of(context);
+    // var mq = Get.mediaQuery;
     return Container(
       height: 52,
       // width: mq.orientation == Orientation.portrait

@@ -62,6 +62,16 @@
       ],
       "problemMatcher": []
     },
+    {
+      "label": "Clear build_runner exports",
+      "type": "shell",
+      "command": "rm",
+      "args": [
+        "-rf",
+        "**/*.{g,freezed}.dart",
+      ],
+      "problemMatcher": []
+    },
   ],
   "inputs": [
     {

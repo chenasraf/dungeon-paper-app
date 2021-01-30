@@ -27,6 +27,7 @@ import 'package:pub_semver/pub_semver.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 import 'app_bar_title.dart';
 import 'drawer_positioner.dart';
@@ -37,10 +38,7 @@ import 'sidebar.dart';
 class MainContainer extends StatelessWidget {
   MainContainer({
     Key key,
-    this.pageController,
   }) : super(key: key);
-
-  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +55,6 @@ class MainContainer extends StatelessWidget {
               character: character,
               user: user,
               loading: isLoading,
-              pageController: pageController,
             );
           },
         );
@@ -70,14 +67,12 @@ class MainView extends StatefulWidget {
   final Character character;
   final User user;
   final bool loading;
-  final PageController pageController;
 
   MainView({
     Key key,
     @required this.character,
     @required this.user,
     @required this.loading,
-    @required this.pageController,
   }) : super(key: key);
 
   static Widget bottomSpacer = BOTTOM_SPACER;
@@ -101,10 +96,14 @@ class _MainViewState extends State<MainView> {
   Map<Pages, ScrollController> scrollControllers;
   String lastPageName = 'Home';
   double elevation = 0;
+  PageController pageController;
+  String sessionKey;
 
   @override
   void initState() {
-    widget.pageController.addListener(_pageListener);
+    sessionKey = Uuid().v4();
+    pageController = PageController(initialPage: 0, keepPage: false)
+      ..addListener(_pageListener);
     scrollControllers = {};
     Pages.values.forEach((page) {
       scrollControllers[page] =
@@ -116,7 +115,11 @@ class _MainViewState extends State<MainView> {
 
   @override
   void dispose() {
-    widget.pageController.removeListener(_pageListener);
+    pageController.removeListener(_pageListener);
+    pageController.dispose();
+    scrollControllers.forEach((key, value) {
+      value?.dispose();
+    });
     super.dispose();
   }
 
@@ -161,10 +164,10 @@ class _MainViewState extends State<MainView> {
 
   Widget get appBarTitle => widget.character == null
       ? null
-      : AppBarTitle(pageController: widget.pageController);
+      : AppBarTitle(pageController: pageController);
 
   Widget get pageView => PageView(
-        controller: widget.pageController,
+        controller: pageController,
         children: widget.character != null
             ? pages
             : [WelcomeView(loading: widget.loading)],
@@ -173,14 +176,14 @@ class _MainViewState extends State<MainView> {
   String get pageName => enumName(page);
 
   Pages get page => Pages.values.elementAt(
-        widget.pageController?.page?.toInt?.call() ?? 0,
+        pageController?.page?.toInt?.call() ?? 0,
       );
 
   // ScrollController get _currentScrollController =>
-  //     widget.pageController.hasClients ? scrollControllers[page] : null;
+  //     pageController.hasClients ? scrollControllers[page] : null;
 
   Widget get fab => widget.character != null
-      ? FAB(pageController: widget.pageController, character: widget.character)
+      ? FAB(pageController: pageController, character: widget.character)
       : null;
 
   FloatingActionButtonLocation get fabLocation =>
@@ -190,26 +193,18 @@ class _MainViewState extends State<MainView> {
       widget.user != null && widget.character != null ? Sidebar() : null;
 
   List<Widget> get pages => Pages.values.map((page) {
+        if (!pageController.hasClients) {
+          return Container();
+        }
         final builder = pageMap[page];
         if (builder != null) {
-          final child = builder(widget.character);
-          return child;
-          // return Container(
-          //   color: Colors.blue[100],
-          //   child: SingleChildScrollView(
-          //     controller: widget.pageController.hasClients
-          //         ? scrollControllers[page]
-          //         : null,
-          //     child: Container(color: Colors.red[100], child: child),
-          //   ),
-          // );
+          return builder(widget.character);
         }
         return Center(child: Container());
       }).toList();
 
-  Widget get navBar => widget.character != null
-      ? NavBar(pageController: widget.pageController)
-      : null;
+  Widget get navBar =>
+      widget.character != null ? NavBar(pageController: pageController) : null;
 
   void _showWhatsNew() async {
     var packageInfo = await PackageInfo.fromPlatform();
@@ -238,9 +233,9 @@ class _MainViewState extends State<MainView> {
   };
 
   void _pageListener() {
-    if (widget.pageController.hasClients) {
+    if (pageController.hasClients) {
       loseAllFocus(context);
-      if (widget.pageController.page.round() == widget.pageController.page) {
+      if (pageController.page.round() == pageController.page) {
         if (pageName != lastPageName) {
           logger.d(
               'Page View: ${screenNames[pageName]} (from: ${screenNames[lastPageName]})');

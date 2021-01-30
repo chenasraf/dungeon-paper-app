@@ -37,7 +37,7 @@ class WhatsNew extends StatefulWidget {
       titlePadding: EdgeInsets.all(24).copyWith(bottom: 16),
       contentPadding: EdgeInsets.zero,
       content: Container(
-        height: min(400, MediaQuery.of(context).size.height),
+        height: min(400, Get.mediaQuery.size.height),
         child: SingleChildScrollView(
           child: Padding(
             padding:
@@ -87,8 +87,8 @@ class _WhatsNewState extends State<WhatsNew> {
     if (currentVersion == null || changelog == null) {
       if (!error) {
         child = Container(
-          width: min(320, MediaQuery.of(context).size.width),
-          height: min(400, MediaQuery.of(context).size.height),
+          width: min(320, Get.mediaQuery.size.width),
+          height: min(400, Get.mediaQuery.size.height),
           child: Center(
             child: Loader(color: Get.theme.colorScheme.primary),
           ),

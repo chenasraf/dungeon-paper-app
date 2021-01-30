@@ -5,6 +5,7 @@ import 'package:dungeon_paper/src/molecules/status_bars.dart';
 import 'package:dungeon_paper/src/pages/home_view/photo_and_summary.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class HomeView extends StatelessWidget {
   final Character character;
@@ -16,8 +17,12 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OrientationBuilder(builder: (context, orientation) {
-      var children = <Widget>[
+    return LayoutBuilder(builder: (context, constraints) {
+      final width = Get.mediaQuery.size.width;
+      final shouldSplit = constraints.maxWidth > 1000;
+      // final height = Get.mediaQuery.size.height;
+
+      final children = <Widget>[
         PhotoAndSummary(character: character),
         ArmorAndDmgDice(character: character),
         Padding(
@@ -29,17 +34,25 @@ class HomeView extends StatelessWidget {
           child: BaseStats(character: character),
         ),
       ];
-      var width = MediaQuery.of(context).size.width;
-      // var height = MediaQuery.of(context).size.height;
 
-      return StaggeredGridView.extentBuilder(
-        // return StaggeredGridView.countBuilder(
-        maxCrossAxisExtent:
-            Orientation.portrait == orientation ? width : width / 2,
-        // crossAxisCount: orientation == Orientation.portrait ? 1 : 2,
-        itemCount: children.length,
-        itemBuilder: (context, index) => children[index],
-        staggeredTileBuilder: (index) => StaggeredTile.fit(1),
+      return ConstrainedBox(
+        key: Key('$width'),
+        constraints: BoxConstraints.loose(
+          Size(
+            shouldSplit ? double.infinity : 500,
+            double.infinity,
+          ),
+        ),
+        child: StaggeredGridView.extentBuilder(
+          // return StaggeredGridView.countBuilder(
+          maxCrossAxisExtent: shouldSplit ? width / 2 : width,
+          // crossAxisCount: orientation == Orientation.portrait ? 1 : 2,
+          itemCount: children.length,
+          itemBuilder: (context, index) => Container(
+            child: children[index],
+          ),
+          staggeredTileBuilder: (index) => StaggeredTile.fit(1),
+        ),
       );
       // return orientation == Orientation.portrait
       //     ? Column(children: children)

@@ -51,7 +51,6 @@ void main() async {
 }
 
 class DungeonPaper extends StatelessWidget {
-  final PageController _pageController = PageController(initialPage: 0);
   final FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
 
@@ -63,7 +62,7 @@ class DungeonPaper extends StatelessWidget {
         title: 'Dungeon Paper',
         theme: Themes.currentTheme,
         routes: {
-          '/': (ctx) => MainContainer(pageController: _pageController),
+          '/': (ctx) => MainContainer(),
           '/account': (ctx) => AccountView(),
           '/settings': (ctx) => SettingsView(),
           '/settings/backup': (ctx) => BackupView(),
