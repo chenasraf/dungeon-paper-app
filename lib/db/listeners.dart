@@ -114,7 +114,8 @@ void registerCustomClassesListener(fb.User firebaseUser) {
 void registerCampaignsListener(fb.User firebaseUser) {
   _campaignsOwnedListener?.cancel();
   _campaignsParticipatingListener?.cancel();
-  if (firebaseUser == null) {
+  // TODO update isDm condition
+  if (firebaseUser == null || !userController.current.isDm) {
     return;
   }
   _campaignsOwnedListener = firestore

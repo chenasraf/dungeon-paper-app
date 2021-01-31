@@ -32,8 +32,7 @@ class CharacterList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final characters = characterController.all.values.toList()
-      ..sort((a, b) => a.order - b.order);
+    final characters = characterController.all.values.toList();
     return Obx(() => builder(context, characters));
   }
 }

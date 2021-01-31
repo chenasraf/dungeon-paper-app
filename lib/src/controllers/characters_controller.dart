@@ -5,18 +5,28 @@ import 'package:dungeon_paper/db/models/character.dart';
 
 class CharacterController extends GetxController {
   final Rx<Character> _current = Rx();
-  final RxMap<String, Character> all = <String, Character>{}.obs;
+  final RxMap<String, Character> _all = <String, Character>{}.obs;
 
   Character get current => _current.value;
 
+  Map<String, Character> get all {
+    final list = _all.values.toList();
+    list.sort((a, b) => a.order - b.order);
+
+    return Map.fromIterable(
+      list,
+      key: (char) => (char as Character).documentID,
+    );
+  }
+
   void setCurrent(Character value, [bool updateCondition = true]) {
-    _current.value = value ?? all[current.documentID] ?? all.values.first;
+    _current.value = value ?? _all[current.documentID] ?? _all.values.first;
     prefsController.user.setLastCharacterId(current.documentID, false);
     update(null, updateCondition);
   }
 
   void upsert(Character character, [bool updateCondition = true]) {
-    all[character.documentID] = character;
+    _all[character.documentID] = character;
     if (current.documentID == character.documentID) {
       _current.value = character;
     }
@@ -24,9 +34,9 @@ class CharacterController extends GetxController {
   }
 
   void remove(Character character) {
-    all.removeWhere((key, value) => character.documentID == value.documentID);
+    _all.removeWhere((key, value) => character.documentID == value.documentID);
     if (current.documentID == character.documentID) {
-      _current.value = all.values.first;
+      _current.value = _all.values.first;
     }
     update();
   }
@@ -34,14 +44,14 @@ class CharacterController extends GetxController {
   void setAll(Iterable<Character> characters, [bool updateCondition = true]) {
     final currentDocId = current?.documentID;
     clear(false);
-    all.assignAll({
+    _all.assignAll({
       for (final char in characters) char.documentID: char,
     });
     setCurrent(
       currentDocId != null
-          ? all.values.firstWhere(
+          ? _all.values.firstWhere(
               (c) => c.documentID == currentDocId,
-              orElse: () => null,
+              orElse: () => characters.first,
             )
           : characters.first,
       false,
@@ -52,7 +62,7 @@ class CharacterController extends GetxController {
 
   void clear([bool updateCondition = true]) {
     _current.value = null;
-    all.removeWhere((_, __) => true);
+    _all.removeWhere((_, __) => true);
     update(null, updateCondition);
   }
 }
@@ -61,30 +71,30 @@ final characterController = CharacterController();
 
 // ignore: missing_return
 CharacterController characterReducer(CharacterController state, action) {
-  // state.all.assignAll({});
+  // state._all.assignAll({});
 
   // if (action is SetCharacters) {
-  //   state.all.assignAll(action.characters);
+  //   state._all.assignAll(action.characters);
 
   //   if (state.current != null) {
   //     state.current = action.characters[state.current.documentID];
   //   } else if (action.characters.isNotEmpty &&
-  //       !state.all.containsKey(state.current?.documentID)) {
+  //       !state._all.containsKey(state.current?.documentID)) {
   //     state.current = action.characters.values.first;
   //   }
   //   return state;
   // }
 
   // if (action is RemoveCharacter) {
-  //   state.all.removeWhere((k, v) => k == action.character.documentID);
+  //   state._all.removeWhere((k, v) => k == action.character.documentID);
   //   if (state.current.documentID == action.character.documentID) {
-  //     state.current = state.all.values.first;
+  //     state.current = state._all.values.first;
   //   }
   //   return state;
   // }
 
   // if (action is UpsertCharacter) {
-  //   state.all[action.character.documentID] = action.character;
+  //   state._all[action.character.documentID] = action.character;
   //   if (state.current?.documentID == action.character.documentID) {
   //     state.current = action.character;
   //   }

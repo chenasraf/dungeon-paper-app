@@ -81,7 +81,6 @@ class _SidebarState extends State<Sidebar> with SingleTickerProviderStateMixin {
                     SizedBox(height: 8),
                     title(
                       'Characters',
-                      context,
                       leading: Row(
                         children: [
                           IconButton(
@@ -101,9 +100,9 @@ class _SidebarState extends State<Sidebar> with SingleTickerProviderStateMixin {
                         ],
                       ),
                     ),
-                    ...characterList(characterController.all, context),
+                    ...characterList,
                     Divider(),
-                    title('Custom Content', context),
+                    title('Custom Content'),
                     if (user.isDm)
                       ListTile(
                         title: Text('Campaigns'),
@@ -126,7 +125,7 @@ class _SidebarState extends State<Sidebar> with SingleTickerProviderStateMixin {
                       ),
                     ),
                     Divider(),
-                    title('Application', context),
+                    title('Application'),
                     ListTile(
                       leading: Icon(Icons.settings),
                       title: Text('Settings'),
@@ -206,8 +205,7 @@ class _SidebarState extends State<Sidebar> with SingleTickerProviderStateMixin {
   }
 
   Widget title(
-    String text,
-    BuildContext context, {
+    String text, {
     Widget leading,
   }) {
     Widget title = Padding(
@@ -242,8 +240,8 @@ class _SidebarState extends State<Sidebar> with SingleTickerProviderStateMixin {
     fontSize: 14,
   );
 
-  List<Widget> characterList(
-      Map<String, Character> characters, BuildContext context) {
+  List<Widget> get characterList {
+    final characters = characterController.all;
     if (characters == null || characters.isEmpty) {
       return [];
     }
