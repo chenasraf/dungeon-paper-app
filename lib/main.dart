@@ -73,6 +73,14 @@ class DungeonPaper extends StatelessWidget {
                 character: null,
                 mode: DialogMode.create,
               ),
+          '/edit-character': (ctx) {
+            final CharacterViewArguments arguments = Get.arguments;
+            return CharacterView(
+              character: arguments.character,
+              mode: DialogMode.edit,
+              onSave: arguments.onSave,
+            );
+          },
           '/add-move': (ctx) => MoveView.createForCharacter(
                 character: characterController.current,
               ),
