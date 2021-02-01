@@ -21,7 +21,7 @@ import 'package:dungeon_paper/src/utils/utils.dart';
 import 'package:dungeon_paper/themes/themes.dart';
 import 'package:dungeon_world_data/dice.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'package:shared_preferences/shared_preferences.dart';

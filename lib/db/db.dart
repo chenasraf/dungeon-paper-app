@@ -15,6 +15,7 @@ FirebaseFirestore _firestore;
 FirebaseAuth _auth;
 FirebaseStorage _storage;
 FirebaseHelpers _helpers;
+bool _persisted = false;
 
 FirebaseApp get firebase => _app;
 FirebaseFirestore get firestore => _firestore;
@@ -36,7 +37,10 @@ Future<FirebaseApp> initApp({bool web}) async {
   _helpers = FirebaseHelpers();
 
   if (kIsWeb) {
-    await _firestore.enablePersistence();
+    if (!_persisted) {
+      await _firestore.enablePersistence();
+      _persisted = true;
+    }
   } else {
     _firestore.settings = Settings(persistenceEnabled: true);
   }

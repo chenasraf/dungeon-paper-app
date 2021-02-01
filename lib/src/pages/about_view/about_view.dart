@@ -321,9 +321,11 @@ class ContactUsBox extends StatelessWidget {
                   Container(),
                   SocialButton(
                     label: 'Review',
-                    url: Platform.isIOS
-                        ? 'https://apps.apple.com/us/app/dungeon-paper/id1525383509'
-                        : 'https://play.google.com/store/apps/details?id=app.dungeonpaper&$utm',
+                    url: kIsWeb
+                        ? 'https://dungeonpaper.app/$utm'
+                        : Platform.isIOS
+                            ? 'https://apps.apple.com/us/app/dungeon-paper/id1525383509/&$utm'
+                            : 'https://play.google.com/store/apps/details?id=app.dungeonpaper&$utm',
                     icon: Icon(Icons.star),
                     color: Color(0xFF66A030),
                     textColor: Colors.white,

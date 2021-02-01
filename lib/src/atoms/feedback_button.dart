@@ -2,7 +2,7 @@ import 'package:dungeon_paper/src/atoms/hyperlink.dart';
 import 'package:dungeon_paper/src/controllers/user_controller.dart';
 import 'package:dungeon_paper/src/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class FeedbackButton extends StatefulWidget {

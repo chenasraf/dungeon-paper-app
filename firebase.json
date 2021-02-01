@@ -1,6 +1,7 @@
 {
   "hosting": {
     "public": "build/web",
+    "target": "dungeon-paper-web",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -8,11 +9,7 @@
     ],
     "rewrites": [
       {
-        "source": "/api/**",
-        "function": "main"
-      },
-      {
-        "source": "/**",
+        "source": "**",
         "destination": "/index.html"
       }
     ]

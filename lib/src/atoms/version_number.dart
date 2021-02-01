@@ -1,7 +1,6 @@
-import 'package:dungeon_paper/src/utils/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pub_semver/pub_semver.dart';
 
 class VersionNumber extends StatefulWidget {
@@ -33,22 +32,12 @@ class _VersionNumberState extends State<VersionNumber> {
   }
 
   void _getVersion() async {
-    if (kIsWeb) {
-      final secrets = await loadSecrets();
-      if (mounted) {
-        setState(() {
-          version = Version.parse(secrets.VERSION_NUMBER);
-        });
-      }
-      return;
-    }
-
     var packageInfo = await PackageInfo.fromPlatform();
 
     if (mounted) {
       setState(() {
         version =
-            Version.parse(packageInfo.version + '+${packageInfo.buildNumber}');
+            Version.parse('${packageInfo.version}+${packageInfo.buildNumber}');
       });
     }
   }

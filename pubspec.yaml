@@ -36,7 +36,7 @@ dependencies:
   icon_shadow: ^1.0.1
   image_picker: ^0.6.7+17
   logger: ^0.9.4
-  package_info: ^0.4.3
+  package_info_plus: ^0.6.3
   path: ^1.7.0
   path_provider: ^1.6.18
   platform: ^2.2.1

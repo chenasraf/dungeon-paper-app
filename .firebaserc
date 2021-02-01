@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "dw-sheet"
+  },
+  "targets": {
+    "dw-sheet": {
+      "hosting": {
+        "dungeon-paper-web": [
+          "dungeon-paper-web"
+        ]
+      }
+    }
   }
 }

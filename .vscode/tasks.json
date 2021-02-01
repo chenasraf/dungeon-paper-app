@@ -89,6 +89,10 @@
           "label": "iOS",
         },
         {
+          "value": "web",
+          "label": "Web",
+        },
+        {
           "value": "all",
           "label": "All"
         }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dungeon_paper/src/utils/logger.dart';
+import 'package:flutter/foundation.dart';
 import 'package:screen/screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -102,7 +103,9 @@ class PrefsSettings {
     logger.d('Applying $name');
     switch (name) {
       case SettingName.keepScreenOn:
-        Screen.keepOn(keepScreenOn);
+        if (!kIsWeb) {
+          Screen.keepOn(keepScreenOn);
+        }
         return;
       case SettingName.expansionStates:
         return;

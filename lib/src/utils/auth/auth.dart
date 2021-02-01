@@ -204,14 +204,16 @@ void _setUserProperties(fb.User firebaseUser, User user) {
     name: 'classes_count',
     value: customClassesController.classes.length.toString(),
   ));
-  unawaited(analytics.setUserProperty(
-    name: 'latest_platform_name',
-    value: LocalPlatform().operatingSystem,
-  ));
-  unawaited(analytics.setUserProperty(
-    name: 'latest_platform_version',
-    value: LocalPlatform().operatingSystemVersion,
-  ));
+  if (!kIsWeb) {
+    unawaited(analytics.setUserProperty(
+      name: 'latest_platform_name',
+      value: LocalPlatform().operatingSystem,
+    ));
+    unawaited(analytics.setUserProperty(
+      name: 'latest_platform_version',
+      value: LocalPlatform().operatingSystemVersion,
+    ));
+  }
   unawaited(analytics.setUserProperty(
     name: 'latest_device_type',
     value: Get.mediaQuery.size.shortestSide < 600 ? 'mobile' : 'tablet',

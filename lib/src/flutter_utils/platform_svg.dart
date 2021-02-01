@@ -13,6 +13,7 @@ class PlatformSvg extends StatelessWidget {
 
   /// Overrides width & height;
   final num size;
+  static final webHack = kIsWeb && !kDebugMode;
 
   PlatformSvg({
     Key key,
@@ -37,7 +38,7 @@ class PlatformSvg extends StatelessWidget {
     String semanticsLabel,
   }) =>
       PlatformSvg(
-        uri: kIsWeb ? 'assets/assets/$assetName' : 'assets/$assetName',
+        uri: webHack ? 'assets/assets/$assetName' : 'assets/$assetName',
         width: width,
         height: height,
         size: size,
@@ -53,7 +54,7 @@ class PlatformSvg extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _color = color ?? IconTheme.of(context).color;
-    if (kIsWeb) {
+    if (webHack) {
       return Image.network(
         uri,
         width: _width.toDouble(),

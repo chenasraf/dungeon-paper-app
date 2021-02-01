@@ -6,6 +6,7 @@ import 'task_utils.dart';
 import 'tasks/android_tasks.dart';
 import 'tasks/ios_tasks.dart';
 import 'tasks/test_task.dart';
+import 'tasks/web_tasks.dart';
 
 void main(List<String> args) {
   var logTask = LogTask((o) {
@@ -34,6 +35,7 @@ void main(List<String> args) {
       testTask,
       android,
       iOS,
+      web,
     ],
   ).run();
 }
