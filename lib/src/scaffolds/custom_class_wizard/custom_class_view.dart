@@ -16,9 +16,11 @@ import 'package:uuid/uuid.dart';
 
 class CustomClassViewArguments {
   final CustomClass customClass;
+  final void Function(CustomClass) onSave;
 
   CustomClassViewArguments({
     this.customClass,
+    this.onSave,
   });
 }
 

@@ -69,6 +69,14 @@ class DungeonPaper extends StatelessWidget {
           '/custom-classes': (ctx) => CustomClassesView(),
           '/create-custom-class': (ctx) =>
               CustomClassView(mode: DialogMode.create),
+          '/edit-custom-class': (ctx) {
+            final CustomClassViewArguments arguments = Get.arguments;
+            return CustomClassView(
+              mode: DialogMode.edit,
+              customClass: arguments.customClass,
+              onSave: arguments.onSave,
+            );
+          },
           '/create-character': (ctx) => CharacterView(
                 character: null,
                 mode: DialogMode.create,
