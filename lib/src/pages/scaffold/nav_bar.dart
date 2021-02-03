@@ -108,8 +108,9 @@ class NavBarState extends State<NavBar> {
       elevation: 0,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment:
-            width < 300 ? MainAxisAlignment.spaceAround : MainAxisAlignment.end,
+        mainAxisAlignment: width < 600
+            ? MainAxisAlignment.spaceAround
+            : MainAxisAlignment.start,
         children: pageItems,
       ),
     );
@@ -148,25 +149,24 @@ class PageNavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Material(
-        color: Colors.transparent,
-        child: SizedBox(
-          height: 60,
-          child: InkWell(
-            onTap: onChangePage,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                iconBuilder(foregroundColor),
-                DefaultTextStyle(
-                  style: Get.theme.textTheme.bodyText2
-                      .copyWith(color: foregroundColor),
-                  child: label,
-                )
-              ],
-            ),
+    return Material(
+      color: Colors.transparent,
+      child: SizedBox(
+        height: 60,
+        width: 100,
+        child: InkWell(
+          onTap: onChangePage,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              iconBuilder(foregroundColor),
+              DefaultTextStyle(
+                style: Get.theme.textTheme.bodyText2
+                    .copyWith(color: foregroundColor),
+                child: label,
+              )
+            ],
           ),
         ),
       ),
