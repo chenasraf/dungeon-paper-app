@@ -1,4 +1,5 @@
 import 'package:dungeon_paper/db/models/character.dart';
+import 'package:dungeon_paper/routes.dart';
 import 'package:dungeon_paper/src/flutter_utils/dice_controller.dart';
 import 'package:dungeon_paper/src/molecules/dice_roll_box.dart';
 import 'package:dungeon_paper/src/molecules/dice_roll_builder.dart';
@@ -115,7 +116,7 @@ class _RollDiceViewState extends State<RollDiceView>
           padding:
               const EdgeInsets.symmetric(horizontal: 16).copyWith(bottom: 16),
           child: DiceRollBox(
-            analyticsSource: 'Roll Dice View',
+            analyticsSource: Routes.dice.analyticsName,
             key: Key('dice-${list.value.hash}'),
             controller: reversedControllers.elementAt(list.index),
             onRemove: () => _removeAt(list.index),
@@ -238,7 +239,7 @@ void showDiceRollView({
   List<Dice> initialDiceList,
 }) {
   logger.d("Open Dice Dialog ${{'screen_name': analyticsSource}}");
-  analytics.setCurrentScreen(screenName: ScreenNames.DiceRoll);
+  analytics.setCurrentScreen(screenName: Routes.dice.analyticsName);
   analytics.logEvent(name: Events.OpenDiceDialog, parameters: {
     'screen_name': analyticsSource,
   });

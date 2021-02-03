@@ -18,7 +18,7 @@ class Compendium extends StatelessWidget {
               title: Text('Custom Classes'),
               leading: Icon(Icons.person),
               onTap: () {
-                Get.toNamed(Routes.customClassesList);
+                Get.toNamed(Routes.customClassesList.path);
               },
             )
           ],

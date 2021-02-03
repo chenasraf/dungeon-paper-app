@@ -2,16 +2,10 @@ import 'package:dungeon_paper/db/models/character.dart';
 import 'package:dungeon_paper/db/models/user.dart';
 import 'package:dungeon_paper/routes.dart';
 import 'package:dungeon_paper/src/atoms/user_avatar.dart';
-import 'package:dungeon_paper/src/dialogs/dialogs.dart';
 import 'package:dungeon_paper/src/flutter_utils/platform_svg.dart';
-import 'package:dungeon_paper/src/pages/about_view/about_view.dart';
-import 'package:dungeon_paper/src/pages/campaigns_view/campaigns_view.dart';
-import 'package:dungeon_paper/src/pages/custom_classes_view/custom_classes_view.dart';
 import 'package:dungeon_paper/src/pages/character/character_view.dart';
-import 'package:dungeon_paper/src/pages/settings_view/settings_view.dart';
 import 'package:dungeon_paper/src/controllers/characters_controller.dart';
 import 'package:dungeon_paper/src/controllers/user_controller.dart';
-import 'package:dungeon_paper/src/scaffolds/manage_characters_view/manage_characters_view.dart';
 import 'package:dungeon_paper/src/utils/analytics.dart';
 import 'package:dungeon_paper/src/utils/auth/auth.dart';
 import 'package:dungeon_paper/src/utils/logger.dart';
@@ -63,7 +57,7 @@ class _SidebarState extends State<Sidebar> with SingleTickerProviderStateMixin {
                     ListTile(
                       leading: Icon(Icons.person),
                       title: Text('Account'),
-                      onTap: () => Get.toNamed(Routes.account),
+                      onTap: () => Get.toNamed(Routes.account.path),
                     ),
                     // Log out
                     ListTile(
@@ -130,8 +124,7 @@ class _SidebarState extends State<Sidebar> with SingleTickerProviderStateMixin {
                     ListTile(
                       leading: Icon(Icons.settings),
                       title: Text('Settings'),
-                      onTap: () =>
-                          openPage(ScreenNames.Settings, SettingsView()),
+                      onTap: () => openPage(Routes.settings.path),
                     ),
                     // About
                     ListTile(
@@ -164,22 +157,17 @@ class _SidebarState extends State<Sidebar> with SingleTickerProviderStateMixin {
     signOutAll();
   }
 
-  void openPage(
-    String pageName,
-    Widget page,
-  ) {
-    logger.d('Page View: $pageName');
-    analytics.setCurrentScreen(screenName: pageName);
-    Get.to(page);
+  void openPage(String route, [dynamic arguments]) {
+    logger.d('Page View: $route');
+    analytics.setCurrentScreen(screenName: route);
+    Get.toNamed(route, arguments: arguments);
   }
 
   void createNewCharacterScreen() {
     Get.back();
     openPage(
-      ScreenNames.CharacterScreen,
-      CharacterView(
-        character: null,
-        mode: DialogMode.create,
+      Routes.characterCreate.path,
+      CharacterViewArguments(
         onSave: (char) => characterController.setCurrent(char),
       ),
     );
@@ -187,22 +175,22 @@ class _SidebarState extends State<Sidebar> with SingleTickerProviderStateMixin {
 
   void manageCharactersScreen() {
     Get.back();
-    openPage(ScreenNames.ManageCharacters, ManageCharactersView());
+    openPage(Routes.characterList.path);
   }
 
   void customClassesScreen() {
     Get.back();
-    openPage(ScreenNames.CustomClasses, CustomClassesView());
+    openPage(Routes.customClassesList.path);
   }
 
   void campaignsScreen() {
     Get.back();
-    openPage(ScreenNames.About, CampaignsView());
+    openPage(Routes.campaignsList.path);
   }
 
   void aboutScreen() {
     Get.back();
-    openPage(ScreenNames.About, AboutView());
+    openPage(Routes.about.path);
   }
 
   Widget title(
@@ -328,7 +316,7 @@ class UserDrawerHeader extends StatelessWidget {
           ),
           currentAccountPicture: GestureDetector(
             child: UserAvatar(user: user),
-            onTap: () => Get.toNamed(Routes.account),
+            onTap: () => Get.toNamed(Routes.account.path),
           ),
           onDetailsPressed: onToggleUserMenu,
         ),

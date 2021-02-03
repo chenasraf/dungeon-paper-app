@@ -177,7 +177,7 @@ class _ManageCharactersViewState extends State<ManageCharactersView> {
 
   void _edit(Character char) {
     Get.toNamed(
-      Routes.characterEdit,
+      Routes.characterEdit.path,
       arguments: CharacterViewArguments(character: char),
     );
   }
@@ -208,6 +208,6 @@ class _ManageCharactersViewState extends State<ManageCharactersView> {
   }
 
   void _openCreatePage() {
-    Get.toNamed(Routes.characterCreate);
+    Get.toNamed(Routes.characterCreate.path);
   }
 }

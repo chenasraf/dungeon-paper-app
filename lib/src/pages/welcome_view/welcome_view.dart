@@ -105,7 +105,7 @@ class WelcomeView extends StatelessWidget {
   }
 
   void _openAboutView() {
-    Get.toNamed(Routes.about);
+    Get.toNamed(Routes.about.path);
   }
 
   void _openResetPasswordView() {

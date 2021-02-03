@@ -3,8 +3,8 @@ import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dungeon_paper/db/models/character.dart';
+import 'package:dungeon_paper/routes.dart';
 import 'package:dungeon_paper/src/flutter_utils/widget_utils.dart';
-import 'package:dungeon_paper/src/utils/analytics.dart';
 import 'package:dungeon_paper/src/utils/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:icon_shadow/icon_shadow.dart';
@@ -229,7 +229,7 @@ class _AvatarUploadCardState extends State<AvatarUploadCard> {
       imageFile,
       directory: 'avatars',
       extraMetadata: {'characterId': widget.character.documentID},
-      analyticsSource: ScreenNames.CharacterScreen,
+      analyticsSource: Routes.characterEdit,
     );
     setState(() {
       imageFile = null;

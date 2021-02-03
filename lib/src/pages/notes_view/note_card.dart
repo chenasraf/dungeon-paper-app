@@ -80,7 +80,7 @@ class NoteCardState extends State<NoteCard> {
 
   void editNote(BuildContext context) {
     Get.toNamed(
-      Routes.noteEdit,
+      Routes.noteEdit.path,
       arguments: NoteViewArguments(
         note: widget.note,
         categories: widget.categories,

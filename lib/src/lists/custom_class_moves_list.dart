@@ -124,7 +124,7 @@ class CustomClassMoveList extends StatelessWidget {
       classes: [],
     );
     Get.toNamed(
-      cat == MoveCategory.Race ? Routes.raceMoveAdd : Routes.moveAdd,
+      (cat == MoveCategory.Race ? Routes.raceMoveAdd : Routes.moveAdd).path,
       arguments: cat == MoveCategory.Race
           ? RaceMoveViewArguments(
               move: blankMove,

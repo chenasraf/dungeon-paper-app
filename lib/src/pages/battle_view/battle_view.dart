@@ -1,6 +1,7 @@
 import 'package:dungeon_paper/db/models/character.dart';
 import 'package:dungeon_paper/db/models/move.dart';
 import 'package:dungeon_paper/db/models/spell.dart';
+import 'package:dungeon_paper/routes.dart';
 import 'package:dungeon_paper/src/atoms/flexible_columns.dart';
 import 'package:dungeon_paper/src/atoms/empty_state.dart';
 import 'package:dungeon_paper/src/atoms/roll_button_with_edit.dart';
@@ -132,7 +133,7 @@ class _BattleViewState extends State<BattleView> {
             Padding(
               padding: const EdgeInsets.only(top: 16),
               child: DiceRollBox(
-                analyticsSource: 'Battle View',
+                analyticsSource: Routes.battle.analyticsName,
                 key: Key(rollSession),
                 controller: diceListController,
                 animated: true,
@@ -223,7 +224,7 @@ class _BattleViewState extends State<BattleView> {
     showDiceRollView(
       character: widget.character,
       initialAddingDice: diceListController.value,
-      analyticsSource: 'Battle',
+      analyticsSource: Routes.battle.analyticsName,
     );
   }
 

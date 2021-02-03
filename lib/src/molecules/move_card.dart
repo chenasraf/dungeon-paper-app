@@ -47,7 +47,7 @@ class MoveCardState extends State<MoveCard> {
       widget.mode == MoveCardMode.editable
           ? CardBottomControls(
               onEdit: () => Get.toNamed(
-                Routes.moveEdit,
+                Routes.moveEdit.path,
                 arguments: MoveViewArguments(
                   move: widget.move,
                   onSave: (move) {

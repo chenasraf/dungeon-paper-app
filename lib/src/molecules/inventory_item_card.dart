@@ -258,7 +258,7 @@ class InventoryItemCard extends StatelessWidget {
 
   void editInventoryItem(BuildContext context) {
     Get.toNamed(
-      Routes.itemEdit,
+      Routes.itemEdit.path,
       arguments: InventoryItemViewArguments(
         item: item,
         onSave: onSave,

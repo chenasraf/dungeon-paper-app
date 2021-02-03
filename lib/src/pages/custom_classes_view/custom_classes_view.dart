@@ -23,8 +23,9 @@ class _CustomClassesViewState extends State<CustomClassesView> {
   @override
   void initState() {
     super.initState();
-    logger.d('Page View: ${ScreenNames.CustomClasses}');
-    analytics.setCurrentScreen(screenName: ScreenNames.CustomClasses);
+    logger.d('Page View: ${Routes.customClassesList}');
+    analytics.setCurrentScreen(
+        screenName: Routes.customClassesList.analyticsName);
   }
 
   @override
@@ -88,14 +89,14 @@ class _CustomClassesViewState extends State<CustomClassesView> {
 
   void Function() _add(BuildContext context) {
     return () {
-      Get.toNamed(Routes.customClassCreate);
+      Get.toNamed(Routes.customClassCreate.path);
     };
   }
 
   void Function(CustomClass) _edit(BuildContext context) {
     return (cls) {
       Get.toNamed(
-        Routes.customClassEdit,
+        Routes.customClassEdit.path,
         arguments: CustomClassViewArguments(
           customClass: cls,
         ),

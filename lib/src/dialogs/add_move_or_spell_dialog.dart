@@ -49,7 +49,7 @@ class AddMoveOrSpell extends StatelessWidget {
                   ),
                   onPressed: () {
                     Get.back();
-                    Get.toNamed(Routes.moveAdd);
+                    Get.toNamed(Routes.moveAdd.path);
                   },
                 ),
               ),
@@ -85,7 +85,7 @@ class AddMoveOrSpell extends StatelessWidget {
                   ),
                   onPressed: () {
                     Get.back();
-                    Get.toNamed(Routes.spellAdd);
+                    Get.toNamed(Routes.spellAdd.path);
                   },
                 ),
               ),

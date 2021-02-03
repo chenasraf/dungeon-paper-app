@@ -36,8 +36,10 @@ import 'nav_bar.dart';
 import 'sidebar.dart';
 
 class MainContainer extends StatelessWidget {
+  final int initialPage;
   MainContainer({
     Key key,
+    @required this.initialPage,
   }) : super(key: key);
 
   @override
@@ -55,6 +57,7 @@ class MainContainer extends StatelessWidget {
               character: character,
               user: user,
               loading: isLoading,
+              initialPage: initialPage,
             );
           },
         );
@@ -67,12 +70,14 @@ class MainView extends StatefulWidget {
   final Character character;
   final User user;
   final bool loading;
+  final int initialPage;
 
   MainView({
     Key key,
     @required this.character,
     @required this.user,
     @required this.loading,
+    @required this.initialPage,
   }) : super(key: key);
 
   static Widget bottomSpacer = BOTTOM_SPACER;
@@ -102,8 +107,10 @@ class _MainViewState extends State<MainView> {
   @override
   void initState() {
     sessionKey = Uuid().v4();
-    pageController = PageController(initialPage: 0, keepPage: false)
-      ..addListener(_pageListener);
+    pageController = PageController(
+      initialPage: widget.initialPage,
+      keepPage: false,
+    )..addListener(_pageListener);
     scrollControllers = {};
     Pages.values.forEach((page) {
       scrollControllers[page] =

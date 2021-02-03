@@ -14,6 +14,7 @@ import 'package:dungeon_paper/src/pages/scaffold/main_view.dart';
 import 'package:dungeon_paper/src/controllers/prefs_controller.dart';
 import 'package:dungeon_paper/src/pages/settings_view/settings_view.dart';
 import 'package:dungeon_paper/src/scaffolds/inventory_item_view.dart';
+import 'package:dungeon_paper/src/scaffolds/manage_characters_view/manage_characters_view.dart';
 import 'package:dungeon_paper/src/scaffolds/move_view.dart';
 import 'package:dungeon_paper/src/scaffolds/race_move_view.dart';
 import 'package:dungeon_paper/src/scaffolds/spell_view.dart';
@@ -64,14 +65,18 @@ class DungeonPaper extends StatelessWidget {
         title: 'Dungeon Paper',
         theme: Themes.currentTheme,
         routes: {
-          Routes.home: (ctx) => MainContainer(),
-          Routes.account: (ctx) => AccountView(),
-          Routes.settings: (ctx) => SettingsView(),
-          Routes.backup: (ctx) => BackupView(),
-          Routes.customClassesList: (ctx) => CustomClassesView(),
-          Routes.customClassCreate: (ctx) =>
+          Routes.home.path: (ctx) => MainContainer(initialPage: 0),
+          Routes.battle.path: (ctx) => MainContainer(initialPage: 1),
+          Routes.reference.path: (ctx) => MainContainer(initialPage: 2),
+          Routes.inventory.path: (ctx) => MainContainer(initialPage: 3),
+          Routes.notes.path: (ctx) => MainContainer(initialPage: 4),
+          Routes.account.path: (ctx) => AccountView(),
+          Routes.settings.path: (ctx) => SettingsView(),
+          Routes.backup.path: (ctx) => BackupView(),
+          Routes.customClassesList.path: (ctx) => CustomClassesView(),
+          Routes.customClassCreate.path: (ctx) =>
               CustomClassView(mode: DialogMode.create),
-          Routes.customClassEdit: (ctx) {
+          Routes.customClassEdit.path: (ctx) {
             final CustomClassViewArguments arguments = Get.arguments;
             return CustomClassView(
               mode: DialogMode.edit,
@@ -79,11 +84,12 @@ class DungeonPaper extends StatelessWidget {
               onSave: arguments.onSave,
             );
           },
-          Routes.characterCreate: (ctx) => CharacterView(
+          Routes.characterList.path: (ctx) => ManageCharactersView(),
+          Routes.characterCreate.path: (ctx) => CharacterView(
                 character: null,
                 mode: DialogMode.create,
               ),
-          Routes.characterEdit: (ctx) {
+          Routes.characterEdit.path: (ctx) {
             final CharacterViewArguments arguments = Get.arguments;
             return CharacterView(
               character: arguments.character,
@@ -91,10 +97,10 @@ class DungeonPaper extends StatelessWidget {
               onSave: arguments.onSave,
             );
           },
-          Routes.moveAdd: (ctx) => MoveView.createForCharacter(
+          Routes.moveAdd.path: (ctx) => MoveView.createForCharacter(
                 character: characterController.current,
               ),
-          Routes.moveEdit: (ctx) {
+          Routes.moveEdit.path: (ctx) {
             final MoveViewArguments arguments = Get.arguments;
             return MoveView(
               mode: DialogMode.edit,
@@ -102,7 +108,7 @@ class DungeonPaper extends StatelessWidget {
               onSave: arguments.onSave,
             );
           },
-          Routes.raceMoveAdd: (ctx) {
+          Routes.raceMoveAdd.path: (ctx) {
             final RaceMoveViewArguments arguments = Get.arguments;
             return RaceMoveView(
               mode: DialogMode.create,
@@ -110,7 +116,7 @@ class DungeonPaper extends StatelessWidget {
               onSave: arguments.onSave,
             );
           },
-          Routes.raceMoveEdit: (ctx) {
+          Routes.raceMoveEdit.path: (ctx) {
             final SelectRaceMoveViewArguments arguments = Get.arguments;
             return SelectRaceMoveView(
               mode: DialogMode.edit,
@@ -118,10 +124,10 @@ class DungeonPaper extends StatelessWidget {
               onUpdate: arguments.onUpdate,
             );
           },
-          Routes.spellAdd: (ctx) => SpellView.createForCharacter(
+          Routes.spellAdd.path: (ctx) => SpellView.createForCharacter(
                 character: characterController.current,
               ),
-          Routes.spellEdit: (ctx) {
+          Routes.spellEdit.path: (ctx) {
             final SpellViewArguments arguments = Get.arguments;
             return SpellView(
               mode: DialogMode.edit,
@@ -129,10 +135,10 @@ class DungeonPaper extends StatelessWidget {
               spell: arguments.spell,
             );
           },
-          Routes.itemAdd: (ctx) => InventoryItemView.createForCharacter(
+          Routes.itemAdd.path: (ctx) => InventoryItemView.createForCharacter(
                 character: characterController.current,
               ),
-          Routes.itemEdit: (ctx) {
+          Routes.itemEdit.path: (ctx) {
             final InventoryItemViewArguments arguments = Get.arguments;
             return InventoryItemView(
               character: characterController.current,
@@ -141,10 +147,10 @@ class DungeonPaper extends StatelessWidget {
               onSave: arguments.onSave,
             );
           },
-          Routes.noteAdd: (ctx) => NoteView.createForCharacter(
+          Routes.noteAdd.path: (ctx) => NoteView.createForCharacter(
                 character: characterController.current,
               ),
-          Routes.noteEdit: (ctx) {
+          Routes.noteEdit.path: (ctx) {
             final NoteViewArguments arguments = Get.arguments;
             return NoteView(
               categories: arguments.categories,
@@ -153,7 +159,7 @@ class DungeonPaper extends StatelessWidget {
               onSave: arguments.onSave,
             );
           },
-          Routes.about: (ctx) => AboutView(),
+          Routes.about.path: (ctx) => AboutView(),
         },
         navigatorObservers: [observer],
       ),

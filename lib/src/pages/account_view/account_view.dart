@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dungeon_paper/db/models/user.dart';
+import 'package:dungeon_paper/routes.dart';
 import 'package:dungeon_paper/src/atoms/user_avatar.dart';
 import 'package:dungeon_paper/src/dialogs/confirmation_dialog.dart';
 import 'package:dungeon_paper/src/dialogs/single_field_edit_dialog.dart';
@@ -45,7 +46,7 @@ class _AccountViewState extends State<AccountView> {
 
   @override
   void initState() {
-    analytics.setCurrentScreen(screenName: ScreenNames.Account);
+    analytics.setCurrentScreen(screenName: Routes.account.analyticsName);
     passwordResetSent = false;
     loadingPasswordReset = false;
     super.initState();
@@ -286,7 +287,7 @@ class _AccountViewState extends State<AccountView> {
     final downloadURL = await uploadImage(
       imageFile,
       directory: 'user_photos',
-      analyticsSource: ScreenNames.Account,
+      analyticsSource: Routes.account,
     );
     setState(() {
       imageFile = null;

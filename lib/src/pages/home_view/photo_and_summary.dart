@@ -105,7 +105,7 @@ class PhotoAndSummary extends StatelessWidget {
 
   void _openEdit(BuildContext context) {
     Get.toNamed(
-      Routes.characterEdit,
+      Routes.characterEdit.path,
       arguments: CharacterViewArguments(
         character: character,
       ),

@@ -1,5 +1,6 @@
 import 'package:dungeon_paper/db/helpers/character_utils.dart';
 import 'package:dungeon_paper/db/models/character.dart';
+import 'package:dungeon_paper/routes.dart';
 import 'package:dungeon_paper/src/atoms/number_controller.dart';
 import 'package:dungeon_paper/src/atoms/roll_button_with_edit.dart';
 import 'package:dungeon_paper/src/dialogs/roll_dice_view.dart';
@@ -35,7 +36,7 @@ class StatDialog extends StatefulWidget {
 class StatDialogState extends State<StatDialog> {
   final CharacterStat stat;
   final String fullName;
-  final String analyticsSource = 'Edit Stat Dialog';
+  final analyticsSource = Routes.statEdit.analyticsName;
 
   num value;
   bool valueError = false;

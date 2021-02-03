@@ -54,5 +54,5 @@ class SettingsView extends StatelessWidget {
     );
   }
 
-  void _openBackupView() => Get.toNamed(Routes.backup);
+  void _openBackupView() => Get.toNamed(Routes.backup.path);
 }

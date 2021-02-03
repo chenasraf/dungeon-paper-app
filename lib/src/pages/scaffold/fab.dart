@@ -60,11 +60,11 @@ class FABState extends State<FAB> {
     var map = <Pages, FABData Function(BuildContext, Character)>{
       Pages.Notes: (context, character) => FABData(
             icon: Icon(Icons.add),
-            onPressed: () => Get.toNamed(Routes.noteAdd),
+            onPressed: () => Get.toNamed(Routes.noteAdd.path),
           ),
       Pages.Inventory: (context, character) => FABData(
             icon: Icon(Icons.add),
-            onPressed: () => Get.toNamed(Routes.itemAdd),
+            onPressed: () => Get.toNamed(Routes.itemAdd.path),
           ),
       Pages.Battle: (context, character) => FABData(
             icon: Icon(Icons.add),

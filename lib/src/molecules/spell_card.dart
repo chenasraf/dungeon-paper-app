@@ -96,7 +96,7 @@ class SpellCardState extends State<SpellCard> {
           widget.mode == SpellCardMode.editable
               ? CardBottomControls(
                   onEdit: () => Get.toNamed(
-                    Routes.spellEdit,
+                    Routes.spellEdit.path,
                     arguments: SpellViewArguments(
                       spell: widget.spell,
                       onSave: (spell) {

@@ -59,14 +59,3 @@ class Events {
   static const CharactersSortStart = 'characters_sort_start';
   static const CharactersSortEnd = 'characters_sort_end';
 }
-
-class ScreenNames {
-  static const DiceRoll = 'roll_dice';
-  static const CharacterScreen = 'edit_character';
-  static const ManageCharacters = 'manage_characters';
-  static const Compendium = 'compendium';
-  static const CustomClasses = 'custom_classes';
-  static const About = 'about';
-  static const Account = 'account';
-  static const Settings = 'settings';
-}

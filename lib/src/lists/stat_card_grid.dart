@@ -22,7 +22,7 @@ class BaseStats extends StatefulWidget {
 
 class _BaseStatsState extends State<BaseStats> {
   final GlobalKey globalKey = GlobalKey();
-  final String analyticsSource = 'Stat Card Grid';
+  final analyticsSource = 'Stat Card Grid';
 
   DiceListController diceController;
   String sessionKey;

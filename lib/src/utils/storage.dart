@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dungeon_paper/db/db.dart';
+import 'package:dungeon_paper/routes.dart';
 import 'package:dungeon_paper/src/controllers/user_controller.dart';
 import 'package:dungeon_paper/src/utils/analytics.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -12,7 +13,7 @@ Future<String> uploadImage(
   File imageFile, {
   @required String directory,
   Map<String, String> extraMetadata,
-  @required String analyticsSource,
+  @required Routes analyticsSource,
 }) async {
   unawaited(analytics
       .logEvent(name: Events.UploadCharacterAvatarAttempt, parameters: {

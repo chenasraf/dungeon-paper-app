@@ -1,4 +1,5 @@
 import 'package:dungeon_paper/db/models/character.dart';
+import 'package:dungeon_paper/routes.dart';
 import 'package:dungeon_paper/src/dialogs/change_alignment_dialog.dart';
 import 'package:dungeon_paper/src/dialogs/confirmation_dialog.dart';
 import 'package:dungeon_paper/src/dialogs/dialogs.dart';
@@ -98,8 +99,8 @@ class _CharacterViewState extends State<CharacterView>
     dirty = false;
 
     tabController = TabController(length: _tabs.keys.length, vsync: this);
-    logger.d('Page View: ${ScreenNames.CharacterScreen}');
-    analytics.setCurrentScreen(screenName: ScreenNames.CharacterScreen);
+    logger.d('Page View: ${Routes.characterEdit}');
+    analytics.setCurrentScreen(screenName: Routes.characterEdit.analyticsName);
     super.initState();
   }
 
