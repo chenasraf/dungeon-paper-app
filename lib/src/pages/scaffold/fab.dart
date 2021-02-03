@@ -1,4 +1,5 @@
 import 'package:dungeon_paper/db/models/character.dart';
+import 'package:dungeon_paper/routes.dart';
 import 'package:dungeon_paper/src/dialogs/add_move_or_spell_dialog.dart';
 import 'package:dungeon_paper/src/utils/utils.dart';
 import 'package:get/get.dart';
@@ -59,11 +60,11 @@ class FABState extends State<FAB> {
     var map = <Pages, FABData Function(BuildContext, Character)>{
       Pages.Notes: (context, character) => FABData(
             icon: Icon(Icons.add),
-            onPressed: () => Get.toNamed('/add-note'),
+            onPressed: () => Get.toNamed(Routes.noteAdd),
           ),
       Pages.Inventory: (context, character) => FABData(
             icon: Icon(Icons.add),
-            onPressed: () => Get.toNamed('/add-item'),
+            onPressed: () => Get.toNamed(Routes.itemAdd),
           ),
       Pages.Battle: (context, character) => FABData(
             icon: Icon(Icons.add),

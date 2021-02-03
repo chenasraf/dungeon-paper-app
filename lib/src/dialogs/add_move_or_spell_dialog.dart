@@ -1,4 +1,5 @@
 import 'package:dungeon_paper/db/models/character.dart';
+import 'package:dungeon_paper/routes.dart';
 import 'package:dungeon_paper/src/flutter_utils/platform_svg.dart';
 import 'package:dungeon_world_data/player_class.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class AddMoveOrSpell extends StatelessWidget {
                   ),
                   onPressed: () {
                     Get.back();
-                    Get.toNamed('/add-move');
+                    Get.toNamed(Routes.moveAdd);
                   },
                 ),
               ),
@@ -84,7 +85,7 @@ class AddMoveOrSpell extends StatelessWidget {
                   ),
                   onPressed: () {
                     Get.back();
-                    Get.toNamed('/add-spell');
+                    Get.toNamed(Routes.spellAdd);
                   },
                 ),
               ),

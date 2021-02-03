@@ -1,4 +1,5 @@
 import 'package:dungeon_paper/db/models/spell.dart';
+import 'package:dungeon_paper/routes.dart';
 import 'package:dungeon_paper/src/atoms/card_bottom_controls.dart';
 import 'package:dungeon_paper/src/dialogs/confirmation_dialog.dart';
 import 'package:dungeon_paper/src/lists/tag_list.dart';
@@ -95,7 +96,7 @@ class SpellCardState extends State<SpellCard> {
           widget.mode == SpellCardMode.editable
               ? CardBottomControls(
                   onEdit: () => Get.toNamed(
-                    '/edit-spell',
+                    Routes.spellEdit,
                     arguments: SpellViewArguments(
                       spell: widget.spell,
                       onSave: (spell) {

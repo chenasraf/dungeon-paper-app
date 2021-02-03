@@ -1,3 +1,4 @@
+import 'package:dungeon_paper/routes.dart';
 import 'package:dungeon_paper/src/atoms/card_bottom_controls.dart';
 import 'package:dungeon_paper/src/dialogs/confirmation_dialog.dart';
 import 'package:dungeon_paper/src/scaffolds/move_view.dart';
@@ -46,7 +47,7 @@ class MoveCardState extends State<MoveCard> {
       widget.mode == MoveCardMode.editable
           ? CardBottomControls(
               onEdit: () => Get.toNamed(
-                '/edit-move',
+                Routes.moveEdit,
                 arguments: MoveViewArguments(
                   move: widget.move,
                   onSave: (move) {

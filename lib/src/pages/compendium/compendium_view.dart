@@ -1,3 +1,4 @@
+import 'package:dungeon_paper/routes.dart';
 import 'package:dungeon_paper/src/atoms/card_list_item.dart';
 import 'package:dungeon_paper/src/scaffolds/main_scaffold.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,7 @@ class Compendium extends StatelessWidget {
               title: Text('Custom Classes'),
               leading: Icon(Icons.person),
               onTap: () {
-                Get.toNamed('/custom-classes');
+                Get.toNamed(Routes.customClassesList);
               },
             )
           ],

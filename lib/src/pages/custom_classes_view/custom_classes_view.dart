@@ -1,4 +1,5 @@
 import 'package:dungeon_paper/db/models/custom_class.dart';
+import 'package:dungeon_paper/routes.dart';
 import 'package:dungeon_paper/src/atoms/empty_state.dart';
 import 'package:dungeon_paper/src/dialogs/confirmation_dialog.dart';
 import 'package:dungeon_paper/src/lists/custom_classes_list.dart';
@@ -87,14 +88,14 @@ class _CustomClassesViewState extends State<CustomClassesView> {
 
   void Function() _add(BuildContext context) {
     return () {
-      Get.toNamed('/create-custom-class');
+      Get.toNamed(Routes.customClassCreate);
     };
   }
 
   void Function(CustomClass) _edit(BuildContext context) {
     return (cls) {
       Get.toNamed(
-        '/edit-custom-class',
+        Routes.customClassEdit,
         arguments: CustomClassViewArguments(
           customClass: cls,
         ),

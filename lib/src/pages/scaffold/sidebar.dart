@@ -1,5 +1,6 @@
 import 'package:dungeon_paper/db/models/character.dart';
 import 'package:dungeon_paper/db/models/user.dart';
+import 'package:dungeon_paper/routes.dart';
 import 'package:dungeon_paper/src/atoms/user_avatar.dart';
 import 'package:dungeon_paper/src/dialogs/dialogs.dart';
 import 'package:dungeon_paper/src/flutter_utils/platform_svg.dart';
@@ -62,7 +63,7 @@ class _SidebarState extends State<Sidebar> with SingleTickerProviderStateMixin {
                     ListTile(
                       leading: Icon(Icons.person),
                       title: Text('Account'),
-                      onTap: () => Get.toNamed('/account'),
+                      onTap: () => Get.toNamed(Routes.account),
                     ),
                     // Log out
                     ListTile(
@@ -327,7 +328,7 @@ class UserDrawerHeader extends StatelessWidget {
           ),
           currentAccountPicture: GestureDetector(
             child: UserAvatar(user: user),
-            onTap: () => Get.toNamed('/account'),
+            onTap: () => Get.toNamed(Routes.account),
           ),
           onDetailsPressed: onToggleUserMenu,
         ),

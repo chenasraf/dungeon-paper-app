@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:dungeon_paper/routes.dart';
 import 'package:dungeon_paper/src/atoms/version_number.dart';
 import 'package:dungeon_paper/src/dialogs/single_field_edit_dialog.dart';
 import 'package:dungeon_paper/src/flutter_utils/loading_container.dart';
@@ -104,7 +105,7 @@ class WelcomeView extends StatelessWidget {
   }
 
   void _openAboutView() {
-    Get.toNamed('/account');
+    Get.toNamed(Routes.about);
   }
 
   void _openResetPasswordView() {

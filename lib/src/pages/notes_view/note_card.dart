@@ -1,4 +1,5 @@
 import 'package:dungeon_paper/db/models/note.dart';
+import 'package:dungeon_paper/routes.dart';
 import 'package:dungeon_paper/src/atoms/card_bottom_controls.dart';
 import 'package:dungeon_paper/src/dialogs/confirmation_dialog.dart';
 import 'package:dungeon_paper/src/flutter_utils/widget_utils.dart';
@@ -79,7 +80,7 @@ class NoteCardState extends State<NoteCard> {
 
   void editNote(BuildContext context) {
     Get.toNamed(
-      '/edit-note',
+      Routes.noteEdit,
       arguments: NoteViewArguments(
         note: widget.note,
         categories: widget.categories,

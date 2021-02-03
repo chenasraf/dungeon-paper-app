@@ -96,7 +96,7 @@ class _FlexibleColumnsState<T> extends State<FlexibleColumns<T>> {
     final cats = _itemsToWidgets(context);
 
     return StaggeredGridView.countBuilder(
-      crossAxisCount: constraints.maxWidth > 1000 ? 2 : 1,
+      crossAxisCount: constraints.maxWidth > 800 ? 2 : 1,
       controller: widget.scrollController,
       itemCount: cats.length + bottomSpacerCount + topSpacerCount,
       itemBuilder: _itemWrapperBuilder,

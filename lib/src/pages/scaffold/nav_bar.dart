@@ -110,7 +110,9 @@ class NavBarState extends State<NavBar> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: width < 600
             ? MainAxisAlignment.spaceAround
-            : MainAxisAlignment.start,
+            : width > 1200
+                ? MainAxisAlignment.start
+                : MainAxisAlignment.center,
         children: pageItems,
       ),
     );
@@ -151,22 +153,24 @@ class PageNavItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
-      child: SizedBox(
-        height: 60,
-        width: 100,
-        child: InkWell(
-          onTap: onChangePage,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              iconBuilder(foregroundColor),
-              DefaultTextStyle(
-                style: Get.theme.textTheme.bodyText2
-                    .copyWith(color: foregroundColor),
-                child: label,
-              )
-            ],
+      child: InkWell(
+        onTap: onChangePage,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: SizedBox(
+            height: 60,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                iconBuilder(foregroundColor),
+                DefaultTextStyle(
+                  style: Get.theme.textTheme.bodyText2
+                      .copyWith(color: foregroundColor),
+                  child: label,
+                )
+              ],
+            ),
           ),
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:dungeon_paper/db/models/character.dart';
+import 'package:dungeon_paper/routes.dart';
 import 'package:dungeon_paper/src/dialogs/biography_dialog.dart';
 import 'package:dungeon_paper/src/molecules/character_headline.dart';
 import 'package:dungeon_paper/src/molecules/character_photo.dart';
@@ -104,7 +105,7 @@ class PhotoAndSummary extends StatelessWidget {
 
   void _openEdit(BuildContext context) {
     Get.toNamed(
-      '/edit-character',
+      Routes.characterEdit,
       arguments: CharacterViewArguments(
         character: character,
       ),

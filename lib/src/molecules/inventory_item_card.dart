@@ -1,5 +1,6 @@
 import 'package:dungeon_paper/db/models/character.dart';
 import 'package:dungeon_paper/db/models/inventory_item.dart';
+import 'package:dungeon_paper/routes.dart';
 import 'package:dungeon_paper/src/atoms/card_bottom_controls.dart';
 import 'package:dungeon_paper/src/atoms/dice_icon.dart';
 import 'package:dungeon_paper/src/atoms/icon_chip.dart';
@@ -257,7 +258,7 @@ class InventoryItemCard extends StatelessWidget {
 
   void editInventoryItem(BuildContext context) {
     Get.toNamed(
-      '/inventory-item',
+      Routes.itemEdit,
       arguments: InventoryItemViewArguments(
         item: item,
         onSave: onSave,

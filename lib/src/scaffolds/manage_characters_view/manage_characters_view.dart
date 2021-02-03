@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:dungeon_paper/db/models/character.dart';
 import 'package:dungeon_paper/db/models/user.dart';
+import 'package:dungeon_paper/routes.dart';
 import 'package:dungeon_paper/src/atoms/card_list_item.dart';
 import 'package:dungeon_paper/src/dialogs/confirmation_dialog.dart';
 import 'package:dungeon_paper/src/flutter_utils/widget_utils.dart';
@@ -176,7 +177,7 @@ class _ManageCharactersViewState extends State<ManageCharactersView> {
 
   void _edit(Character char) {
     Get.toNamed(
-      '/edit-character',
+      Routes.characterEdit,
       arguments: CharacterViewArguments(character: char),
     );
   }
@@ -207,6 +208,6 @@ class _ManageCharactersViewState extends State<ManageCharactersView> {
   }
 
   void _openCreatePage() {
-    Get.toNamed('/create-character');
+    Get.toNamed(Routes.characterCreate);
   }
 }

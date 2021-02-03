@@ -1,3 +1,4 @@
+import 'package:dungeon_paper/routes.dart';
 import 'package:dungeon_paper/src/pages/settings_view/settings_list_tile.dart';
 import 'package:dungeon_paper/src/controllers/prefs_controller.dart';
 import 'package:dungeon_paper/src/scaffolds/main_scaffold.dart';
@@ -53,5 +54,5 @@ class SettingsView extends StatelessWidget {
     );
   }
 
-  void _openBackupView() => Get.toNamed('/settings/backup');
+  void _openBackupView() => Get.toNamed(Routes.backup);
 }

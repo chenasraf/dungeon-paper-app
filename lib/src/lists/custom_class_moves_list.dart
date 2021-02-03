@@ -1,4 +1,5 @@
 import 'package:dungeon_paper/db/models/custom_class.dart';
+import 'package:dungeon_paper/routes.dart';
 import 'package:dungeon_paper/src/atoms/flexible_columns.dart';
 import 'package:dungeon_paper/src/dialogs/dialogs.dart';
 import 'package:dungeon_paper/src/flutter_utils/widget_utils.dart';
@@ -123,7 +124,7 @@ class CustomClassMoveList extends StatelessWidget {
       classes: [],
     );
     Get.toNamed(
-      cat == MoveCategory.Race ? '/add-race-move' : '/add-move',
+      cat == MoveCategory.Race ? Routes.raceMoveAdd : Routes.moveAdd,
       arguments: cat == MoveCategory.Race
           ? RaceMoveViewArguments(
               move: blankMove,
