@@ -9,6 +9,15 @@
     ],
     "headers": [
       {
+        "source": "/(index.html)?",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, max-age=0"
+          }
+        ]
+      },
+      {
         "source": "/service-worker.js",
         "headers": [
           {
