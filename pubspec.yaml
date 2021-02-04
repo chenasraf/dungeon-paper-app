@@ -1,6 +1,6 @@
 name: dungeon_paper
 description: A Dungeon World character sheet app written with Flutter.
-version: 1.2.6+76
+version: 1.2.6+77
 
 environment:
   sdk: ">=2.8.0 <3.0.0"

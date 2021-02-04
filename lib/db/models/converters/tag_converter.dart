@@ -18,5 +18,5 @@ class TagConverter implements JsonConverter<Tag, dynamic> {
   }
 
   @override
-  dynamic toJson(Tag data) => data.toJSON();
+  dynamic toJson(Tag data) => data?.toJSON();
 }
