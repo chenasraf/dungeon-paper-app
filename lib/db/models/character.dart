@@ -29,10 +29,13 @@ part 'character.freezed.dart';
 part 'character.g.dart';
 
 @freezed
-abstract class Character with FirebaseMixin, KeyMixin implements _$Character {
+abstract class Character
+    with FirebaseMixin, CharacterFirebaseMixin, KeyMixin
+    implements _$Character {
   const Character._();
 
   @With(FirebaseMixin)
+  @With(CharacterFirebaseMixin)
   @With(KeyMixin)
   factory Character({
     @required @DefaultUuid() String key,
@@ -82,24 +85,6 @@ abstract class Character with FirebaseMixin, KeyMixin implements _$Character {
   factory Character.fromJson(value, {DocumentReference ref}) =>
       _$CharacterFromJson(value).copyWith(ref: ref);
 
-  @override
-  Future<DocumentReference> create() async {
-    final char = await userController.current.createCharacter(this);
-    return char.ref;
-  }
-
-  @override
-  Future<DocumentReference> update({Iterable<String> keys}) {
-    characterController.upsert(this);
-    return super.update(keys: keys);
-  }
-
-  @override
-  Future<void> delete() {
-    characterController.remove(this);
-    return super.delete();
-  }
-
   Character copyWithStat(CharacterStat stat, int value) {
     switch (stat) {
       case CharacterStat.str:
@@ -118,6 +103,9 @@ abstract class Character with FirebaseMixin, KeyMixin implements _$Character {
     throw FormatException(
         'Stat expected, got ${stat.runtimeType} ($stat)', stat, 0);
   }
+
+  @override
+  Character get character => this;
 
   static String getStatUpdateKey(CharacterStat stat) =>
       CHARACTER_STAT_KEYS[stat];
@@ -217,4 +205,25 @@ abstract class Character with FirebaseMixin, KeyMixin implements _$Character {
 
   int get equippedDamage => inventory.fold(
       0, (count, item) => count += (item.equipped ? item.damage : 0));
+}
+
+mixin CharacterFirebaseMixin {
+  DocumentReference get ref;
+  Character get character;
+  Map<String, dynamic> toJson();
+
+  Future<DocumentReference> create() async {
+    final char = await userController.current.createCharacter(character);
+    return char.ref;
+  }
+
+  Future<DocumentReference> update({Iterable<String> keys}) {
+    characterController.upsert(character);
+    return helpers.update(ref, toJson(), keys: keys);
+  }
+
+  Future<void> delete() {
+    characterController.remove(character);
+    return helpers.delete(ref);
+  }
 }

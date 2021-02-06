@@ -15,6 +15,7 @@ class FirebaseHelpers {
     Map<String, dynamic> data, {
     Iterable<String> keys,
   }) async {
+    logger.d('FirebaseHelper: update');
     data = pick(data, keys);
     logger.d('Updating: ${ref.path}\n$data');
     await ref.update({...data, 'updatedAt': DateTime.now()});
@@ -70,8 +71,10 @@ mixin FirebaseMixin {
 
   Future<DocumentReference> create() => helpers.create(ref, toJson());
 
-  Future<DocumentReference> update({Iterable<String> keys}) =>
-      helpers.update(ref, toJson(), keys: keys);
+  Future<DocumentReference> update({Iterable<String> keys}) {
+    logger.d('FirebaseMixin.update');
+    return helpers.update(ref, toJson(), keys: keys);
+  }
 
   Future<DocumentReference> move(
     String newId, {

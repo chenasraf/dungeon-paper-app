@@ -555,10 +555,12 @@ class __$CharacterCopyWithImpl<$Res> extends _$CharacterCopyWithImpl<$Res>
 
 @JsonSerializable()
 @With(FirebaseMixin)
+@With(CharacterFirebaseMixin)
 @With(KeyMixin)
 
 /// @nodoc
-class _$_Character extends _Character with FirebaseMixin, KeyMixin {
+class _$_Character extends _Character
+    with FirebaseMixin, CharacterFirebaseMixin, KeyMixin {
   _$_Character(
       {@required
       @DefaultUuid()
@@ -881,7 +883,8 @@ class _$_Character extends _Character with FirebaseMixin, KeyMixin {
   }
 }
 
-abstract class _Character extends Character implements FirebaseMixin, KeyMixin {
+abstract class _Character extends Character
+    implements FirebaseMixin, CharacterFirebaseMixin, KeyMixin {
   _Character._() : super._();
   factory _Character(
       {@required

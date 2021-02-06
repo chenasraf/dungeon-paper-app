@@ -23,7 +23,7 @@ class _CustomClassesViewState extends State<CustomClassesView> {
   @override
   void initState() {
     super.initState();
-    logger.d('Page View: ${Routes.customClassesList}');
+    logger.d('Page View: ${Routes.customClassesList.analyticsName}');
     analytics.setCurrentScreen(
         screenName: Routes.customClassesList.analyticsName);
   }

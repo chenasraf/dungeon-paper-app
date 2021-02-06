@@ -97,9 +97,19 @@ class DungeonPaper extends StatelessWidget {
               onSave: arguments.onSave,
             );
           },
-          Routes.moveAdd.path: (ctx) => MoveView.createForCharacter(
+          Routes.moveAdd.path: (ctx) {
+            final MoveViewArguments arguments = Get.arguments;
+            if (arguments == null) {
+              return MoveView.createForCharacter(
                 character: characterController.current,
-              ),
+              );
+            }
+            return MoveView(
+              mode: DialogMode.create,
+              move: arguments.move,
+              onSave: arguments.onSave,
+            );
+          },
           Routes.moveEdit.path: (ctx) {
             final MoveViewArguments arguments = Get.arguments;
             return MoveView(
@@ -124,9 +134,19 @@ class DungeonPaper extends StatelessWidget {
               onUpdate: arguments.onUpdate,
             );
           },
-          Routes.spellAdd.path: (ctx) => SpellView.createForCharacter(
+          Routes.spellAdd.path: (ctx) {
+            final SpellViewArguments arguments = Get.arguments;
+            if (arguments == null) {
+              return SpellView.createForCharacter(
                 character: characterController.current,
-              ),
+              );
+            }
+            return SpellView(
+              mode: DialogMode.create,
+              spell: arguments.spell,
+              onSave: arguments.onSave,
+            );
+          },
           Routes.spellEdit.path: (ctx) {
             final SpellViewArguments arguments = Get.arguments;
             return SpellView(

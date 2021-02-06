@@ -99,7 +99,7 @@ class _CharacterViewState extends State<CharacterView>
     dirty = false;
 
     tabController = TabController(length: _tabs.keys.length, vsync: this);
-    logger.d('Page View: ${Routes.characterEdit}');
+    logger.d('Page View: ${Routes.characterEdit.analyticsName}');
     analytics.setCurrentScreen(screenName: Routes.characterEdit.analyticsName);
     super.initState();
   }

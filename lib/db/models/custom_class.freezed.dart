@@ -398,10 +398,12 @@ class __$CustomClassCopyWithImpl<$Res> extends _$CustomClassCopyWithImpl<$Res>
 
 @JsonSerializable()
 @With(FirebaseMixin)
+@With(CustomClassFirebaseMixin)
 @With(KeyMixin)
 
 /// @nodoc
-class _$_CustomClass extends _CustomClass with FirebaseMixin, KeyMixin {
+class _$_CustomClass extends _CustomClass
+    with FirebaseMixin, CustomClassFirebaseMixin, KeyMixin {
   const _$_CustomClass(
       {@required
       @DefaultUuid()
@@ -624,7 +626,7 @@ class _$_CustomClass extends _CustomClass with FirebaseMixin, KeyMixin {
 }
 
 abstract class _CustomClass extends CustomClass
-    implements FirebaseMixin, KeyMixin {
+    implements FirebaseMixin, CustomClassFirebaseMixin, KeyMixin {
   const _CustomClass._() : super._();
   const factory _CustomClass(
       {@required

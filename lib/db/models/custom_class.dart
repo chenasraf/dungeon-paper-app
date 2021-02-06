@@ -25,11 +25,12 @@ part 'custom_class.g.dart';
 
 @freezed
 abstract class CustomClass
-    with FirebaseMixin, KeyMixin
+    with FirebaseMixin, CustomClassFirebaseMixin, KeyMixin
     implements _$CustomClass {
   const CustomClass._();
 
   @With(FirebaseMixin)
+  @With(CustomClassFirebaseMixin)
   @With(KeyMixin)
   const factory CustomClass({
     @required @DefaultUuid() String key,
@@ -122,6 +123,10 @@ abstract class CustomClass
     return Map<String, dynamic>.from(json);
   }
 
+  @override
+  CustomClass get customClass => this;
+
+  @override
   PlayerClass toPlayerClass() {
     final data = Map<String, dynamic>.from(
       toJson().map((k, v) => MapEntry(camelToSnake(k), v)),
@@ -129,33 +134,37 @@ abstract class CustomClass
     data['looks'] = looks.values.toList();
     return PlayerClass.fromJSON(data);
   }
+}
 
-  @override
+mixin CustomClassFirebaseMixin {
+  DocumentReference get ref;
+  CustomClass get customClass;
+  Map<String, dynamic> toJson();
+  PlayerClass toPlayerClass();
+
   Future<DocumentReference> create() async {
-    final cls = await userController.current.createCustomClass(this);
+    final cls = await userController.current.createCustomClass(customClass);
     return cls.ref;
   }
 
-  @override
   Future<DocumentReference> update({Iterable<String> keys}) async {
-    customClassesController.upsert(this);
-    final ref = super.update(keys: keys);
+    customClassesController.upsert(customClass);
     await _updateChars();
+    final ref = await helpers.update(this.ref, toJson(), keys: keys);
     return ref;
   }
 
-  @override
   Future<void> delete() async {
-    customClassesController.remove(this);
-    return super.delete();
+    customClassesController.remove(customClass);
+    return helpers.delete(ref);
   }
 
   Future<void> _updateChars() async {
     final futures = <Future>[];
     for (final char in characterController.all.values) {
-      if (char.playerClasses.any((el) => el.key == key)) {
+      if (char.playerClasses.any((el) => el.key == customClass.key)) {
         final _updated = char.playerClasses
-            .map((el) => el.key == key ? toPlayerClass() : el)
+            .map((el) => el.key == customClass.key ? toPlayerClass() : el)
             .toList();
         futures.add(
           char.copyWith(playerClasses: _updated).update(

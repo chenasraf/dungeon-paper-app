@@ -33,10 +33,10 @@ class MoveCard extends StatefulWidget {
 class MoveCardState extends State<MoveCard> {
   @override
   Widget build(BuildContext context) {
-    var move = widget.move;
+    final move = widget.move;
     Widget name = Text("${move.name}${widget.raceMove ? '\'s Move' : ''}");
 
-    var children = <Widget>[
+    final children = <Widget>[
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: MarkdownBody(
@@ -105,7 +105,7 @@ class MoveCardState extends State<MoveCard> {
         ),
       ]);
     }
-    Widget expansionTile = ExpansionTile(
+    final Widget expansionTile = ExpansionTile(
       title: widget.raceMove
           ? Row(
               children: <Widget>[
@@ -132,9 +132,7 @@ class MoveCardState extends State<MoveCard> {
   }
 
   void _save(Move move) {
-    if (widget.onSave != null) {
-      widget.onSave(move);
-    }
+    widget.onSave?.call(move);
   }
 
   void _delete() {

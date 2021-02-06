@@ -41,7 +41,7 @@ class CustomClassView extends StatefulWidget {
   _CustomClassViewState createState() => _CustomClassViewState();
 }
 
-enum CustomClassWizardTab { BasicInfo, Moves, Races, Looks, Alignments }
+enum CustomClassWizardTab { basicInfo, moves, races, looks, alignments }
 
 class _CustomClassViewState extends State<CustomClassView>
     with SingleTickerProviderStateMixin {
@@ -55,11 +55,11 @@ class _CustomClassViewState extends State<CustomClassView>
   bool dirty;
 
   static const Map<CustomClassWizardTab, String> TAB_TITLES = {
-    CustomClassWizardTab.BasicInfo: 'General',
-    CustomClassWizardTab.Moves: 'Moves',
-    CustomClassWizardTab.Races: 'Races',
-    CustomClassWizardTab.Looks: 'Look Choices',
-    CustomClassWizardTab.Alignments: 'Alignments',
+    CustomClassWizardTab.basicInfo: 'General',
+    CustomClassWizardTab.moves: 'Moves',
+    CustomClassWizardTab.races: 'Races',
+    CustomClassWizardTab.looks: 'Look Choices',
+    CustomClassWizardTab.alignments: 'Alignments',
   };
 
   @override
@@ -159,36 +159,44 @@ class _CustomClassViewState extends State<CustomClassView>
       );
 
   Map<CustomClassWizardTab, Widget> get _tabs => {
-        CustomClassWizardTab.BasicInfo: ClassBasicDetails(
+        CustomClassWizardTab.basicInfo: ClassBasicDetails(
           mode: widget.mode,
           customClass: def,
           validityNotifier: basicInfoValid,
           onUpdate: (cls) => setState(() {
             dirty = true;
-            def = cls;
+            def = def.copyWith(
+              name: cls.name,
+              baseHP: cls.baseHP,
+              damage: cls.damage,
+            );
           }),
         ),
-        CustomClassWizardTab.Races: CustomClassMoveList(
+        CustomClassWizardTab.races: CustomClassMoveList(
           mode: widget.mode,
           customClass: def,
           validityNotifier: racesValid,
           raceMoveMode: true,
           onUpdate: (cls) => setState(() {
             dirty = true;
-            def = cls;
+            def = def.copyWith(raceMoves: cls.raceMoves);
           }),
         ),
-        CustomClassWizardTab.Moves: CustomClassMoveList(
+        CustomClassWizardTab.moves: CustomClassMoveList(
           mode: widget.mode,
           customClass: def,
           validityNotifier: movesValid,
           raceMoveMode: false,
           onUpdate: (cls) => setState(() {
             dirty = true;
-            def = cls;
+            def = def.copyWith(
+              startingMoves: cls.startingMoves,
+              advancedMoves1: cls.advancedMoves1,
+              advancedMoves2: cls.advancedMoves2,
+            );
           }),
         ),
-        CustomClassWizardTab.Looks: CustomClassLooks(
+        CustomClassWizardTab.looks: CustomClassLooks(
           mode: widget.mode,
           looks: def.looks,
           validityNotifier: looksValid,
@@ -203,7 +211,7 @@ class _CustomClassViewState extends State<CustomClassView>
             );
           }),
         ),
-        CustomClassWizardTab.Alignments: CustomClassAlignments(
+        CustomClassWizardTab.alignments: CustomClassAlignments(
           mode: widget.mode,
           alignments: def.alignments,
           onUpdate: (alignments) => setState(() {
@@ -215,15 +223,15 @@ class _CustomClassViewState extends State<CustomClassView>
 
   bool _isValid(CustomClassWizardTab k) {
     switch (k) {
-      case CustomClassWizardTab.BasicInfo:
+      case CustomClassWizardTab.basicInfo:
         return basicInfoValid.value;
-      case CustomClassWizardTab.Moves:
+      case CustomClassWizardTab.moves:
         return movesValid.value;
-      case CustomClassWizardTab.Races:
+      case CustomClassWizardTab.races:
         return racesValid.value;
-      case CustomClassWizardTab.Looks:
+      case CustomClassWizardTab.looks:
         return looksValid.value;
-      case CustomClassWizardTab.Alignments:
+      case CustomClassWizardTab.alignments:
         return alignmentsValid.value;
     }
     return true;
