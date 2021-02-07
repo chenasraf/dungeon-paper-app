@@ -167,8 +167,10 @@ class _CustomClassViewState extends State<CustomClassView>
             dirty = true;
             def = def.copyWith(
               name: cls.name,
+              description: cls.description,
               baseHP: cls.baseHP,
               damage: cls.damage,
+              load: cls.load,
             );
           }),
         ),
