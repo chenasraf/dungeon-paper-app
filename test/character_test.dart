@@ -24,7 +24,7 @@ void main() {
     test('properly uses class values', () {
       final char = Character.fromJson(
         <String, dynamic>{
-          'playerClasses': [wizard.toJSON().cast<String, dynamic>()],
+          'playerClass': wizard.toJSON().cast<String, dynamic>(),
           'con': 10,
         },
       );
@@ -36,7 +36,7 @@ void main() {
     test('properly dumps json', () {
       final char = Character.fromJson(
         <String, dynamic>{
-          'playerClasses': [druid.toJSON().cast<String, dynamic>()],
+          'playerClass': druid.toJSON().cast<String, dynamic>(),
           'displayName': 'Goku',
           'str': 20,
           'dex': 10,
@@ -49,16 +49,15 @@ void main() {
       final json = char.toJson();
       expect(json['alignment'], equals('neutral'));
       expect(json['displayName'], equals('Goku'));
-      expect(json['playerClasses'][0]['key'], equals('druid'));
+      expect(json['playerClass']['key'], equals('druid'));
       expect(json['hitDice'], equals('1d6'));
     });
 
     test('auto max HP get/set', () {
       var char1 = Character.fromJson(
         <String, dynamic>{
-          'playerClasses': [
-            immolator.toJSON().cast<String, dynamic>()
-          ], // base HP 6
+          'playerClass':
+              immolator.toJSON().cast<String, dynamic>(), // base HP 6
           'displayName': 'Goku',
           'str': 20,
           'dex': 10,
@@ -71,9 +70,7 @@ void main() {
       );
       var char2 = Character.fromJson(
         <String, dynamic>{
-          'playerClasses': [
-            wizard.toJSON().cast<String, dynamic>()
-          ], // base HP 4
+          'playerClass': wizard.toJSON().cast<String, dynamic>(), // base HP 4
           'displayName': 'Harry Potter',
           'str': 20,
           'dex': 10,
