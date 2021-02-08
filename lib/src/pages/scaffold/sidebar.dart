@@ -9,6 +9,7 @@ import 'package:dungeon_paper/src/controllers/user_controller.dart';
 import 'package:dungeon_paper/src/utils/analytics.dart';
 import 'package:dungeon_paper/src/utils/auth/auth.dart';
 import 'package:dungeon_paper/src/utils/logger.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -121,11 +122,12 @@ class _SidebarState extends State<Sidebar> with SingleTickerProviderStateMixin {
                     ),
                     Divider(),
                     title('Application'),
-                    ListTile(
-                      leading: Icon(Icons.settings),
-                      title: Text('Settings'),
-                      onTap: () => openPage(Routes.settings.path),
-                    ),
+                    if (!kIsWeb)
+                      ListTile(
+                        leading: Icon(Icons.settings),
+                        title: Text('Settings'),
+                        onTap: () => openPage(Routes.settings.path),
+                      ),
                     // About
                     ListTile(
                       leading: Icon(Icons.info),

@@ -27,8 +27,9 @@ class CharacterMigrations extends MigrationRunner<Character> {
     }, (data) => data['useDefaultMaxHP'] != null),
     Migration('Single object player class', (data) {
       return <String, dynamic>{
-        'playerClasses': null,
-        'playerClass': data['playerClasses'].first,
+        // TODO uncomment line when ready to make migration final
+        // 'playerClasses': null,
+        'playerClass': data['playerClass'] ?? data['playerClasses'].first,
       };
     }, (data) => data['playerClasses'] != null),
   ];
