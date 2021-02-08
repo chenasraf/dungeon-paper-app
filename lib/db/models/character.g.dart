@@ -21,10 +21,8 @@ _$_Character _$_$_CharacterFromJson(Map<String, dynamic> json) {
     wisdom: json['wis'] as int ?? 8,
     intelligence: json['int'] as int ?? 8,
     charisma: json['cha'] as int ?? 0,
-    playerClasses: (json['playerClasses'] as List)
-        ?.map((e) =>
-            const PlayerClassConverter().fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    playerClass: const PlayerClassConverter()
+        .fromJson(json['playerClass'] as Map<String, dynamic>),
     alignment:
         _$enumDecodeNullable(_$AlignmentNameEnumMap, json['alignment']) ??
             AlignmentName.neutral,
@@ -79,9 +77,7 @@ Map<String, dynamic> _$_$_CharacterToJson(_$_Character instance) =>
       'wis': instance.wisdom,
       'int': instance.intelligence,
       'cha': instance.charisma,
-      'playerClasses': instance.playerClasses
-          ?.map(const PlayerClassConverter().toJson)
-          ?.toList(),
+      'playerClass': const PlayerClassConverter().toJson(instance.playerClass),
       'alignment': _$AlignmentNameEnumMap[instance.alignment],
       'maxHP': instance.customMaxHP,
       'level': instance.level,

@@ -51,7 +51,7 @@ abstract class Character
     @Default(8) @JsonKey(name: 'wis', defaultValue: 8) int wisdom,
     @Default(8) @JsonKey(name: 'int', defaultValue: 8) int intelligence,
     @Default(0) @JsonKey(name: 'cha', defaultValue: 0) int charisma,
-    @PlayerClassConverter() List<PlayerClass> playerClasses,
+    @required @PlayerClassConverter() PlayerClass playerClass,
     @Default(AlignmentName.neutral)
     @JsonKey(defaultValue: AlignmentName.neutral)
         AlignmentName alignment,
@@ -110,19 +110,16 @@ abstract class Character
   static String getStatUpdateKey(CharacterStat stat) =>
       CHARACTER_STAT_KEYS[stat];
 
-  Dice get damageDice => customDamageDice ?? mainClass?.damage ?? Dice.d6;
-  Move get race => raceMove ?? mainClass.raceMoves.first;
+  Dice get damageDice => customDamageDice ?? playerClass?.damage ?? Dice.d6;
+  Move get race => raceMove ?? playerClass.raceMoves.first;
   int get currentHP => clamp<int>(customCurrentHP, 0, maxHP).toInt();
   CharacterSettings get settings => customSettings ?? CharacterSettings();
-
-  PlayerClass get mainClass =>
-      playerClasses?.first ?? dungeonWorld.classes.first;
 
   int get maxHP =>
       (settings.useDefaultMaxHp == true ? defaultMaxHP : customMaxHP) ??
       defaultMaxHP;
-  int get defaultMaxHP => (mainClass?.baseHP ?? 0) + constitution;
-  int get maxLoad => mainClass.load + strMod;
+  int get defaultMaxHP => (playerClass?.baseHP ?? 0) + constitution;
+  int get maxLoad => playerClass.load + strMod;
 
   static String statModifierText(int stat) {
     var mod = modifierFromValue(stat);

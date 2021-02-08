@@ -6,6 +6,7 @@ import 'package:dungeon_paper/db/models/character.dart';
 import 'package:dungeon_paper/routes.dart';
 import 'package:dungeon_paper/src/flutter_utils/widget_utils.dart';
 import 'package:dungeon_paper/src/utils/storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:icon_shadow/icon_shadow.dart';
 import 'package:image_picker/image_picker.dart';
@@ -47,22 +48,23 @@ class _AvatarUploadCardState extends State<AvatarUploadCard> {
           Stack(
             children: [
               avatar,
-              Positioned.fill(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: RaisedButton.icon(
-                      color: Colors.white,
-                      label: Text('Upload Image'),
-                      icon: imageFile == null
-                          ? Icon(Icons.file_upload)
-                          : Loader.button(),
-                      onPressed: imageFile == null ? _pickImage : null,
+              if (!kIsWeb)
+                Positioned.fill(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: RaisedButton.icon(
+                        color: Colors.white,
+                        label: Text('Upload Image'),
+                        icon: imageFile == null
+                            ? Icon(Icons.file_upload)
+                            : Loader.button(),
+                        onPressed: imageFile == null ? _pickImage : null,
+                      ),
                     ),
                   ),
                 ),
-              ),
               if (imageUrl.isNotEmpty)
                 Positioned.fill(
                   child: Align(

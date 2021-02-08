@@ -72,7 +72,7 @@ class FABState extends State<FAB> {
               context: context,
               builder: (context) => AddMoveOrSpell(
                 character: character,
-                defaultClass: character.mainClass,
+                defaultClass: character.playerClass,
               ),
             ),
           )

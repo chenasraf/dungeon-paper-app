@@ -86,8 +86,8 @@ class AlignmentSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final alignment = character.mainClass.alignments.containsKey(alignmentKey)
-        ? character.mainClass.alignments[alignmentKey]
+    final alignment = character.playerClass.alignments.containsKey(alignmentKey)
+        ? character.playerClass.alignments[alignmentKey]
         : dwa_alignment.Alignment(
             name: capitalize(alignmentKey),
             description: null,
@@ -119,7 +119,7 @@ class RaceSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     return RaceDescription(
       race: character.race,
-      playerClass: character.mainClass,
+      playerClass: character.playerClass,
       color: Get.theme.canvasColor.withOpacity(0.5),
       elevation: 0,
       margin: EdgeInsets.all(0),
@@ -141,11 +141,11 @@ class ClassSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CardListItem(
-      title: Text(character.mainClass.name),
-      subtitle: character.mainClass.description != null &&
-              character.mainClass.description.trim().isNotEmpty
+      title: Text(character.playerClass.name),
+      subtitle: character.playerClass.description != null &&
+              character.playerClass.description.trim().isNotEmpty
           ? Text(
-              character.mainClass.description,
+              character.playerClass.description,
               overflow: TextOverflow.ellipsis,
             )
           : null,
@@ -171,7 +171,7 @@ class LooksSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LooksDescription(
-      playerClass: character.mainClass,
+      playerClass: character.playerClass,
       looks: character.looks,
       color: Get.theme.canvasColor.withOpacity(0.5),
       elevation: 0,

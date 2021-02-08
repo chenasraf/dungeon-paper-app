@@ -85,7 +85,7 @@ class _ManageCharactersViewState extends State<ManageCharactersView> {
                     onTap: () => _select(char.value),
                     subtitle: Text('Level ${char.value.level} '
                         '${capitalize(enumName(char.value.alignment))} '
-                        '${capitalize(char.value.mainClass.name)}'),
+                        '${capitalize(char.value.playerClass.name)}'),
                     trailing: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Column(

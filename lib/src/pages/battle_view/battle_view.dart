@@ -182,8 +182,8 @@ class _BattleViewState extends State<BattleView> {
 
   Map<CategoryKeys, List<dynamic>> get categories => {
         CategoryKeys.Dice: [null],
-        CategoryKeys.StartingMoves:
-            [widget.character.race] + widget.character.mainClass.startingMoves,
+        CategoryKeys.StartingMoves: [widget.character.race] +
+            widget.character.playerClass.startingMoves,
         CategoryKeys.AdvancedMoves: widget.character.moves,
         CategoryKeys.Spells: widget.character.spells,
         if (widget.character.moves.isEmpty && widget.character.spells.isEmpty)

@@ -162,12 +162,9 @@ mixin CustomClassFirebaseMixin {
   Future<void> _updateChars() async {
     final futures = <Future>[];
     for (final char in characterController.all.values) {
-      if (char.playerClasses.any((el) => el.key == customClass.key)) {
-        final _updated = char.playerClasses
-            .map((el) => el.key == customClass.key ? toPlayerClass() : el)
-            .toList();
+      if (char.playerClass.key == customClass.key) {
         futures.add(
-          char.copyWith(playerClasses: _updated).update(
+          char.copyWith(playerClass: customClass.toPlayerClass()).update(
             keys: ['playerClasses'],
           ),
         );

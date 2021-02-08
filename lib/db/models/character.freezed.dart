@@ -45,8 +45,9 @@ class _$CharacterTearOff {
           int intelligence = 8,
       @JsonKey(name: 'cha', defaultValue: 0)
           int charisma = 0,
+      @required
       @PlayerClassConverter()
-          List<PlayerClass> playerClasses,
+          PlayerClass playerClass,
       @JsonKey(defaultValue: AlignmentName.neutral)
           AlignmentName alignment = AlignmentName.neutral,
       @JsonKey(name: 'maxHP')
@@ -99,7 +100,7 @@ class _$CharacterTearOff {
       wisdom: wisdom,
       intelligence: intelligence,
       charisma: charisma,
-      playerClasses: playerClasses,
+      playerClass: playerClass,
       alignment: alignment,
       customMaxHP: customMaxHP,
       level: level,
@@ -158,7 +159,7 @@ mixin _$Character {
   @JsonKey(name: 'cha', defaultValue: 0)
   int get charisma;
   @PlayerClassConverter()
-  List<PlayerClass> get playerClasses;
+  PlayerClass get playerClass;
   @JsonKey(defaultValue: AlignmentName.neutral)
   AlignmentName get alignment;
   @JsonKey(name: 'maxHP')
@@ -235,7 +236,7 @@ abstract class $CharacterCopyWith<$Res> {
       @JsonKey(name: 'cha', defaultValue: 0)
           int charisma,
       @PlayerClassConverter()
-          List<PlayerClass> playerClasses,
+          PlayerClass playerClass,
       @JsonKey(defaultValue: AlignmentName.neutral)
           AlignmentName alignment,
       @JsonKey(name: 'maxHP')
@@ -301,7 +302,7 @@ class _$CharacterCopyWithImpl<$Res> implements $CharacterCopyWith<$Res> {
     Object wisdom = freezed,
     Object intelligence = freezed,
     Object charisma = freezed,
-    Object playerClasses = freezed,
+    Object playerClass = freezed,
     Object alignment = freezed,
     Object customMaxHP = freezed,
     Object level = freezed,
@@ -338,9 +339,9 @@ class _$CharacterCopyWithImpl<$Res> implements $CharacterCopyWith<$Res> {
       intelligence:
           intelligence == freezed ? _value.intelligence : intelligence as int,
       charisma: charisma == freezed ? _value.charisma : charisma as int,
-      playerClasses: playerClasses == freezed
-          ? _value.playerClasses
-          : playerClasses as List<PlayerClass>,
+      playerClass: playerClass == freezed
+          ? _value.playerClass
+          : playerClass as PlayerClass,
       alignment:
           alignment == freezed ? _value.alignment : alignment as AlignmentName,
       customMaxHP:
@@ -415,7 +416,7 @@ abstract class _$CharacterCopyWith<$Res> implements $CharacterCopyWith<$Res> {
       @JsonKey(name: 'cha', defaultValue: 0)
           int charisma,
       @PlayerClassConverter()
-          List<PlayerClass> playerClasses,
+          PlayerClass playerClass,
       @JsonKey(defaultValue: AlignmentName.neutral)
           AlignmentName alignment,
       @JsonKey(name: 'maxHP')
@@ -483,7 +484,7 @@ class __$CharacterCopyWithImpl<$Res> extends _$CharacterCopyWithImpl<$Res>
     Object wisdom = freezed,
     Object intelligence = freezed,
     Object charisma = freezed,
-    Object playerClasses = freezed,
+    Object playerClass = freezed,
     Object alignment = freezed,
     Object customMaxHP = freezed,
     Object level = freezed,
@@ -520,9 +521,9 @@ class __$CharacterCopyWithImpl<$Res> extends _$CharacterCopyWithImpl<$Res>
       intelligence:
           intelligence == freezed ? _value.intelligence : intelligence as int,
       charisma: charisma == freezed ? _value.charisma : charisma as int,
-      playerClasses: playerClasses == freezed
-          ? _value.playerClasses
-          : playerClasses as List<PlayerClass>,
+      playerClass: playerClass == freezed
+          ? _value.playerClass
+          : playerClass as PlayerClass,
       alignment:
           alignment == freezed ? _value.alignment : alignment as AlignmentName,
       customMaxHP:
@@ -589,8 +590,9 @@ class _$_Character extends _Character
           this.intelligence = 8,
       @JsonKey(name: 'cha', defaultValue: 0)
           this.charisma = 0,
+      @required
       @PlayerClassConverter()
-          this.playerClasses,
+          this.playerClass,
       @JsonKey(defaultValue: AlignmentName.neutral)
           this.alignment = AlignmentName.neutral,
       @JsonKey(name: 'maxHP')
@@ -639,6 +641,7 @@ class _$_Character extends _Character
         assert(wisdom != null),
         assert(intelligence != null),
         assert(charisma != null),
+        assert(playerClass != null),
         assert(alignment != null),
         assert(level != null),
         assert(bio != null),
@@ -697,7 +700,7 @@ class _$_Character extends _Character
   final int charisma;
   @override
   @PlayerClassConverter()
-  final List<PlayerClass> playerClasses;
+  final PlayerClass playerClass;
   @override
   @JsonKey(defaultValue: AlignmentName.neutral)
   final AlignmentName alignment;
@@ -756,7 +759,7 @@ class _$_Character extends _Character
 
   @override
   String toString() {
-    return 'Character(key: $key, ref: $ref, displayName: $displayName, photoURL: $photoURL, createdAt: $createdAt, updatedAt: $updatedAt, baseArmor: $baseArmor, strength: $strength, dexterity: $dexterity, constitution: $constitution, wisdom: $wisdom, intelligence: $intelligence, charisma: $charisma, playerClasses: $playerClasses, alignment: $alignment, customMaxHP: $customMaxHP, level: $level, bio: $bio, customCurrentHP: $customCurrentHP, currentXP: $currentXP, moves: $moves, notes: $notes, spells: $spells, inventory: $inventory, customDamageDice: $customDamageDice, looks: $looks, raceMove: $raceMove, coins: $coins, order: $order, customSettings: $customSettings)';
+    return 'Character(key: $key, ref: $ref, displayName: $displayName, photoURL: $photoURL, createdAt: $createdAt, updatedAt: $updatedAt, baseArmor: $baseArmor, strength: $strength, dexterity: $dexterity, constitution: $constitution, wisdom: $wisdom, intelligence: $intelligence, charisma: $charisma, playerClass: $playerClass, alignment: $alignment, customMaxHP: $customMaxHP, level: $level, bio: $bio, customCurrentHP: $customCurrentHP, currentXP: $currentXP, moves: $moves, notes: $notes, spells: $spells, inventory: $inventory, customDamageDice: $customDamageDice, looks: $looks, raceMove: $raceMove, coins: $coins, order: $order, customSettings: $customSettings)';
   }
 
   @override
@@ -799,9 +802,9 @@ class _$_Character extends _Character
             (identical(other.charisma, charisma) ||
                 const DeepCollectionEquality()
                     .equals(other.charisma, charisma)) &&
-            (identical(other.playerClasses, playerClasses) ||
+            (identical(other.playerClass, playerClass) ||
                 const DeepCollectionEquality()
-                    .equals(other.playerClasses, playerClasses)) &&
+                    .equals(other.playerClass, playerClass)) &&
             (identical(other.alignment, alignment) ||
                 const DeepCollectionEquality()
                     .equals(other.alignment, alignment)) &&
@@ -854,7 +857,7 @@ class _$_Character extends _Character
       const DeepCollectionEquality().hash(wisdom) ^
       const DeepCollectionEquality().hash(intelligence) ^
       const DeepCollectionEquality().hash(charisma) ^
-      const DeepCollectionEquality().hash(playerClasses) ^
+      const DeepCollectionEquality().hash(playerClass) ^
       const DeepCollectionEquality().hash(alignment) ^
       const DeepCollectionEquality().hash(customMaxHP) ^
       const DeepCollectionEquality().hash(level) ^
@@ -914,8 +917,9 @@ abstract class _Character extends Character
           int intelligence,
       @JsonKey(name: 'cha', defaultValue: 0)
           int charisma,
+      @required
       @PlayerClassConverter()
-          List<PlayerClass> playerClasses,
+          PlayerClass playerClass,
       @JsonKey(defaultValue: AlignmentName.neutral)
           AlignmentName alignment,
       @JsonKey(name: 'maxHP')
@@ -999,7 +1003,7 @@ abstract class _Character extends Character
   int get charisma;
   @override
   @PlayerClassConverter()
-  List<PlayerClass> get playerClasses;
+  PlayerClass get playerClass;
   @override
   @JsonKey(defaultValue: AlignmentName.neutral)
   AlignmentName get alignment;

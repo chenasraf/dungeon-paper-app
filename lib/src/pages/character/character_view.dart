@@ -9,6 +9,7 @@ import 'package:dungeon_paper/src/scaffolds/main_scaffold.dart';
 import 'package:dungeon_paper/src/utils/analytics.dart';
 import 'package:dungeon_paper/src/utils/logger.dart';
 import 'package:dungeon_paper/src/utils/utils.dart';
+import 'package:dungeon_world_data/dw_data.dart';
 import 'package:get/get.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:uuid/uuid.dart';
@@ -88,10 +89,11 @@ class _CharacterViewState extends State<CharacterView>
         : Character(
             key: Uuid().v4(),
             ref: user.ref.collection('characters').doc(),
+            playerClass: dungeonWorld.classes.first,
           );
 
     basicInfoValid = ValueNotifier(character.displayName.isNotEmpty);
-    mainClassValid = ValueNotifier(character.mainClass != null);
+    mainClassValid = ValueNotifier(character.playerClass != null);
     alignmentValid = ValueNotifier(character.alignment != null);
     raceValid = ValueNotifier(character.race != null);
     looksValid = ValueNotifier(true);
@@ -178,7 +180,11 @@ class _CharacterViewState extends State<CharacterView>
           mode: DialogMode.create,
           onUpdate: (char) => setState(() {
             dirty = true;
-            character = char;
+            character = character.copyWith(
+              displayName: char.displayName,
+              photoURL: char.photoURL,
+              bio: char.bio,
+            );
           }),
         ),
         CreateCharacterTab.MainClass: ClassSelectView(
@@ -186,7 +192,9 @@ class _CharacterViewState extends State<CharacterView>
           mode: DialogMode.create,
           onUpdate: (char) => setState(() {
             dirty = true;
-            character = char;
+            character = character.copyWith(
+              playerClass: char.playerClass,
+            );
           }),
         ),
         CreateCharacterTab.Alignment: ChangeAlignmentDialog(

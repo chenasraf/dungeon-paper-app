@@ -113,7 +113,7 @@ class _HpDialogState extends State<HpDialog> {
                   value: useDefaultMaxHP,
                   title: Text('Calculate based on stats'),
                   subtitle: Text(
-                      'Class Base HP (${widget.character.mainClass.baseHP}) + Constitution (${widget.character.constitution})'),
+                      'Class Base HP (${widget.character.playerClass.baseHP}) + Constitution (${widget.character.constitution})'),
                   onChanged: (val) {
                     if (val) updateValue(widget.character.defaultMaxHP);
                     setState(() {

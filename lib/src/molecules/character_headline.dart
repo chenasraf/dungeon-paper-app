@@ -16,7 +16,7 @@ class CharacterHeadline extends StatelessWidget {
   Widget build(BuildContext context) {
     var level = character.level;
     var alignment = capitalize(enumName(character.alignment));
-    var mainClass = capitalize(character.mainClass.name);
+    var mainClass = capitalize(character.playerClass.name);
     var displayName = capitalize(character.displayName);
 
     return Container(

@@ -53,7 +53,7 @@ class MoveView extends StatefulWidget {
           createMove(character, move);
           Get.back();
         },
-        defaultClass: character.mainClass,
+        defaultClass: character.playerClass,
       );
 }
 

@@ -32,7 +32,7 @@ class ClassSelectView extends StatelessWidget {
         child: PlayerClassList(
           builder: (context, list) {
             var sorted = [...list]
-              ..sort((a, b) => character.mainClass == a ? -1 : 1);
+              ..sort((a, b) => character.playerClass == a ? -1 : 1);
             return Column(
               children: [
                 for (var availClass in sorted)
@@ -41,7 +41,7 @@ class ClassSelectView extends StatelessWidget {
                     subtitle: Text('Preview class'),
                     leading: Icon(Icons.person, size: 40.0),
                     color: Get.theme.canvasColor.withOpacity(
-                        availClass == character.mainClass ? 1 : 0.7),
+                        availClass == character.playerClass ? 1 : 0.7),
                     trailing: Icon(Icons.chevron_right),
                     onTap: previewClass(context, availClass),
                   ),
@@ -73,7 +73,7 @@ class ClassSelectView extends StatelessWidget {
   void save(BuildContext context, PlayerClass def,
       ChangeClassConfirmationOptions options) {
     var result = options.applyToCharacter(character, def);
-    onUpdate?.call(result.character.copyWith(playerClasses: [def]));
+    onUpdate?.call(result.character.copyWith(playerClass: def));
   }
 
   Function() previewClass(BuildContext context, PlayerClass def) {

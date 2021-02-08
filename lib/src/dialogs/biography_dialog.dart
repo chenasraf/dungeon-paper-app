@@ -15,7 +15,7 @@ class BiographyDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasBio = character.bio?.isNotEmpty == true;
-    final hasClsDescr = character.mainClass?.description?.isNotEmpty == true;
+    final hasClsDescr = character.playerClass?.description?.isNotEmpty == true;
     final hasLooks = character.looks.isNotEmpty;
     final blocks = <List<Widget>>[
       if (hasBio)
@@ -56,7 +56,7 @@ class BiographyDialog extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: 4.0),
             child: Text(
-              '${character.mainClass.name} description',
+              '${character.playerClass.name} description',
               textScaleFactor: 1.1,
               style: Get.theme.textTheme.bodyText2
                   .copyWith(fontWeight: FontWeight.w700),
@@ -64,7 +64,7 @@ class BiographyDialog extends StatelessWidget {
           ),
           // children: [
           MarkdownBody(
-            data: character.mainClass.description,
+            data: character.playerClass.description,
             listItemCrossAxisAlignment:
                 MarkdownListItemCrossAxisAlignment.start,
           ),

@@ -31,7 +31,7 @@ class _LooksViewState extends State<LooksView> {
 
   @override
   void initState() {
-    looksOptions = widget.character.mainClass.looks;
+    looksOptions = widget.character.playerClass.looks;
     selected = List.generate(
         widget.character.looks.isNotEmpty
             ? widget.character.looks.length

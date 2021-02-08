@@ -3,8 +3,6 @@ import 'package:dungeon_paper/db/migrations/migration.dart';
 import 'package:dungeon_paper/db/models/character.dart';
 
 class CharacterMigrations extends MigrationRunner<Character> {
-  static const deleteOldMaxHp = <String, dynamic>{'useDefaultMaxHP': null};
-
   @override
   final migrations = [
     Migration('Settings', (data) {
@@ -16,6 +14,7 @@ class CharacterMigrations extends MigrationRunner<Character> {
       };
     }, (data) => data['settings'] == null),
     Migration('Settings defaultMaxHp', (data) {
+      final deleteOldMaxHp = <String, dynamic>{'useDefaultMaxHP': null};
       if (data['settings'] != null) {
         return deleteOldMaxHp;
       }
@@ -26,6 +25,12 @@ class CharacterMigrations extends MigrationRunner<Character> {
         },
       };
     }, (data) => data['useDefaultMaxHP'] != null),
+    Migration('Single object player class', (data) {
+      return <String, dynamic>{
+        'playerClasses': null,
+        'playerClass': data['playerClasses'].first,
+      };
+    }, (data) => data['playerClasses'] != null),
   ];
 
   @override

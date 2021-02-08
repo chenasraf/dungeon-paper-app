@@ -65,15 +65,14 @@ class _CustomClassViewState extends State<CustomClassView>
   @override
   void initState() {
     var user = userController.current;
-    def = widget.customClass != null
-        ? widget.customClass.copyWith(
-            ref: widget.customClass.ref ??
-                user.ref.collection('custom_classes').doc(),
-          )
-        : CustomClass(
-            key: Uuid().v4(),
-            ref: user.ref.collection('custom_classes').doc(),
-          );
+    def = widget.customClass?.copyWith(
+          ref: widget.customClass.ref ??
+              user.ref.collection('custom_classes').doc(),
+        ) ??
+        CustomClass(
+          key: Uuid().v4(),
+          ref: user.ref.collection('custom_classes').doc(),
+        );
 
     basicInfoValid = ValueNotifier(def.name.isNotEmpty);
     racesValid = ValueNotifier(def.raceMoves.isNotEmpty);

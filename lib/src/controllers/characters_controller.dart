@@ -1,5 +1,6 @@
 import 'package:dungeon_paper/src/controllers/loading_controller.dart';
 import 'package:dungeon_paper/src/controllers/prefs_controller.dart';
+import 'package:dungeon_paper/src/controllers/user_controller.dart';
 import 'package:get/get.dart';
 import 'package:dungeon_paper/db/models/character.dart';
 
@@ -51,9 +52,11 @@ class CharacterController extends GetxController {
       currentDocId != null
           ? _all.values.firstWhere(
               (c) => c.documentID == currentDocId,
-              orElse: () => characters.first,
+              orElse: () =>
+                  _all[prefsController.user.lastCharacterId] ??
+                  characters.first,
             )
-          : characters.first,
+          : _all[prefsController.user.lastCharacterId] ?? characters.first,
       false,
     );
     loadingController.upsertCharacter(false);

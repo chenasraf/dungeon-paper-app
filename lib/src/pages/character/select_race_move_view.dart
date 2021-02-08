@@ -35,10 +35,10 @@ class SelectRaceMoveView extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          children: character.mainClass.raceMoves
+          children: character.playerClass.raceMoves
               .map(
                 (move) => RaceDescription(
-                  playerClass: character.mainClass,
+                  playerClass: character.playerClass,
                   race: move,
                   onTap: changeRace(move),
                   color: Get.theme.canvasColor

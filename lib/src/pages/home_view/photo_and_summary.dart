@@ -69,7 +69,7 @@ class PhotoAndSummary extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   if (character.bio?.isNotEmpty == true ||
-                      character.mainClass?.description?.isNotEmpty == true)
+                      character.playerClass?.description?.isNotEmpty == true)
                     IconButton(
                       icon: IconShadowWidget(
                         Icon(

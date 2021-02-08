@@ -12,7 +12,7 @@ void main() {
         dungeonWorld.classes.firstWhere((k) => k.key == 'immolator');
 
     test('generates default uuid key', () {
-      final char1 = Character(key: Uuid().v4());
+      final char1 = Character(key: Uuid().v4(), playerClass: immolator);
       final char2 = Character.fromJson(<String, dynamic>{});
 
       expect(char1.key, isNotNull);
@@ -28,7 +28,7 @@ void main() {
           'con': 10,
         },
       );
-      expect(char.mainClass.key, equals(wizard.key));
+      expect(char.playerClass.key, equals(wizard.key));
       expect(char.currentHP, equals(wizard.baseHP + char.constitution));
       expect(char.maxHP, equals(wizard.baseHP + char.constitution));
     });

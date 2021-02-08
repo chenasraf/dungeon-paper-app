@@ -26,7 +26,7 @@ class ChangeAlignmentDialog extends StatelessWidget {
           children: chr.AlignmentName.values
               .map(
                 (alignment) => AlignmentDescription(
-                  playerClass: character.mainClass,
+                  playerClass: character.playerClass,
                   alignment: alignment,
                   onTap: changeAlignment(alignment),
                   selected: alignment == character.alignment,

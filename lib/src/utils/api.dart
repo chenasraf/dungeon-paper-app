@@ -3,6 +3,7 @@ import 'package:dungeon_paper/db/models/character.dart';
 import 'package:dungeon_paper/db/models/user.dart';
 import 'package:dungeon_paper/src/utils/analytics.dart';
 import 'package:dungeon_paper/src/utils/auth/auth.dart';
+import 'package:dungeon_world_data/dw_data.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:flutter/foundation.dart';
 import 'package:pedantic/pedantic.dart';
@@ -33,7 +34,12 @@ Future<User> getDatabaseUser(
       photoURL: fbUser.photoURL,
     );
     await helpers.create(userDoc.reference, data);
-    await user.createCharacter(Character(key: Uuid().v4()));
+    await user.createCharacter(
+      Character(
+        key: Uuid().v4(),
+        playerClass: dungeonWorld.classes.first,
+      ),
+    );
   } else {
     if (user.email?.isEmpty != true) {
       user = user.copyWith(
