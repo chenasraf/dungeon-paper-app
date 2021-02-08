@@ -2,6 +2,7 @@ import 'package:dungeon_paper/db/models/prefs_settings.dart';
 import 'package:dungeon_paper/src/controllers/auth_controller.dart';
 import 'package:dungeon_paper/src/utils/auth/auth.dart';
 import 'package:dungeon_paper/src/utils/logger.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,7 +10,7 @@ enum SharedPrefKeys {
   userEmail,
   userId,
   characterId,
-  LastOpenedVersion,
+  lastOpenedVersion,
 }
 
 Map<SharedPrefKeys, String> sharedPrefsKeyMap = {
@@ -21,60 +22,19 @@ Map<SharedPrefKeys, String> sharedPrefsKeyMap = {
 void withPrefs(Function(SharedPreferences inst) fn) =>
     SharedPreferences.getInstance().then(fn);
 
-class UserDetails extends GetxController {
-  final _email = RxString();
-  final _id = RxString();
-  final _lastCharacterId = RxString();
-
-  String get id => _id.value;
-  String get email => _email.value;
-  String get lastCharacterId => _lastCharacterId.value;
-
-  void setId(String value, [bool updateCondition = true]) {
-    _id.value = value;
-    withPrefs(
-      (prefs) => prefs.setString(
-        sharedPrefsKeyMap[SharedPrefKeys.userId],
-        value,
-      ),
-    );
-    update(null, updateCondition);
-  }
-
-  void setEmail(String value, [bool updateCondition = true]) {
-    _email.value = value;
-    withPrefs(
-      (prefs) => prefs.setString(
-        sharedPrefsKeyMap[SharedPrefKeys.userEmail],
-        value,
-      ),
-    );
-    update(null, updateCondition);
-  }
-
-  void setLastCharacterId(String value, [bool updateCondition = true]) {
-    _lastCharacterId.value = value;
-    withPrefs(
-      (prefs) => prefs.setString(
-        sharedPrefsKeyMap[SharedPrefKeys.characterId],
-        value,
-      ),
-    );
-    update(null, updateCondition);
-  }
-}
-
 class PrefsStore extends GetxController {
   final _user = UserDetails().obs;
   final _settings = PrefsSettings().obs;
   final _prefs = Rx<SharedPreferences>();
+  final _config = RxMap<String, RemoteConfigValue>();
 
-  PrefsStore() {
+  PrefsStore._() {
     withPrefs((inst) => _prefs.value = inst);
   }
 
   UserDetails get user => _user.value;
   PrefsSettings get settings => _settings.value;
+  Map<String, RemoteConfigValue> get config => _config;
 
   void setUser(UserDetails user, [bool updateCondition = true]) {
     _user.value = user;
@@ -125,6 +85,56 @@ class PrefsStore extends GetxController {
       rethrow;
     }
   }
+
+  void setConfig(Map<String, RemoteConfigValue> all,
+      [bool updateCondition = true]) {
+    _config.clear();
+    _config.addAll(all);
+    update(null, updateCondition);
+  }
 }
 
-final prefsController = PrefsStore();
+class UserDetails extends GetxController {
+  final _email = RxString();
+  final _id = RxString();
+  final _lastCharacterId = RxString();
+
+  String get id => _id.value;
+  String get email => _email.value;
+  String get lastCharacterId => _lastCharacterId.value;
+
+  void setId(String value, [bool updateCondition = true]) {
+    _id.value = value;
+    withPrefs(
+      (prefs) => prefs.setString(
+        sharedPrefsKeyMap[SharedPrefKeys.userId],
+        value,
+      ),
+    );
+    update(null, updateCondition);
+  }
+
+  void setEmail(String value, [bool updateCondition = true]) {
+    _email.value = value;
+    withPrefs(
+      (prefs) => prefs.setString(
+        sharedPrefsKeyMap[SharedPrefKeys.userEmail],
+        value,
+      ),
+    );
+    update(null, updateCondition);
+  }
+
+  void setLastCharacterId(String value, [bool updateCondition = true]) {
+    _lastCharacterId.value = value;
+    withPrefs(
+      (prefs) => prefs.setString(
+        sharedPrefsKeyMap[SharedPrefKeys.characterId],
+        value,
+      ),
+    );
+    update(null, updateCondition);
+  }
+}
+
+final prefsController = PrefsStore._();

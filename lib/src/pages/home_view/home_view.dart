@@ -19,6 +19,7 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       final width = Get.mediaQuery.size.width;
+      // ignore: unused_local_variable
       final dpr = Get.mediaQuery.devicePixelRatio;
       final shouldSplit = constraints.maxWidth > 800;
       // final height = Get.mediaQuery.size.height;

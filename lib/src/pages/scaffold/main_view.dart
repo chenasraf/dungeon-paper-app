@@ -216,7 +216,7 @@ class _MainViewState extends State<MainView> {
   void _showWhatsNew() async {
     var packageInfo = await PackageInfo.fromPlatform();
     var sharedPrefs = await SharedPreferences.getInstance();
-    var lastVersionKey = enumName(SharedPrefKeys.LastOpenedVersion);
+    var lastVersionKey = enumName(SharedPrefKeys.lastOpenedVersion);
     Version lastViewedAt;
     if (sharedPrefs.containsKey(lastVersionKey)) {
       lastViewedAt = Version.parse(sharedPrefs.getString(lastVersionKey));

@@ -4,6 +4,7 @@ import 'package:dungeon_paper/src/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/widgets.dart';
 
@@ -15,6 +16,7 @@ FirebaseFirestore _firestore;
 FirebaseAuth _auth;
 FirebaseStorage _storage;
 FirebaseHelpers _helpers;
+RemoteConfig _config;
 bool _persisted = false;
 
 FirebaseApp get firebase => _app;
@@ -22,6 +24,7 @@ FirebaseFirestore get firestore => _firestore;
 FirebaseAuth get auth => _auth;
 FirebaseStorage get storage => _storage;
 FirebaseHelpers get helpers => _helpers;
+RemoteConfig get config => _config;
 
 Future<FirebaseApp> initApp({bool web}) async {
   if (_app != null) {
@@ -35,6 +38,7 @@ Future<FirebaseApp> initApp({bool web}) async {
   _auth = FirebaseAuth.instance;
   _storage = FirebaseStorage.instance;
   _helpers = FirebaseHelpers();
+  _config = await RemoteConfig.instance;
 
   if (kIsWeb) {
     if (!_persisted) {

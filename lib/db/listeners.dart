@@ -6,6 +6,7 @@ import 'package:dungeon_paper/src/controllers/auth_controller.dart';
 import 'package:dungeon_paper/src/controllers/campaigns_controller.dart';
 import 'package:dungeon_paper/src/controllers/characters_controller.dart';
 import 'package:dungeon_paper/src/controllers/custom_classes_controller.dart';
+import 'package:dungeon_paper/src/controllers/prefs_controller.dart';
 import 'package:dungeon_paper/src/controllers/user_controller.dart';
 import 'package:dungeon_paper/src/utils/logger.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
@@ -151,4 +152,11 @@ void registerCampaignsListener(fb.User firebaseUser) {
     });
   }
   logger.d('Registered db campaigns listener');
+}
+
+void registerConfigListener() {
+  config.addListener(() {
+    prefsController.setConfig(config.getAll());
+  });
+  logger.d('Registered config listener');
 }

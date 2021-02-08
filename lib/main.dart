@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:dungeon_paper/db/db.dart';
+import 'package:dungeon_paper/db/listeners.dart';
 import 'package:dungeon_paper/routes.dart';
 import 'package:dungeon_paper/src/controllers/characters_controller.dart';
 import 'package:dungeon_paper/src/dialogs/dialogs.dart';
@@ -48,6 +49,9 @@ void withInit(Function() cb) async {
 void main() async {
   await initApp(web: kIsWeb);
   withInit(() {
+    registerConfigListener();
+
+    // this should be last
     prefsController.loadAll();
     runApp(DungeonPaper());
   });

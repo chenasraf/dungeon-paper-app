@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dungeon_paper/db/migrations/character_migrations.dart';
 import 'package:dungeon_paper/db/models/character.dart';
 import 'package:dungeon_paper/db/models/custom_class.dart';
 import 'package:dungeon_paper/src/dialogs/confirmation_dialog.dart';
@@ -220,7 +221,7 @@ class _ImportViewState extends State<ImportView> {
   void _loadFile(File file) async {
     final str = await file.readAsString();
     final _format = ImportFormat.JSON;
-    final data = _dataParsers[_format]?.call(str);
+    final data = await _dataParsers[_format]?.call(str);
 
     setState(() {
       _loadedCharacters = Set.from(data.characters);
@@ -228,12 +229,16 @@ class _ImportViewState extends State<ImportView> {
     });
   }
 
-  final Map<ImportFormat, ImportData Function(String)> _dataParsers = {
-    ImportFormat.JSON: (str) {
+  final Map<ImportFormat, Future<ImportData> Function(String)> _dataParsers = {
+    ImportFormat.JSON: (str) async {
       final raw = jsonDecode(str);
       final json = raw is List ? {'characters': raw} : raw;
-      final chars = Set<Character>.from(
-              json['characters']?.map((v) => Character.fromJson(v))) ??
+      final chars = <Character>{
+            for (final char in json['characters'] as List<Map<String, dynamic>>)
+              await Character.fromJson(
+                CharacterMigrations().getData(char),
+              ),
+          } ??
           [];
       final customClasses = Set<CustomClass>.from(
             json['classes']?.map(
