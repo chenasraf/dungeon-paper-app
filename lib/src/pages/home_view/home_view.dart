@@ -19,7 +19,8 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       final width = Get.mediaQuery.size.width;
-      final shouldSplit = constraints.maxWidth > 1000;
+      final dpr = Get.mediaQuery.devicePixelRatio;
+      final shouldSplit = constraints.maxWidth > 800;
       // final height = Get.mediaQuery.size.height;
 
       final children = <Widget>[
@@ -44,9 +45,7 @@ class HomeView extends StatelessWidget {
           ),
         ),
         child: StaggeredGridView.extentBuilder(
-          // return StaggeredGridView.countBuilder(
           maxCrossAxisExtent: shouldSplit ? width / 2 : width,
-          // crossAxisCount: orientation == Orientation.portrait ? 1 : 2,
           itemCount: children.length,
           itemBuilder: (context, index) => Container(
             child: children[index],
@@ -54,9 +53,6 @@ class HomeView extends StatelessWidget {
           staggeredTileBuilder: (index) => StaggeredTile.fit(1),
         ),
       );
-      // return orientation == Orientation.portrait
-      //     ? Column(children: children)
-      //     : ListView(children: children);
     });
   }
 }
