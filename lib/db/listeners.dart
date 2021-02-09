@@ -10,6 +10,7 @@ import 'package:dungeon_paper/src/controllers/prefs_controller.dart';
 import 'package:dungeon_paper/src/controllers/user_controller.dart';
 import 'package:dungeon_paper/src/utils/logger.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
+import 'package:flutter/foundation.dart';
 
 import 'migrations/character_migrations.dart';
 import 'models/user.dart';
@@ -155,6 +156,9 @@ void registerCampaignsListener(fb.User firebaseUser) {
 }
 
 void registerConfigListener() {
+  if (kIsWeb) {
+    return;
+  }
   config.addListener(() {
     prefsController.setConfig(config.getAll());
   });

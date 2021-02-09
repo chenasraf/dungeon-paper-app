@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:dungeon_paper/src/utils/logger.dart';
 import 'package:dungeon_paper/src/utils/utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -28,6 +30,10 @@ Future<void> reportError(dynamic error, StackTrace stackTrace) async {
     print(stackTrace);
     return;
   } else {
-    unawaited(crashlytics.recordError(error, stackTrace));
+    if (!kIsWeb) {
+      unawaited(crashlytics.recordError(error, stackTrace));
+    } else {
+      logger.e('Uncaught error:', error, stackTrace);
+    }
   }
 }

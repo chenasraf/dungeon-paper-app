@@ -24,7 +24,7 @@ FirebaseFirestore get firestore => _firestore;
 FirebaseAuth get auth => _auth;
 FirebaseStorage get storage => _storage;
 FirebaseHelpers get helpers => _helpers;
-RemoteConfig get config => _config;
+RemoteConfig get config => !kIsWeb ? _config : null;
 
 Future<FirebaseApp> initApp({bool web}) async {
   if (_app != null) {
@@ -38,7 +38,6 @@ Future<FirebaseApp> initApp({bool web}) async {
   _auth = FirebaseAuth.instance;
   _storage = FirebaseStorage.instance;
   _helpers = FirebaseHelpers();
-  _config = await RemoteConfig.instance;
 
   if (kIsWeb) {
     if (!_persisted) {
@@ -46,6 +45,7 @@ Future<FirebaseApp> initApp({bool web}) async {
       _persisted = true;
     }
   } else {
+    _config = await RemoteConfig.instance;
     _firestore.settings = Settings(persistenceEnabled: true);
   }
   return _app;
